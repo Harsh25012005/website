@@ -5,7 +5,7 @@ export const services: Service[] = [
     number: '01',
     title: { en: 'Web UI design' },
     description: {
-      en: 'Responsive website and web app UI designed in Figma — landing pages, marketing sites and product screens built on a real grid, type scale and spacing system.',
+      en: 'Responsive website and web app UI designed in Figma: landing pages, marketing sites and product screens built on a real grid, type scale and spacing system.',
     },
     deliverables: {
       en: [
@@ -19,7 +19,7 @@ export const services: Service[] = [
     number: '02',
     title: { en: 'Design systems' },
     description: {
-      en: 'Figma design system work — component libraries, tokens and documentation that keep a product team shipping consistent UI instead of rebuilding it every sprint.',
+      en: 'Figma design system work: component libraries, tokens and documentation that keep a product team shipping consistent UI instead of rebuilding it every sprint.',
     },
     deliverables: {
       en: [
@@ -33,7 +33,7 @@ export const services: Service[] = [
     number: '03',
     title: { en: 'Mobile app design' },
     description: {
-      en: 'iOS and Android app UI/UX design — onboarding, navigation and core flows drawn around platform conventions, real content and a clickable Figma prototype.',
+      en: 'iOS and Android app UI/UX design: onboarding, navigation and core flows drawn around platform conventions, real content and a clickable Figma prototype.',
     },
     deliverables: {
       en: [
@@ -47,7 +47,7 @@ export const services: Service[] = [
     number: '04',
     title: { en: 'SaaS product design' },
     description: {
-      en: 'SaaS dashboard and admin panel design — data-heavy screens, onboarding and settings flows that stay usable as features and edge cases pile up.',
+      en: 'SaaS dashboard and admin panel design: data-heavy screens, onboarding and settings flows that stay usable as features and edge cases pile up.',
     },
     deliverables: {
       en: [
@@ -92,34 +92,34 @@ export const servicesProcess: {
   paragraphs: Localized<string[]>
 }[] = [
   {
-    heading: { en: '01 — Discover' },
+    heading: { en: '01 - Discover' },
     paragraphs: {
       en: [
-        'A short call or written brief to understand the product, its users, the screens in scope and what "done" looks like — before any design starts.',
+        'A short call or written brief to understand the product, its users, the screens in scope and what "done" looks like, before any design starts.',
       ],
     },
   },
   {
-    heading: { en: '02 — Design' },
+    heading: { en: '02 - Design' },
     paragraphs: {
       en: [
-        'User flows and wireframes first, then high-fidelity UI in Figma — reviewed with you at each stage rather than revealed at the end.',
+        'User flows and wireframes first, then high-fidelity UI in Figma, reviewed with you at each stage rather than revealed at the end.',
       ],
     },
   },
   {
-    heading: { en: '03 — Build' },
+    heading: { en: '03 - Build' },
     paragraphs: {
       en: [
-        'For projects that need it, the approved design is built as working front-end code — HTML, CSS, Tailwind CSS, React or Next.js — responsive from the start.',
+        'For projects that need it, the approved design is built as working front-end code (HTML, CSS, Tailwind CSS, React or Next.js), responsive from the start.',
       ],
     },
   },
   {
-    heading: { en: '04 — Handoff' },
+    heading: { en: '04 - Handoff' },
     paragraphs: {
       en: [
-        'Organised Figma files, documented components and tokens, and a build that matches the design — everything your developers need to take it forward.',
+        'Organised Figma files, documented components and tokens, and a build that matches the design, with everything your developers need to take it forward.',
       ],
     },
   },
@@ -131,7 +131,7 @@ export const testimonials: Testimonial[] = []
 export const aboutIntro: Localized<string[]> = {
   en: [
     'I’m Harsh Vaghela, a freelance UI/UX and product designer based in Ahmedabad, Gujarat, India. I work on design systems, web UI, mobile app design and SaaS product design for founders and small teams, locally and remotely worldwide.',
-    'I design in Figma, Framer, Webflow and Sketch, then build the front end in HTML, CSS, JavaScript, React, Next.js, Tailwind CSS and PHP — so what ships stays close to what was designed. I completed my BCA at Bholabhai Patel College of Computer Studies and am pursuing my MCA at Bhagwan Swaminarayan Institute of Technology.',
+    'I design in Figma, Framer, Webflow and Sketch, then build the front end in HTML, CSS, JavaScript, React, Next.js, Tailwind CSS and PHP, so what ships stays close to what was designed. I completed my BCA at Bholabhai Patel College of Computer Studies and am pursuing my MCA at Bhagwan Swaminarayan Institute of Technology.',
   ],
 }
 
@@ -144,7 +144,7 @@ export const aboutChapters: {
     paragraphs: {
       en: [
         'My interest in design started during my BCA, where computer science coursework kept pulling me toward the interface side of every project rather than only the logic behind it. Figma became the tool I kept coming back to, and UI/UX design turned from a course topic into the thing I actually wanted to do.',
-        'Picking up front-end development alongside it — HTML, CSS, JavaScript, and later React and Next.js — turned out to be the useful detour. Understanding how an interface actually gets built changed how I design in the first place.',
+        'Picking up front-end development alongside it (HTML, CSS, JavaScript, and later React and Next.js) turned out to be the useful detour. Understanding how an interface actually gets built changed how I design in the first place.',
       ],
     },
   },
@@ -153,7 +153,7 @@ export const aboutChapters: {
     paragraphs: {
       en: [
         'My first freelance work was web UI and landing page design, where real client feedback replaced a brief written by a course. Each project pushed me to tighten spacing, hierarchy and consistency in ways a tutorial never covers.',
-        'From there the work expanded into design systems and mobile app screens, and I started pairing every Figma file with a working front-end build — so a client could see the interface in a browser, not only in a prototype.',
+        'From there the work expanded into design systems and mobile app screens, and I started pairing every Figma file with a working front-end build, so a client could see the interface in a browser, not only in a prototype.',
       ],
     },
   },
@@ -161,7 +161,7 @@ export const aboutChapters: {
     heading: { en: 'Design and code today' },
     paragraphs: {
       en: [
-        'With 1.5+ years in the field, I now work across design systems, web UI, mobile app design and SaaS product design — usually for founders and small teams who want both the design file and a working build. I’m completing my MCA at Bhagwan Swaminarayan Institute of Technology alongside client work.',
+        'With 1.5+ years in the field, I now work across design systems, web UI, mobile app design and SaaS product design, usually for founders and small teams who want both the design file and a working build. I’m completing my MCA at Bhagwan Swaminarayan Institute of Technology alongside client work.',
         'I take on freelance and collaborative projects, particularly design system work, SaaS dashboards, and web UI that has to go from Figma to a live, responsive site.',
       ],
     },
@@ -175,7 +175,7 @@ export const beyondScreens: {
   heading: { en: 'Beyond screens' },
   paragraphs: {
     en: [
-      'Outside client work, I spend time exploring new tools and frameworks in design and front-end development — it’s part of why I ended up as much of a coder as a designer.',
+      'Outside client work, I spend time exploring new tools and frameworks in design and front-end development; it’s part of why I ended up as much of a coder as a designer.',
       'Being a student again through my MCA keeps me close to the fundamentals, which shows up in how I approach structure and problem-solving in design work too.',
     ],
   },

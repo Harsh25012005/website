@@ -47,10 +47,8 @@ export function Services({ locale, dictionary }: ServicesProps) {
         <Reveal>
           <div className="flex flex-col items-start gap-6 border-b border-[var(--color-border)] py-12 md:flex-row md:items-center md:justify-between md:gap-10 md:px-8 md:py-14">
             <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[28ch]">
-              <span className="text-gradient">
-                {locale === 'cs'
-                  ? 'Máte v hlavě projekt? Pojďme si promluvit.'
-                  : 'Have a project in mind? Let’s talk.'}
+              <span className="text-white">
+                Have a project in mind? Let’s talk.
               </span>
             </p>
             <Link

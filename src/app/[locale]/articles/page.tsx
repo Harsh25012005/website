@@ -16,11 +16,8 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/articles',
-    title: locale === 'cs' ? 'Články' : 'Articles',
-    description:
-      locale === 'cs'
-        ? 'Poznámky k projektům, procesu a věcem, které stojí za sdílení.'
-        : 'Notes on projects, process and things worth sharing.',
+    title: 'Articles',
+    description: 'Notes on projects, process and things worth sharing.',
   })
 }
 

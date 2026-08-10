@@ -122,7 +122,7 @@ export function Footer({ locale, dictionary }: FooterProps) {
             </p>
             <a
               href={`mailto:${site.email}`}
-              className="text-gradient block text-[clamp(20px,2.2vw,30px)] leading-[1.2] font-light break-all"
+              className="block text-[clamp(20px,2.2vw,30px)] leading-[1.2] font-light text-white break-all"
             >
               {user}@{domain}
             </a>
@@ -141,6 +141,13 @@ export function Footer({ locale, dictionary }: FooterProps) {
             <span>
               {dictionary.common.builtBy} {site.name}
             </span>
+            <button
+              onClick={scrollToTop}
+              type="button"
+              className="cursor-pointer transition-colors hover:text-white"
+            >
+              Back to top ↑
+            </button>
           </div>
         </div>
       </div>
@@ -150,7 +157,7 @@ export function Footer({ locale, dictionary }: FooterProps) {
 
 function CtaLine({ children }: { children: ReactNode }) {
   return (
-    <span className="text-gradient relative inline-block max-w-full">
+    <span className="relative inline-block max-w-full text-white">
       {children}
     </span>
   )
@@ -166,7 +173,7 @@ function InternalLink({
   return (
     <Link
       href={href}
-      className="group relative inline-block py-0.5 transition-colors hover:text-[var(--color-accent)]"
+      className="group relative inline-block py-0.5 transition-colors hover:text-white"
     >
       {children}
       <span
@@ -191,7 +198,7 @@ function OutboundLink({
       href={href}
       target={newTab ? '_blank' : undefined}
       rel={newTab ? 'noopener noreferrer' : undefined}
-      className="group relative inline-flex items-center gap-1 py-0.5 transition-colors hover:text-[var(--color-accent)]"
+      className="group relative inline-flex items-center gap-1 py-0.5 transition-colors hover:text-white"
     >
       {children}
       <span

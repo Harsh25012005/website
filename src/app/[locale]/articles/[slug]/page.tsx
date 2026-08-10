@@ -42,10 +42,11 @@ export default async function ArticlePage({ params }: PageProps) {
   const dictionary = getDictionary(locale)
   const more = articles.filter((item) => item.slug !== slug)
 
-  const published = new Date(article.date).toLocaleDateString(
-    locale === 'cs' ? 'cs-CZ' : 'en-GB',
-    { day: 'numeric', month: 'long', year: 'numeric' },
-  )
+  const published = new Date(article.date).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
 
   return (
     <>

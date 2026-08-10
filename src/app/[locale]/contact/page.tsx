@@ -16,11 +16,8 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/contact',
-    title: locale === 'cs' ? 'Kontakt' : 'Contact',
-    description:
-      locale === 'cs'
-        ? 'Poptávky, spolupráce nebo rychlý dotaz — napište mi.'
-        : 'Briefs, collaborations, or a quick question — drop a note.',
+    title: 'Contact',
+    description: 'Briefs, collaborations, or a quick question, drop a note.',
   })
 }
 
@@ -41,16 +38,12 @@ export default async function ContactPage({ params }: PageProps) {
               delay={0.1}
               className="font-serif text-[clamp(40px,5vw,5rem)] leading-[1.05] font-light tracking-[-0.04em]"
             >
-              {locale === 'cs'
-                ? 'Pojďme postavit něco, co stojí za vydání.'
-                : 'Let’s build something worth shipping.'}
+              Let’s build something worth shipping.
             </SplitHeading>
 
             <Reveal delay={0.32}>
               <p className="mt-8 max-w-[48ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-                {locale === 'cs'
-                  ? 'Poptávky, spolupráce nebo rychlý dotaz — napište pár řádků. Čtu všechno a obvykle odpovím do dvou pracovních dnů.'
-                  : 'Briefs, collaborations, or a quick question — drop a note. I read everything and usually reply within a couple of working days.'}
+                Briefs, collaborations, or a quick question: drop a note. I read everything and usually reply within a couple of working days.
               </p>
             </Reveal>
 
@@ -59,10 +52,10 @@ export default async function ContactPage({ params }: PageProps) {
                 href={`mailto:${site.email}`}
                 className="group mt-10 inline-flex items-center gap-3 font-serif text-[clamp(20px,2.4vw,32px)] leading-none font-light tracking-[-0.02em]"
               >
-                <span className="text-gradient">{site.email}</span>
+                <span className="text-white">{site.email}</span>
                 <span
                   aria-hidden
-                  className="text-[var(--color-accent)] transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                  className="text-white transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
                 >
                   ↗
                 </span>

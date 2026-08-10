@@ -7,14 +7,27 @@ import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 const HOVER_TARGETS = 'a, button, [role="button"], input, textarea, select'
 const PROJECT_TARGETS = '[data-cursor-label]'
 
+type Mode = 'rest' | 'hover' | 'project'
+
+const SIZES: Record<Mode, { size: number; bg: string }> = {
+  rest: { size: 10, bg: 'rgba(253,253,253,1)' },
+  hover: { size: 44, bg: 'rgba(253,253,253,0.9)' },
+  project: { size: 112, bg: '#ffffff' },
+}
+
 /**
  * Single dot glued to the pointer. Grows into a plain, borderless circle over
  * generic interactive elements, and swaps to a labelled bubble (e.g. "View
  * project") over anything tagged `data-cursor-label` — project cards mainly.
  *
- * Uses delegated `mouseover`/`mouseout` on `document` instead of binding to
- * each target directly — the work grid, filters and menu swap DOM nodes in
- * and out constantly, and delegation means there is nothing to re-bind.
+ * Mode is derived from `document.elementFromPoint` on every pointer move
+ * instead of tracked via `mouseover`/`mouseout` pairs. The event-pair approach
+ * left the dot stuck at its grown size whenever an enter/exit didn't fire on
+ * the element we expected — a pinned/overlapping layer mid-scroll, or a
+ * project card unmounting under the pointer on navigation — which is exactly
+ * the "giant circle floating over content" glitch. Re-deriving the mode every
+ * frame means there is no stale state to get stuck in; it always reflects
+ * whatever is actually under the cursor right now.
  * Disabled on touch/coarse pointers and under reduced motion.
  */
 export function CustomCursor() {
@@ -36,60 +49,52 @@ export function CustomCursor() {
     const setX = gsap.quickTo(dot, 'x', { duration: 0.35, ease: 'power3.out' })
     const setY = gsap.quickTo(dot, 'y', { duration: 0.35, ease: 'power3.out' })
 
+    let mode: Mode = 'rest'
+
+    const applyMode = (next: Mode, labelText: string) => {
+      if (next === mode) return
+      mode = next
+      const { size, bg } = SIZES[next]
+      gsap.to(dot, {
+        width: size,
+        height: size,
+        backgroundColor: bg,
+        duration: next === 'rest' ? 0.35 : 0.4,
+        ease: 'power3.out',
+        overwrite: 'auto',
+      })
+      label.textContent = labelText
+      gsap.to(label, {
+        autoAlpha: next === 'project' ? 1 : 0,
+        duration: next === 'project' ? 0.25 : 0.15,
+        overwrite: 'auto',
+      })
+    }
+
     const onMove = (event: PointerEvent) => {
       setX(event.clientX)
       setY(event.clientY)
-    }
 
-    const restDot = () => {
-      gsap.to(dot, {
-        width: 10,
-        height: 10,
-        backgroundColor: 'rgba(253,253,253,1)',
-        duration: 0.35,
-        ease: 'power3.out',
-      })
-      gsap.to(label, { autoAlpha: 0, duration: 0.15, overwrite: true })
-    }
-
-    const onOver = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      const projectEl = target.closest<HTMLElement>(PROJECT_TARGETS)
-      if (projectEl) {
-        label.textContent = projectEl.dataset.cursorLabel ?? ''
-        gsap.to(dot, {
-          width: 112,
-          height: 112,
-          backgroundColor: '#ffffff',
-          duration: 0.4,
-          ease: 'power3.out',
-        })
-        gsap.to(label, { autoAlpha: 1, duration: 0.25, overwrite: true })
+      // The cursor's own overlay is pointer-events-none, so this always
+      // reports the real page element under the pointer, never itself.
+      const hit = document.elementFromPoint(event.clientX, event.clientY)
+      if (!hit) {
+        applyMode('rest', '')
         return
       }
 
-      gsap.to(label, { autoAlpha: 0, duration: 0.15, overwrite: true })
-
-      if (target.closest(HOVER_TARGETS)) {
-        gsap.to(dot, {
-          width: 44,
-          height: 44,
-          backgroundColor: 'rgba(253,253,253,0.9)',
-          duration: 0.35,
-          ease: 'power3.out',
-        })
+      const projectEl = hit.closest<HTMLElement>(PROJECT_TARGETS)
+      if (projectEl) {
+        applyMode('project', projectEl.dataset.cursorLabel ?? '')
+        return
       }
-    }
 
-    const onOut = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      const related = event.relatedTarget as HTMLElement | null
-      const leftInteractive = target.closest(HOVER_TARGETS) ?? target.closest(PROJECT_TARGETS)
-      if (!leftInteractive) return
-      // Moving between a nested child and its interactive parent isn't a
-      // real exit — only reset once the pointer leaves the whole element.
-      if (related && leftInteractive.contains(related)) return
-      restDot()
+      if (hit.closest(HOVER_TARGETS)) {
+        applyMode('hover', '')
+        return
+      }
+
+      applyMode('rest', '')
     }
 
     const onDown = () => gsap.to(dot, { scale: 0.8, duration: 0.2 })
@@ -100,8 +105,6 @@ export function CustomCursor() {
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerdown', onDown)
     window.addEventListener('pointerup', onUp)
-    document.addEventListener('mouseover', onOver)
-    document.addEventListener('mouseout', onOut)
     document.addEventListener('mouseleave', onLeaveWindow)
     document.addEventListener('mouseenter', onEnterWindow)
 
@@ -110,8 +113,6 @@ export function CustomCursor() {
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerdown', onDown)
       window.removeEventListener('pointerup', onUp)
-      document.removeEventListener('mouseover', onOver)
-      document.removeEventListener('mouseout', onOut)
       document.removeEventListener('mouseleave', onLeaveWindow)
       document.removeEventListener('mouseenter', onEnterWindow)
     }
@@ -128,7 +129,7 @@ export function CustomCursor() {
       >
         <span
           ref={labelRef}
-          className="absolute inset-0 flex items-center justify-center text-center text-[13px] font-medium tracking-[0.02em] text-black opacity-0"
+          className="absolute inset-0 flex flex-col items-center justify-center text-center text-[13px] leading-tight font-medium tracking-[0.02em] text-black opacity-0 whitespace-pre-line"
         />
       </div>
     </div>

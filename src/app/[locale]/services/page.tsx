@@ -16,14 +16,9 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/services',
-    title:
-      locale === 'cs'
-        ? 'Services — UI/UX & Product Design | Harsh Vaghela'
-        : 'Services — UI/UX & Product Design | Harsh Vaghela',
+    title: 'Services - UI/UX & Product Design | Harsh Vaghela',
     description:
-      locale === 'cs'
-        ? 'UI/UX design services: web UI design, mobile app design, SaaS product design and design systems, from Figma to a live, coded build.'
-        : 'UI/UX design services: web UI design, mobile app design, SaaS product design and design systems, from Figma to a live, coded build.',
+      'UI/UX design services: web UI design, mobile app design, SaaS product design and design systems, from Figma to a live, coded build.',
   })
 }
 
@@ -43,16 +38,12 @@ export default async function ServicesPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[18ch] font-serif text-[clamp(40px,5.6vw,88px)] leading-[1.02] font-light tracking-[-0.04em] md:max-w-[20ch]"
           >
-            {locale === 'cs'
-              ? 'UI/UX design services for web, mobile and SaaS products'
-              : 'UI/UX design services for web, mobile and SaaS products'}
+            UI/UX design services for web, mobile and SaaS products
           </SplitHeading>
 
           <Reveal delay={0.35}>
             <p className="mt-8 max-w-[52ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-              {locale === 'cs'
-                ? 'I design interfaces in Figma, Framer, Webflow and Sketch, and can take them further into a coded build with HTML, CSS, Tailwind, React, Next.js and PHP — so the handoff never loses fidelity.'
-                : 'I design interfaces in Figma, Framer, Webflow and Sketch, and can take them further into a coded build with HTML, CSS, Tailwind, React, Next.js and PHP — so the handoff never loses fidelity.'}
+              I design interfaces in Figma, Framer, Webflow and Sketch, and can take them further into a coded build with HTML, CSS, Tailwind, React, Next.js and PHP, so the handoff never loses fidelity.
             </p>
           </Reveal>
         </div>
@@ -109,7 +100,7 @@ export default async function ServicesPage({ params }: PageProps) {
         <div className="shell">
           <Reveal>
             <h2 className="max-w-[16ch] font-serif text-[clamp(32px,4.5vw,56px)] leading-[1.05] font-light tracking-[-0.03em]">
-              {locale === 'cs' ? 'How I work' : 'How I work'}
+              How I work
             </h2>
           </Reveal>
 
@@ -135,10 +126,8 @@ export default async function ServicesPage({ params }: PageProps) {
           <Reveal>
             <div className="flex flex-col items-start gap-6 border-t border-[var(--color-border)] pt-12 md:flex-row md:items-center md:justify-between md:gap-10 md:pt-16">
               <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[28ch]">
-                <span className="text-gradient">
-                  {locale === 'cs'
-                    ? 'Have a project in mind? Let’s talk.'
-                    : 'Have a project in mind? Let’s talk.'}
+                <span className="text-white">
+                  Have a project in mind? Let’s talk.
                 </span>
               </p>
               <Link

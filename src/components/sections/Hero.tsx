@@ -18,28 +18,30 @@ export function Hero({ locale, dictionary }: HeroProps) {
   ]
 
   return (
-    <section className="relative flex flex-col px-5 pt-48 pb-12 md:px-10 md:pt-[13rem] md:pb-20">
+    <section className="relative flex min-h-svh flex-col justify-center px-5 pt-44 pb-24 md:px-10 md:pt-52 md:pb-24">
       <div className="shell relative flex flex-col">
         <SplitHeading
           as="h1"
           immediate
           delay={0.15}
           stagger={0.09}
-          className="max-w-[18ch] font-serif text-[clamp(40px,6.4vw,6rem)] leading-[1] font-light tracking-[-0.04em] md:max-w-[64.0625rem]"
+          className="max-w-[18ch] font-serif text-[clamp(34px,5.4vw,5rem)] leading-[1.3] font-light tracking-[-0.04em] md:max-w-[64.0625rem]"
         >
           {/* Explicit breaks rather than natural wrapping: the line rhythm is
               a design decision, and SplitText masks whatever the layout
               produces — left to wrap, the last line shifts with viewport
               width and the cascade loses its shape. */}
-          {locale === 'cs' ? 'UI/UX designér z ' : 'UI/UX Designer in '}
-          <span className="text-gradient font-serif font-light">
-            {site.city[locale]}
-          </span>
+          {/* Deliberately no city in the h1. The old "UI/UX Designer in
+              Ahmedabad" spent the page's strongest on-page signal on a
+              local-intent SERP this site is not trying to win, and led an
+              overseas buyer with a geo cue rather than the service. Location
+              is not hidden — it stays in the facts row below and in the
+              `region`/`country`/`areaServed` fields that feed schema. */}
+          {'UI/UX Designer for '}
+          <span className="font-serif font-light">global teams</span>
           {'.'}
           <br />
-          {locale === 'cs'
-            ? 'Design systémy s jasností a charakterem.'
-            : 'Design systems with clarity and character.'}
+          {'Websites, apps & design systems.'}
         </SplitHeading>
 
         <Reveal

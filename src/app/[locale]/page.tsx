@@ -17,11 +17,9 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/',
-    title: `${site.name} — ${site.role[locale]}`,
+    title: `${site.name} - ${site.role[locale]}`,
     description:
-      locale === 'cs'
-        ? 'Portfolio produktového designéra — rozhraní, design systémy a weby.'
-        : 'Portfolio of a digital product designer — interfaces, design systems and websites.',
+      'Portfolio of a digital product designer: interfaces, design systems and websites.',
   })
 }
 

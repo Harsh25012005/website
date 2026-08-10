@@ -21,12 +21,9 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/about',
-    title:
-      locale === 'cs' ? 'About — Harsh Vaghela' : 'About — Harsh Vaghela',
+    title: 'About — Harsh Vaghela',
     description:
-      locale === 'cs'
-        ? 'Harsh Vaghela is a UI/UX and product designer working across design systems, web UI, mobile and SaaS design.'
-        : 'Harsh Vaghela is a UI/UX and product designer working across design systems, web UI, mobile and SaaS design.',
+      'Harsh Vaghela is a UI/UX and product designer working across design systems, web UI, mobile and SaaS design.',
   })
 }
 
@@ -44,9 +41,7 @@ export default async function AboutPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[22ch] font-serif text-[clamp(36px,5.4vw,5rem)] leading-[0.95] font-light tracking-[-0.04em]"
           >
-            {locale === 'cs'
-              ? 'I design and build digital products — UI/UX, design systems, and the SaaS and mobile experiences built on them.'
-              : 'I design and build digital products — UI/UX, design systems, and the SaaS and mobile experiences built on them.'}
+            I design and build digital products — UI/UX, design systems, and the SaaS and mobile experiences built on them.
           </SplitHeading>
 
           <Reveal delay={0.35}>
@@ -88,15 +83,13 @@ export default async function AboutPage({ params }: PageProps) {
 
       <section
         className="relative px-5 py-16 md:px-10 md:py-24"
-        aria-label={
-          locale === 'cs' ? 'Dovednosti a nástroje' : 'Skills and tools'
-        }
+        aria-label="Skills and tools"
       >
         <div className="shell">
           <div className="grid gap-12 border-t border-[var(--color-border)] pt-12 md:grid-cols-2 md:gap-8 md:pt-16">
             <Reveal>
               <h2 className="max-w-[20ch] font-serif text-[clamp(26px,3vw,40px)] leading-[1.05] font-light tracking-[-0.03em]">
-                {locale === 'cs' ? 'Dovednosti' : 'Skills'}
+                Skills
               </h2>
               <ul className="mt-8 flex flex-wrap gap-2">
                 {skills.map((skill) => (
@@ -112,7 +105,7 @@ export default async function AboutPage({ params }: PageProps) {
 
             <Reveal delay={0.08}>
               <h2 className="max-w-[20ch] font-serif text-[clamp(26px,3vw,40px)] leading-[1.05] font-light tracking-[-0.03em]">
-                {locale === 'cs' ? 'Nástroje' : 'Tools'}
+                Tools
               </h2>
               <ul className="mt-8 flex flex-wrap gap-2">
                 {tools.map((tool) => (

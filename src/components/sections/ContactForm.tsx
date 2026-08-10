@@ -63,10 +63,10 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
       return
     }
 
-    const body = [message, '', `— ${name}`, email].join('\n')
+    const body = [message, '', `- ${name}`, email].join('\n')
 
     window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject || `${dictionary.contact.message} — ${name}`,
+      subject || `${dictionary.contact.message} - ${name}`,
     )}&body=${encodeURIComponent(body)}`
 
     setSent(true)
@@ -162,7 +162,7 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
         <p
           role="status"
           aria-live="polite"
-          className="text-[14px] text-[var(--color-accent)]"
+          className="text-[14px] text-white"
         >
           {sent ? dictionary.contact.success : ''}
         </p>

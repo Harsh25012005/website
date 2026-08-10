@@ -9,7 +9,6 @@ import {
 } from '@/lib/gsap'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { getLenis } from './SmoothScroll'
-import { site } from '@/content/site'
 import { Logo } from '@/components/ui/Logo'
 
 type PreloaderProps = {
@@ -26,7 +25,7 @@ const COLUMNS = 4
  * Scroll is locked for the duration — otherwise a wheel event during the count
  * leaves the page mid-section when the curtain lifts.
  */
-export function Preloader({ images }: PreloaderProps) {
+export function Preloader({ images: _images }: PreloaderProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const counterRef = useRef<HTMLSpanElement>(null)
   const [done, setDone] = useState(false)

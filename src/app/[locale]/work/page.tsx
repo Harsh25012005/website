@@ -16,11 +16,9 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/work',
-    title: locale === 'cs' ? 'Práce' : 'Work',
+    title: 'Work',
     description:
-      locale === 'cs'
-        ? 'Vybrané projekty napříč produktovým designem, weby, systémy a značkou.'
-        : 'Selected projects across product design, websites, systems and brand.',
+      'Selected projects across product design, websites, systems and brand.',
   })
 }
 
@@ -40,16 +38,12 @@ export default async function WorkPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[18ch] font-serif text-[clamp(40px,5.6vw,88px)] leading-[1.02] font-light tracking-[-0.04em] md:max-w-[20ch]"
           >
-            {locale === 'cs'
-              ? 'Bližší pohled na práci, kterou jsem pomohl utvářet'
-              : 'A closer look at the work I’ve helped shape'}
+            A closer look at the work I’ve helped shape
           </SplitHeading>
 
           <Reveal delay={0.35}>
             <p className="mt-8 max-w-[52ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-              {locale === 'cs'
-                ? 'Vybrané projekty napříč produktovým designem, weby, systémy a značkou — samostatně i jako součást týmů.'
-                : 'Selected projects across product design, websites, systems and brand-led experiences — independently and as part of teams.'}
+              Selected projects across product design, websites, systems and brand-led experiences, independently and as part of teams.
             </p>
           </Reveal>
 

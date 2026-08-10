@@ -24,8 +24,8 @@ const instrumentSans = Instrument_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${site.name} — ${site.role.en}`,
-    template: `%s — ${site.name}`,
+    default: `${site.name} - ${site.role.en}`,
+    template: `%s - ${site.name}`,
   },
   description:
     'Portfolio of a digital product designer working on interfaces, design systems and websites.',

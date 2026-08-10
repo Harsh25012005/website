@@ -193,7 +193,7 @@ export default async function ProjectPage({ params }: PageProps) {
                     rel="noopener noreferrer"
                     className="group/cta relative mt-8 inline-flex items-center gap-2 pb-1 text-[1.0625rem] md:text-[1.1875rem]"
                   >
-                    <span className="text-gradient inline-flex items-center gap-2">
+                    <span className="inline-flex items-center gap-2 text-white">
                       {project.outcomeLink.label[locale]}
                       <span className="transition-transform duration-300 group-hover/cta:translate-x-1">
                         →
@@ -201,7 +201,7 @@ export default async function ProjectPage({ params }: PageProps) {
                     </span>
                     <span
                       aria-hidden
-                      className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-[var(--color-accent)] transition-transform duration-700 ease-out group-hover/cta:scale-x-100"
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-white transition-transform duration-700 ease-out group-hover/cta:scale-x-100"
                     />
                   </a>
                 ) : null}

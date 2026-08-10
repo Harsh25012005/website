@@ -176,7 +176,7 @@ export function MobileMenu({
         >
           <a
             href={`mailto:${site.email}`}
-            className="text-gradient self-start font-serif text-[clamp(20px,5.5vw,28px)] leading-[1.1] font-light tracking-[-0.02em]"
+            className="self-start font-serif text-[clamp(20px,5.5vw,28px)] leading-[1.1] font-light tracking-[-0.02em] text-white"
           >
             {site.email}
           </a>

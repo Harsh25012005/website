@@ -14,11 +14,8 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/privacy',
-    title: locale === 'cs' ? 'Zásady ochrany osobních údajů' : 'Privacy Policy',
-    description:
-      locale === 'cs'
-        ? 'Jaké údaje web shromažďuje, proč a jaká máte práva.'
-        : 'What this site collects, why, and what your rights are.',
+    title: 'Privacy Policy',
+    description: 'What this site collects, why, and what your rights are.',
   })
 }
 
@@ -26,10 +23,11 @@ export default async function PrivacyPage({ params }: PageProps) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
 
-  const updated = new Date(lastUpdated).toLocaleDateString(
-    locale === 'cs' ? 'cs-CZ' : 'en-GB',
-    { day: 'numeric', month: 'long', year: 'numeric' },
-  )
+  const updated = new Date(lastUpdated).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
 
   return (
     <section className="px-5 pt-32 pb-16 md:px-10 md:pt-[8.75rem] md:pb-24">
@@ -38,7 +36,7 @@ export default async function PrivacyPage({ params }: PageProps) {
           <div className="md:col-span-8 md:col-start-3">
             <Reveal y={12}>
               <p className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
-                {locale === 'cs' ? 'Právní' : 'Legal'}
+                Legal
               </p>
             </Reveal>
 
@@ -48,15 +46,12 @@ export default async function PrivacyPage({ params }: PageProps) {
               delay={0.12}
               className="mt-6 font-serif text-[clamp(40px,5vw,5rem)] leading-[1.05] font-light tracking-[-0.04em]"
             >
-              {locale === 'cs'
-                ? 'Zásady ochrany osobních údajů'
-                : 'Privacy Policy'}
+              Privacy Policy
             </SplitHeading>
 
             <Reveal delay={0.3}>
               <p className="mt-6 text-[14px] text-[var(--color-text-muted)]">
-                {locale === 'cs' ? 'Naposledy upraveno: ' : 'Last updated: '}
-                {updated}
+                Last updated: {updated}
               </p>
             </Reveal>
 

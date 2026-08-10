@@ -167,7 +167,7 @@ export function buildMetadata({
           ...(isDefaultImage
             ? { width: DEFAULT_OG_WIDTH, height: DEFAULT_OG_HEIGHT }
             : {}),
-          alt: imageAlt ?? `${title} — ${site.name}`,
+          alt: imageAlt ?? `${title} - ${site.name}`,
         },
       ],
     },
@@ -177,7 +177,7 @@ export function buildMetadata({
       title,
       description,
       images: [
-        { url: imageUrl, alt: imageAlt ?? `${title} — ${site.name}` },
+        { url: imageUrl, alt: imageAlt ?? `${title} - ${site.name}` },
       ],
     },
   }
