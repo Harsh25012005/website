@@ -42,6 +42,36 @@ export const site = {
   areaServed: ['Ahmedabad', 'Gujarat', 'India'],
   availability: 'Available for freelance and contract product design work',
   /**
+   * Person portrait for JSON-LD `image`. Google wants a real photo of the named
+   * entity here, not the OG card — it is one of the inputs to knowledge-panel
+   * eligibility, and a logo or generic share image is silently ignored.
+   */
+  portrait: '/images/hero-portrait.png',
+  /** Schema `knowsLanguage`; also what the hero "Languages" fact states. */
+  languages: ['English'],
+  /**
+   * `Person.alumniOf`. Real institutions, spelled as they are elsewhere on the
+   * site — a mismatch between the About prose and the schema weakens rather
+   * than reinforces the entity.
+   */
+  education: [
+    {
+      name: 'Bholabhai Patel College of Computer Studies',
+      credential: 'Bachelor of Computer Applications (BCA)',
+    },
+    {
+      name: 'Bhagwan Swaminarayan Institute of Technology',
+      credential: 'Master of Computer Applications (MCA), in progress',
+    },
+  ],
+  /**
+   * Bumped whenever page copy changes. Drives `lastModified` in the sitemap for
+   * every URL that has no date of its own. Stamping `new Date()` there instead
+   * tells crawlers the entire site changed on every deploy, which is false and
+   * gets the signal discounted wholesale.
+   */
+  contentUpdated: '2026-08-10',
+  /**
    * ⚠️ PLACEHOLDER URLS — REPLACE BEFORE LAUNCH. ⚠️
    *
    * These are bare domain roots, not profiles. They are wrong in two ways:
@@ -64,8 +94,47 @@ export const site = {
   ],
 } as const
 
+/**
+ * A `sameAs` entry only helps if it resolves to a profile the same entity
+ * controls. `https://www.linkedin.com/` is LinkedIn's own homepage, so claiming
+ * it as "also me" asserts something false about a site Google knows perfectly
+ * well belongs to Microsoft — the whole annotation set gets distrusted and the
+ * identity graph the name should anchor never forms.
+ *
+ * Rather than hand-maintaining two lists, the schema layer derives its own:
+ * anything that is a bare domain root is treated as the placeholder it is and
+ * dropped. Replace the `href`s in `socials` with real profile URLs and they
+ * start feeding schema automatically, with no second edit here.
+ */
+export function isProfileUrl(href: string): boolean {
+  try {
+    const { pathname } = new URL(href)
+    return pathname.replace(/\/$/, '').length > 0
+  } catch {
+    return false
+  }
+}
+
+/** `socials` minus the placeholder domain roots. Safe to emit as `sameAs`. */
+export const profileSocials = site.socials.filter((social) =>
+  isProfileUrl(social.href),
+)
+
 export const navigation = [
   { key: 'work', href: '/work' },
   { key: 'services', href: '/services' },
   { key: 'about', href: '/about' },
+] as const
+
+/**
+ * Footer link column. Wider than the header nav on purpose: `/articles` has no
+ * header entry (four items break the header's line rhythm) and was reachable
+ * only from article cards, which left the whole editorial section hanging off a
+ * single home-page module. A sitewide footer link is the cheapest fix — it puts
+ * every article two clicks from any page and stops the section looking like an
+ * afterthought to a crawler mapping the site's structure.
+ */
+export const footerNavigation = [
+  ...navigation,
+  { key: 'articles', href: '/articles' },
 ] as const

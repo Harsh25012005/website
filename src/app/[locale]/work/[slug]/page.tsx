@@ -5,10 +5,17 @@ import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
 import { ParallaxFrame } from '@/components/motion/ParallaxFrame'
 import { ProjectCard } from '@/components/sections/ProjectCard'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { projects, getProject, getRelatedProjects } from '@/content/projects'
 import { getDictionary } from '@/content/dictionary'
 import { isLocale, localizedPath, locales } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
+import {
+  graph,
+  breadcrumbSchema,
+  projectSchema,
+  webPageSchema,
+} from '@/lib/schema'
 import { cn } from '@/lib/cn'
 
 type PageProps = { params: Promise<{ locale: string; slug: string }> }
@@ -27,9 +34,18 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: `/work/${slug}`,
-    title: project.title[locale],
+    // A bare project name ("Atlas") is a brand nobody is searching for. Pairing
+    // it with the discipline gives the title a phrase with actual demand behind
+    // it while keeping the case study identifiable.
+    title: `${project.title[locale]}: ${project.discipline[locale]} case study`,
     description: project.summary[locale],
     image: project.hero.src,
+    imageAlt: project.hero.alt[locale],
+    keywords: [
+      ...project.discipline[locale].split(',').map((value) => value.trim()),
+      'UI/UX case study',
+      'design portfolio',
+    ],
   })
 }
 
@@ -45,6 +61,22 @@ export default async function ProjectPage({ params }: PageProps) {
 
   return (
     <>
+      <JsonLd
+        data={graph(
+          projectSchema(project, locale),
+          webPageSchema({
+            locale,
+            path: `/work/${slug}`,
+            title: `${project.title[locale]}: ${project.discipline[locale]} case study`,
+            description: project.summary[locale],
+          }),
+          breadcrumbSchema(locale, [
+            { name: 'Work', path: '/work' },
+            { name: project.title[locale], path: `/work/${slug}` },
+          ]),
+        )}
+      />
+
       <section className="px-5 pt-32 pb-12 md:px-10 md:pt-[8.75rem] md:pb-16">
         <div className="shell">
           <Reveal y={12}>

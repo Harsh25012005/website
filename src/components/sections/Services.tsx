@@ -51,12 +51,36 @@ export function Services({ locale, dictionary }: ServicesProps) {
                 Have a project in mind? Let’s talk.
               </span>
             </p>
-            <Link
-              href={localizedPath(locale, '/contact')}
-              className="inline-flex h-12 items-center gap-2 rounded-full border border-white bg-white px-6 text-[15px] leading-none text-black transition-colors duration-200 hover:bg-transparent hover:text-white"
-            >
-              {dictionary.nav.contact}
-            </Link>
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+              {/* `/services` holds the deliverables, the process and the FAQ —
+                  all of the commercial long-tail copy. Before this, the home
+                  page summarised it in six cards and then sent everyone
+                  straight to the contact form, so the page doing the ranking
+                  had exactly one internal link pointing at it, from the nav. */}
+              <Link
+                href={localizedPath(locale, '/services')}
+                className="group relative inline-flex items-center gap-2 pb-1 text-[15px] text-white"
+              >
+                {dictionary.common.allServices}
+                <span
+                  aria-hidden
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  →
+                </span>
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-white transition-transform duration-700 ease-out group-hover:scale-x-100"
+                />
+              </Link>
+
+              <Link
+                href={localizedPath(locale, '/contact')}
+                className="inline-flex h-12 items-center gap-2 rounded-full border border-white bg-white px-6 text-[15px] leading-none text-black transition-colors duration-200 hover:bg-transparent hover:text-white"
+              >
+                {dictionary.nav.contact}
+              </Link>
+            </div>
           </div>
         </Reveal>
       </div>

@@ -87,7 +87,7 @@ export const articles: Article[] = [
           en: [
             'A button with forty variants for every combination of size, style, icon and state is a component nobody can find anything in. Use component properties instead: a variant property for style, another for size, boolean properties for the icon slots, and instance swap properties for the icons themselves. Four properties describe the same forty combinations and stay legible.',
             'Name those properties the way the front end will name its props: size, variant, state, disabled, leadingIcon. When the Figma property panel and the React prop signature use the same words, handoff conversations stop being translation work. It costs nothing at build time and it pays off on every ticket afterwards.',
-            'Build every component with auto layout, including the ones that look like they do not need it, and set the resizing behaviour deliberately: fill for anything that should stretch, hug for anything sized by its content. Auto layout is the closest thing Figma has to flexbox, so a component laid out properly in the file is a component that has already answered the developer\'s layout questions.',
+            "Build every component with auto layout, including the ones that look like they do not need it, and set the resizing behaviour deliberately: fill for anything that should stretch, hug for anything sized by its content. Auto layout is the closest thing Figma has to flexbox, so a component laid out properly in the file is a component that has already answered the developer's layout questions.",
             'Also design the states people forget: hover, focus, disabled, loading, and the version with text long enough to wrap. A component that only exists in its ideal state is not a system component, it is an illustration of one.',
           ],
         },
@@ -205,7 +205,7 @@ export const articles: Article[] = [
         paragraphs: {
           en: [
             'If the project uses Tailwind, the design tokens should land in the theme configuration as named values on day one: colours, spacing, radii, font sizes, shadows. Do that first and the code that follows uses bg-surface-raised and p-4 instead of arbitrary values scattered through the markup.',
-            'The friction point is usually the spacing scale. Tailwind\'s default steps are multiples of 4px; if the Figma spacing tokens use a different base, every gap in the build becomes a bracketed one-off. Align the two scales at the start, or commit to overriding the theme completely. Half-alignment is the worst of both.',
+            "The friction point is usually the spacing scale. Tailwind's default steps are multiples of 4px; if the Figma spacing tokens use a different base, every gap in the build becomes a bracketed one-off. Align the two scales at the start, or commit to overriding the theme completely. Half-alignment is the worst of both.",
             'Colour tokens should cross the boundary by semantic name, not by hex. When a token changes value later, a semantic mapping means one edit in the theme file. A hex-based handoff means a find-and-replace across a codebase, and it will miss the one in the email template.',
           ],
         },
@@ -327,7 +327,7 @@ export const articles: Article[] = [
         },
         paragraphs: {
           en: [
-            'Light grey text on a white background looks refined on a designer\'s calibrated monitor in a dim room. It is unreadable on a laptop outdoors, and it fails accessibility requirements. The threshold to check against is a 4.5:1 contrast ratio for body text and 3:1 for large text, icons and the borders of interactive controls.',
+            "Light grey text on a white background looks refined on a designer's calibrated monitor in a dim room. It is unreadable on a laptop outdoors, and it fails accessibility requirements. The threshold to check against is a 4.5:1 contrast ratio for body text and 3:1 for large text, icons and the borders of interactive controls.",
             'Run a contrast checker over your muted text, your placeholder text, your disabled states and your borders. Placeholder text is the most common failure, and it is often carrying information that should have been a label anyway.',
             'The second half of this is not relying on colour alone. A red border on an invalid field means nothing to a colour-blind user without an icon and a message. Errors need text, always.',
           ],

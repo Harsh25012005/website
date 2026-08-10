@@ -18,6 +18,7 @@ const dictionaries = {
       personal: 'Personal',
       services: 'Services',
       about: 'About',
+      articles: 'Articles',
       contact: 'Get in touch',
       openMenu: 'Open menu',
       closeMenu: 'Close menu',
@@ -30,6 +31,13 @@ const dictionaries = {
       kindWords: 'Kind words',
       worthSharing: 'Articles on design and code',
       moreProjects: 'More case studies',
+      // Anchor text for the home page's links into the three listing pages.
+      // These are the strongest internal links on the site — the home page has
+      // the most inbound equity, and anchor text is a direct relevance signal —
+      // so they name the destination rather than saying "View all".
+      allCaseStudies: 'See all case studies',
+      allServices: 'Explore all design services',
+      allArticles: 'Read all articles',
       workTogether: 'Let’s work together',
       soon: 'Soon',
       all: 'All',

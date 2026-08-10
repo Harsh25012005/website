@@ -5,10 +5,17 @@ import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
 import { ParallaxFrame } from '@/components/motion/ParallaxFrame'
 import { ArticleCard } from '@/components/sections/ArticleCard'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { articles, getArticle } from '@/content/articles'
 import { getDictionary } from '@/content/dictionary'
 import { isLocale, localizedPath, locales } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
+import {
+  graph,
+  breadcrumbSchema,
+  articleSchema,
+  webPageSchema,
+} from '@/lib/schema'
 
 type PageProps = { params: Promise<{ locale: string; slug: string }> }
 
@@ -26,9 +33,20 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: `/articles/${slug}`,
+    // Article headlines are already 50–60 characters of pure query language.
+    // Appending "- Harsh Vaghela" would push the useful half past where a SERP
+    // truncates, so the headline stands alone.
+    titleIsAbsolute: true,
     title: article.title[locale],
     description: article.excerpt[locale],
     image: article.cover.src,
+    imageAlt: article.cover.alt[locale],
+    // `article` unlocks published/modified time and the author byline in the
+    // OG payload — the fields that make a shared link render as a dated post
+    // rather than an anonymous page.
+    type: 'article',
+    publishedTime: article.date,
+    modifiedTime: article.date,
   })
 }
 
@@ -50,6 +68,22 @@ export default async function ArticlePage({ params }: PageProps) {
 
   return (
     <>
+      <JsonLd
+        data={graph(
+          articleSchema(article, locale),
+          webPageSchema({
+            locale,
+            path: `/articles/${slug}`,
+            title: article.title[locale],
+            description: article.excerpt[locale],
+          }),
+          breadcrumbSchema(locale, [
+            { name: 'Articles', path: '/articles' },
+            { name: article.title[locale], path: `/articles/${slug}` },
+          ]),
+        )}
+      />
+
       <section className="px-5 pt-32 pb-12 md:px-10 md:pt-[8.75rem] md:pb-16">
         <div className="shell max-w-[70rem]">
           <Reveal y={12}>

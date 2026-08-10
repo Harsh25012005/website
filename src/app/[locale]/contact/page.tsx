@@ -2,12 +2,18 @@ import { notFound } from 'next/navigation'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
 import { ContactForm } from '@/components/sections/ContactForm'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { getDictionary } from '@/content/dictionary'
 import { site } from '@/content/site'
 import { isLocale } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
+import { graph, breadcrumbSchema, webPageSchema } from '@/lib/schema'
 
 type PageProps = { params: Promise<{ locale: string }> }
+
+const TITLE = 'Contact: Start a UI/UX Design Project'
+const DESCRIPTION =
+  'Hire Harsh Vaghela for UI/UX, design system, mobile app or SaaS product design. Send a brief with scope and timeline — replies usually within a couple of working days.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params
@@ -16,8 +22,14 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/contact',
-    title: 'Contact',
-    description: 'Briefs, collaborations, or a quick question, drop a note.',
+    title: TITLE,
+    description: DESCRIPTION,
+    imageAlt: `Contact ${site.name}, ${site.role[locale]}`,
+    keywords: [
+      'hire UI/UX designer',
+      'freelance product designer contact',
+      'design project enquiry',
+    ],
   })
 }
 
@@ -29,6 +41,19 @@ export default async function ContactPage({ params }: PageProps) {
 
   return (
     <section className="flex min-h-[calc(100svh-5rem)] flex-col justify-center px-5 pt-42 pb-20 md:px-10 md:pt-44 md:pb-28">
+      <JsonLd
+        data={graph(
+          webPageSchema({
+            locale,
+            path: '/contact',
+            title: TITLE,
+            description: DESCRIPTION,
+            type: 'ContactPage',
+          }),
+          breadcrumbSchema(locale, [{ name: 'Contact', path: '/contact' }]),
+        )}
+      />
+
       <div className="shell">
         <div className="grid gap-x-12 gap-y-16 md:grid-cols-12 md:items-center">
           <div className="md:col-span-5">
@@ -43,7 +68,8 @@ export default async function ContactPage({ params }: PageProps) {
 
             <Reveal delay={0.32}>
               <p className="mt-8 max-w-[48ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-                Briefs, collaborations, or a quick question: drop a note. I read everything and usually reply within a couple of working days.
+                Briefs, collaborations, or a quick question: drop a note. I read
+                everything and usually reply within a couple of working days.
               </p>
             </Reveal>
 

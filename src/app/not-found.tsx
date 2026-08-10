@@ -1,6 +1,20 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getDictionary } from '@/content/dictionary'
 import { defaultLocale, localizedPath } from '@/lib/i18n'
+
+/**
+ * The 404 already answers with a 404 status, which is what keeps it out of the
+ * index. `noindex` is belt-and-braces for the crawlers and previewers that
+ * render the body regardless of status, and the explicit title stops the page
+ * inheriting the home page's — a "Harsh Vaghela - UI/UX & Product Designer" tab
+ * on a dead link is confusing to a visitor and, if it is ever cached, is the
+ * worst possible title to have attached to a broken URL.
+ */
+export const metadata: Metadata = {
+  title: 'Page not found',
+  robots: { index: false, follow: true },
+}
 
 /**
  * Root-level 404. Lives outside `[locale]` so unmatched paths (which never

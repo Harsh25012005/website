@@ -1,6 +1,9 @@
 import type { SVGProps } from 'react'
 
-export function Logo({ className = 'h-8 w-auto', ...props }: SVGProps<SVGSVGElement>) {
+export function Logo({
+  className = 'h-8 w-auto',
+  ...props
+}: SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="120 280 1005 695"

@@ -159,11 +159,7 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
 
         {/* Announced rather than shown inline so screen readers get the
             confirmation even though the mail client steals focus. */}
-        <p
-          role="status"
-          aria-live="polite"
-          className="text-[14px] text-white"
-        >
+        <p role="status" aria-live="polite" className="text-[14px] text-white">
           {sent ? dictionary.contact.success : ''}
         </p>
       </div>

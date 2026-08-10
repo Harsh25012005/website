@@ -1,8 +1,9 @@
+import Link from 'next/link'
 import { Reveal } from '@/components/motion/Reveal'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { ArticleCard } from './ArticleCard'
 import { articles } from '@/content/articles'
-import type { Locale } from '@/lib/i18n'
+import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
 
 type ArticlesTeaserProps = {
@@ -27,6 +28,30 @@ export function ArticlesTeaser({ locale, dictionary }: ArticlesTeaserProps) {
             </Reveal>
           ))}
         </div>
+
+        {/* `/articles` has no header nav entry, so before this link (and the
+            new footer one) the listing page was reachable only by guessing the
+            URL — the cards here jump straight past it to individual posts. */}
+        <Reveal>
+          <div className="mt-16 border-t border-[var(--color-border)] pt-8 md:mt-20 md:pt-10">
+            <Link
+              href={localizedPath(locale, '/articles')}
+              className="group relative inline-flex items-center gap-2 pb-1 text-[1.0625rem] text-white md:text-[1.1875rem]"
+            >
+              {dictionary.common.allArticles}
+              <span
+                aria-hidden
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              >
+                →
+              </span>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-white transition-transform duration-700 ease-out group-hover:scale-x-100"
+              />
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

@@ -176,9 +176,7 @@ export function buildMetadata({
       card: 'summary_large_image',
       title,
       description,
-      images: [
-        { url: imageUrl, alt: imageAlt ?? `${title} - ${site.name}` },
-      ],
+      images: [{ url: imageUrl, alt: imageAlt ?? `${title} - ${site.name}` }],
     },
   }
 }
