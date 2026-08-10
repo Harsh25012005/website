@@ -1,6 +1,11 @@
 import type { Locale } from '@/lib/i18n'
 
-/** Every user-facing string is keyed by locale so pages stay locale-agnostic. */
+/**
+ * Every user-facing string is keyed by locale so pages stay locale-agnostic and
+ * keep reading content as `value[locale]`. The site is English-only, so this
+ * currently narrows to `{ en: T }` — the wrapper is kept so adding a language
+ * back is a content change rather than a component rewrite.
+ */
 export type Localized<T> = Record<Locale, T>
 
 export type ImageAsset = {
@@ -79,6 +84,8 @@ export type Service = {
   number: string
   title: Localized<string>
   description: Localized<string>
+  /** Longer-form detail shown on the dedicated services page only. */
+  deliverables?: Localized<string[]>
 }
 
 export type Testimonial = {

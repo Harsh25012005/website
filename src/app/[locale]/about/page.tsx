@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
-import { Testimonials } from '@/components/sections/Testimonials'
 import {
   aboutIntro,
   aboutChapters,
@@ -9,7 +8,6 @@ import {
   skills,
   tools,
 } from '@/content/about'
-import { getDictionary } from '@/content/dictionary'
 import { site } from '@/content/site'
 import { isLocale } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
@@ -23,19 +21,18 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/about',
-    title: locale === 'cs' ? 'O mně' : 'About',
+    title:
+      locale === 'cs' ? 'About — Harsh Vaghela' : 'About — Harsh Vaghela',
     description:
       locale === 'cs'
-        ? 'Produktový designér se zaměřením na přehlednost, charakter a použitelnost.'
-        : 'A product designer focused on clarity, character and real-world usability.',
+        ? 'Harsh Vaghela is a UI/UX and product designer working across design systems, web UI, mobile and SaaS design.'
+        : 'Harsh Vaghela is a UI/UX and product designer working across design systems, web UI, mobile and SaaS design.',
   })
 }
 
 export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
-
-  const dictionary = getDictionary(locale)
 
   return (
     <>
@@ -48,8 +45,8 @@ export default async function AboutPage({ params }: PageProps) {
             className="max-w-[22ch] font-serif text-[clamp(36px,5.4vw,5rem)] leading-[0.95] font-light tracking-[-0.04em]"
           >
             {locale === 'cs'
-              ? 'Navrhuji digitální produkty s důrazem na přehlednost, charakter a použitelnost.'
-              : 'I design digital products with a focus on clarity, character, and real-world usability.'}
+              ? 'I design and build digital products — UI/UX, design systems, and the SaaS and mobile experiences built on them.'
+              : 'I design and build digital products — UI/UX, design systems, and the SaaS and mobile experiences built on them.'}
           </SplitHeading>
 
           <Reveal delay={0.35}>
@@ -150,8 +147,6 @@ export default async function AboutPage({ params }: PageProps) {
           </div>
         </div>
       </section>
-
-      <Testimonials locale={locale} dictionary={dictionary} />
 
       <section className="relative px-5 pb-4 md:px-10">
         <div className="shell">

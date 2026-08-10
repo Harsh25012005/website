@@ -1,57 +1,64 @@
 import { describe, it, expect } from 'vitest'
-import { localizedPath, stripLocale, isLocale, otherLocale } from './i18n'
+import { localizedPath, stripLocale, isLocale, locales, defaultLocale } from './i18n'
+
+describe('locales', () => {
+  it('ships English only', () => {
+    expect([...locales]).toEqual(['en'])
+    expect(defaultLocale).toBe('en')
+  })
+})
 
 describe('localizedPath', () => {
-  it('leaves default-locale paths unprefixed', () => {
+  it('leaves paths unprefixed', () => {
     expect(localizedPath('en', '/work')).toBe('/work')
     expect(localizedPath('en', '/')).toBe('/')
   })
 
-  it('prefixes non-default locales', () => {
-    expect(localizedPath('cs', '/work')).toBe('/cs/work')
-    expect(localizedPath('cs', '/')).toBe('/cs')
+  it('never emits a locale prefix', () => {
+    for (const path of ['/', '/work', '/work/atlas', '/services']) {
+      expect(localizedPath('en', path).startsWith('/en/')).toBe(false)
+      expect(localizedPath('en', path)).not.toBe('/cs')
+      expect(localizedPath('en', path).startsWith('/cs/')).toBe(false)
+    }
   })
 
   it('strips trailing slashes so canonicals never double up', () => {
     expect(localizedPath('en', '/work/')).toBe('/work')
-    expect(localizedPath('cs', '/work/atlas/')).toBe('/cs/work/atlas')
+    expect(localizedPath('en', '/work/atlas/')).toBe('/work/atlas')
   })
 })
 
 describe('stripLocale', () => {
   it('removes a locale prefix', () => {
-    expect(stripLocale('/cs/work/atlas')).toBe('/work/atlas')
-    expect(stripLocale('/cs')).toBe('/')
+    expect(stripLocale('/en/work/atlas')).toBe('/work/atlas')
+    expect(stripLocale('/en')).toBe('/')
   })
 
-  it('leaves unprefixed paths untouched', () => {
+  it('is the identity for the public, unprefixed URLs', () => {
     expect(stripLocale('/work/atlas')).toBe('/work/atlas')
+    expect(stripLocale('/')).toBe('/')
+    // Czech is gone, so `/cs/…` is just an ordinary path here — the permanent
+    // redirect in `middleware.ts` is what retires it.
+    expect(stripLocale('/cs/work')).toBe('/cs/work')
   })
 
-  // `/cs` is a locale, but `/css-tricks` is a page that merely starts with it.
+  // `/en` is a locale, but `/english-lessons` is a page that merely starts with it.
   it('does not match a locale that is only a path prefix', () => {
-    expect(stripLocale('/css-tricks')).toBe('/css-tricks')
+    expect(stripLocale('/english-lessons')).toBe('/english-lessons')
   })
 
   it('round-trips with localizedPath', () => {
     const path = '/work/atlas'
-    expect(stripLocale(localizedPath('cs', path))).toBe(path)
     expect(stripLocale(localizedPath('en', path))).toBe(path)
+    expect(stripLocale(localizedPath(defaultLocale, '/'))).toBe('/')
   })
 })
 
 describe('isLocale', () => {
-  it('accepts known locales and rejects everything else', () => {
+  it('accepts English and rejects everything else', () => {
     expect(isLocale('en')).toBe(true)
-    expect(isLocale('cs')).toBe(true)
+    expect(isLocale('cs')).toBe(false)
     expect(isLocale('de')).toBe(false)
     expect(isLocale(undefined)).toBe(false)
-  })
-})
-
-describe('otherLocale', () => {
-  it('toggles between the two locales', () => {
-    expect(otherLocale('en')).toBe('cs')
-    expect(otherLocale('cs')).toBe('en')
   })
 })

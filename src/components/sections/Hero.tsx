@@ -18,7 +18,7 @@ export function Hero({ locale, dictionary }: HeroProps) {
   ]
 
   return (
-    <section className="relative flex flex-col px-5 pt-32 pb-12 md:px-10 md:pt-[8.75rem] md:pb-20">
+    <section className="relative flex flex-col px-5 pt-48 pb-12 md:px-10 md:pt-[13rem] md:pb-20">
       <div className="shell relative flex flex-col">
         <SplitHeading
           as="h1"
@@ -31,23 +31,15 @@ export function Hero({ locale, dictionary }: HeroProps) {
               a design decision, and SplitText masks whatever the layout
               produces — left to wrap, the last line shifts with viewport
               width and the cascade loses its shape. */}
-          {locale === 'cs' ? 'Designér z ' : 'Designer based in '}
+          {locale === 'cs' ? 'UI/UX designér z ' : 'UI/UX Designer in '}
           <span className="text-gradient font-serif font-light">
             {site.city[locale]}
           </span>
           {'.'}
           <br />
           {locale === 'cs'
-            ? 'Tvořím digitální produkty,'
-            : 'Shaping digital products,'}
-          <br />
-          {locale === 'cs'
-            ? 'weby a design systémy'
-            : 'websites and design systems'}
-          <br />
-          {locale === 'cs'
-            ? 's jasností a charakterem.'
-            : 'with clarity and character.'}
+            ? 'Design systémy s jasností a charakterem.'
+            : 'Design systems with clarity and character.'}
         </SplitHeading>
 
         <Reveal

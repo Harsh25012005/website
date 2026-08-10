@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import { Hero } from '@/components/sections/Hero'
 import { SelectedWork } from '@/components/sections/SelectedWork'
 import { Services } from '@/components/sections/Services'
-import { Testimonials } from '@/components/sections/Testimonials'
 import { ArticlesTeaser } from '@/components/sections/ArticlesTeaser'
 import { getDictionary } from '@/content/dictionary'
 import { site } from '@/content/site'
@@ -37,7 +36,6 @@ export default async function HomePage({ params }: PageProps) {
       <Hero locale={locale} dictionary={dictionary} />
       <SelectedWork locale={locale} dictionary={dictionary} />
       <Services locale={locale} dictionary={dictionary} />
-      <Testimonials locale={locale} dictionary={dictionary} />
       <ArticlesTeaser locale={locale} dictionary={dictionary} />
     </>
   )

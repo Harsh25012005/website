@@ -3,76 +3,135 @@ import type { Localized, Service, Testimonial } from './types'
 export const services: Service[] = [
   {
     number: '01',
-    title: { en: 'Product design', cs: 'Produktový design' },
+    title: { en: 'Web UI design' },
     description: {
-      en: 'End-to-end UX and UI for digital products — from early flows to interfaces ready to ship. Structure first, polish second.',
-      cs: 'UX a UI pro digitální produkty od začátku do konce — od prvních toků po rozhraní připravené k nasazení. Nejdřív struktura, pak leštění.',
+      en: 'Responsive website and web app UI designed in Figma — landing pages, marketing sites and product screens built on a real grid, type scale and spacing system.',
+    },
+    deliverables: {
+      en: [
+        'Responsive page designs in Figma, desktop through mobile',
+        'Landing page, marketing site and web app screen design',
+        'Typography, spacing and component structure ready to build',
+      ],
     },
   },
   {
     number: '02',
-    title: { en: 'Design systems', cs: 'Design systémy' },
+    title: { en: 'Design systems' },
     description: {
-      en: 'Scalable systems with real foundations, reusable components and documentation that survives handoff.',
-      cs: 'Škálovatelné systémy se skutečnými základy, znovupoužitelnými komponentami a dokumentací, která přežije předání.',
+      en: 'Figma design system work — component libraries, tokens and documentation that keep a product team shipping consistent UI instead of rebuilding it every sprint.',
+    },
+    deliverables: {
+      en: [
+        'Figma component library with variants and auto layout',
+        'Colour, type and spacing tokens documented for developer handoff',
+        'Usage guidelines so new screens stay on-system',
+      ],
     },
   },
   {
     number: '03',
-    title: { en: 'Interface direction', cs: 'Směr rozhraní' },
+    title: { en: 'Mobile app design' },
     description: {
-      en: 'Visual direction for products that need a distinct presence — typography, motion, imagery and the details in between.',
-      cs: 'Vizuální směr pro produkty, které potřebují vlastní výraz — typografie, pohyb, obrazovost a detaily mezi tím.',
+      en: 'iOS and Android app UI/UX design — onboarding, navigation and core flows drawn around platform conventions, real content and a clickable Figma prototype.',
+    },
+    deliverables: {
+      en: [
+        'iOS and Android screen designs following platform conventions',
+        'Onboarding, navigation and core app flows, screen by screen',
+        'Clickable Figma prototype for user testing and dev handoff',
+      ],
     },
   },
   {
     number: '04',
-    title: { en: 'Web design', cs: 'Webdesign' },
+    title: { en: 'SaaS product design' },
     description: {
-      en: 'Websites for studios, founders and brands, built on a strong sense of typography, structure and restraint.',
-      cs: 'Weby pro studia, zakladatele a značky, postavené na typografii, struktuře a zdrženlivosti.',
+      en: 'SaaS dashboard and admin panel design — data-heavy screens, onboarding and settings flows that stay usable as features and edge cases pile up.',
+    },
+    deliverables: {
+      en: [
+        'Dashboard, admin panel and data table layouts that stay readable',
+        'Onboarding flows, empty states and error cases covered',
+        'Scalable UI patterns for features added after launch',
+      ],
     },
   },
   {
     number: '05',
-    title: { en: 'Brand identity', cs: 'Identita značky' },
+    title: { en: 'UX research & wireframing' },
     description: {
-      en: 'Identities developed alongside the product, so brand and interface end up feeling like one decision rather than two.',
-      cs: 'Identity vznikající souběžně s produktem, aby značka a rozhraní působily jako jedno rozhodnutí, ne dvě.',
+      en: 'User flows, wireframes and prototypes that test structure and validate the idea in Figma before anyone writes a line of production code.',
+    },
+    deliverables: {
+      en: [
+        'Low-fidelity wireframes to test structure before visual design',
+        'User flow diagrams mapping every screen and decision point',
+        'Clickable prototypes for stakeholder and user feedback',
+      ],
     },
   },
   {
     number: '06',
-    title: { en: 'Advisory & audits', cs: 'Konzultace a audity' },
+    title: { en: 'Figma to React build' },
     description: {
-      en: 'UX/UI reviews and design system audits for teams that need an outside read on where the gaps are.',
-      cs: 'UX/UI revize a audity design systémů pro týmy, které potřebují pohled zvenčí na to, kde jsou mezery.',
+      en: 'Design-to-code front-end builds in HTML, CSS, Tailwind, React and Next.js, so the live site matches the Figma file instead of drifting in handoff.',
+    },
+    deliverables: {
+      en: [
+        'Front-end build in HTML, CSS and Tailwind CSS, true to the design',
+        'React and Next.js components for interactive products',
+        'Responsive and cross-browser QA before launch',
+      ],
     },
   },
 ]
 
-export const testimonials: Testimonial[] = [
+export const servicesProcess: {
+  heading: Localized<string>
+  paragraphs: Localized<string[]>
+}[] = [
   {
-    quote: {
-      en: 'Replace this with a real quote from someone you have worked with. Keep it specific — what the project was, what changed, and what it was like to work together. Two or three sentences carry more weight here than a paragraph of adjectives.',
-      cs: 'Nahraďte skutečnou referencí od někoho, s kým jste spolupracovali. Buďte konkrétní — o jaký projekt šlo, co se změnilo a jaká byla spolupráce. Dvě tři věty tu unesou víc než odstavec přídavných jmen.',
+    heading: { en: '01 — Discover' },
+    paragraphs: {
+      en: [
+        'A short call or written brief to understand the product, its users, the screens in scope and what "done" looks like — before any design starts.',
+      ],
     },
-    name: 'Reference Name',
-    lines: {
-      en: ['Role, Company', 'Second line, optional'],
-      cs: ['Role, společnost', 'Druhý řádek, volitelný'],
+  },
+  {
+    heading: { en: '02 — Design' },
+    paragraphs: {
+      en: [
+        'User flows and wireframes first, then high-fidelity UI in Figma — reviewed with you at each stage rather than revealed at the end.',
+      ],
+    },
+  },
+  {
+    heading: { en: '03 — Build' },
+    paragraphs: {
+      en: [
+        'For projects that need it, the approved design is built as working front-end code — HTML, CSS, Tailwind CSS, React or Next.js — responsive from the start.',
+      ],
+    },
+  },
+  {
+    heading: { en: '04 — Handoff' },
+    paragraphs: {
+      en: [
+        'Organised Figma files, documented components and tokens, and a build that matches the design — everything your developers need to take it forward.',
+      ],
     },
   },
 ]
+
+/** Real client quotes go here once there are ones worth publishing. Never seed placeholders. */
+export const testimonials: Testimonial[] = []
 
 export const aboutIntro: Localized<string[]> = {
   en: [
-    'Replace this with your own introduction. Two short paragraphs work best: what you do now, and the route that got you here.',
-    'The layout is built for roughly this much text — a sentence or two more will sit fine, a full page will not.',
-  ],
-  cs: [
-    'Nahraďte vlastním úvodem. Nejlépe fungují dva krátké odstavce: čím se zabýváte teď a jak jste se sem dostali.',
-    'Layout počítá zhruba s tímto rozsahem — věta dvě navíc projdou, celá strana ne.',
+    'I’m Harsh Vaghela, a freelance UI/UX and product designer based in Ahmedabad, Gujarat, India. I work on design systems, web UI, mobile app design and SaaS product design for founders and small teams, locally and remotely worldwide.',
+    'I design in Figma, Framer, Webflow and Sketch, then build the front end in HTML, CSS, JavaScript, React, Next.js, Tailwind CSS and PHP — so what ships stays close to what was designed. I completed my BCA at Bholabhai Patel College of Computer Studies and am pursuing my MCA at Bhagwan Swaminarayan Institute of Technology.',
   ],
 }
 
@@ -81,41 +140,29 @@ export const aboutChapters: {
   paragraphs: Localized<string[]>
 }[] = [
   {
-    heading: { en: 'How I got here', cs: 'Jak jsem se sem dostal' },
+    heading: { en: 'From BCA to UI/UX design' },
     paragraphs: {
       en: [
-        'A short account of the path — the first thing you built, what pulled you toward design, and the detour that turned out to be useful.',
-        'Specifics beat summary. The project that went badly is usually more interesting than the one that went well.',
-      ],
-      cs: [
-        'Krátké vyprávění o cestě — první věc, kterou jste postavili, co vás přitáhlo k designu a odbočka, která se ukázala jako užitečná.',
-        'Konkrétnost poráží souhrn. Projekt, který dopadl špatně, bývá zajímavější než ten povedený.',
+        'My interest in design started during my BCA, where computer science coursework kept pulling me toward the interface side of every project rather than only the logic behind it. Figma became the tool I kept coming back to, and UI/UX design turned from a course topic into the thing I actually wanted to do.',
+        'Picking up front-end development alongside it — HTML, CSS, JavaScript, and later React and Next.js — turned out to be the useful detour. Understanding how an interface actually gets built changed how I design in the first place.',
       ],
     },
   },
   {
-    heading: { en: 'First work', cs: 'První práce' },
+    heading: { en: 'First freelance projects' },
     paragraphs: {
       en: [
-        'Early clients and projects, and what each one taught you that a course could not.',
-        'Naming real organisations here is worth more than describing the work in the abstract.',
-      ],
-      cs: [
-        'První klienti a projekty a to, co vás každý naučil lépe než jakýkoli kurz.',
-        'Jmenovat skutečné organizace má větší cenu než abstraktní popis práce.',
+        'My first freelance work was web UI and landing page design, where real client feedback replaced a brief written by a course. Each project pushed me to tighten spacing, hierarchy and consistency in ways a tutorial never covers.',
+        'From there the work expanded into design systems and mobile app screens, and I started pairing every Figma file with a working front-end build — so a client could see the interface in a browser, not only in a prototype.',
       ],
     },
   },
   {
-    heading: { en: 'Today', cs: 'Dnes' },
+    heading: { en: 'Design and code today' },
     paragraphs: {
       en: [
-        'What you work on now, at what scale, and the kind of problem you would like more of.',
-        'End with what you are open to — it is the last thing people read before deciding whether to email.',
-      ],
-      cs: [
-        'Na čem pracujete teď, v jakém měřítku a jaký typ problémů byste chtěli víc.',
-        'Zakončete tím, čemu jste otevření — je to poslední věc, kterou lidé čtou, než se rozhodnou napsat.',
+        'With 1.5+ years in the field, I now work across design systems, web UI, mobile app design and SaaS product design — usually for founders and small teams who want both the design file and a working build. I’m completing my MCA at Bhagwan Swaminarayan Institute of Technology alongside client work.',
+        'I take on freelance and collaborative projects, particularly design system work, SaaS dashboards, and web UI that has to go from Figma to a live, responsive site.',
       ],
     },
   },
@@ -125,39 +172,37 @@ export const beyondScreens: {
   heading: Localized<string>
   paragraphs: Localized<string[]>
 } = {
-  heading: { en: 'Beyond screens', cs: 'Mimo obrazovky' },
+  heading: { en: 'Beyond screens' },
   paragraphs: {
     en: [
-      'The things outside work that shape how you think — sport, travel, music, whatever is actually true.',
-      'This section exists so the page reads as a person rather than a CV. Keep it brief and keep it honest.',
-    ],
-    cs: [
-      'Věci mimo práci, které utvářejí vaše přemýšlení — sport, cestování, hudba, cokoli je skutečně pravda.',
-      'Tahle sekce existuje proto, aby stránka působila jako člověk, ne jako životopis. Krátce a upřímně.',
+      'Outside client work, I spend time exploring new tools and frameworks in design and front-end development — it’s part of why I ended up as much of a coder as a designer.',
+      'Being a student again through my MCA keeps me close to the fundamentals, which shows up in how I approach structure and problem-solving in design work too.',
     ],
   },
 }
 
 export const skills = [
-  'UX Design',
   'UI Design',
+  'UX Design',
   'Design Systems',
-  'Web Design',
-  'Visual Identity',
-  'Art Direction',
+  'Web UI Design',
+  'Mobile App Design',
+  'SaaS Product Design',
+  'UX Research & Wireframing',
   'Prototyping',
-  'Motion Design',
-  '3D Design',
-  'Photography',
+  'Design to Code',
+  'Front-End Development',
 ]
 
 export const tools = [
   'Figma',
-  'Blender',
-  'After Effects',
-  'Illustrator',
-  'Photoshop',
-  'Cinema 4D',
   'Framer',
-  'Notion',
+  'Webflow',
+  'Sketch',
+  'HTML/CSS',
+  'JavaScript',
+  'React',
+  'Next.js',
+  'Tailwind CSS',
+  'PHP',
 ]
