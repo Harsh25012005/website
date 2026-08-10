@@ -1,0 +1,67 @@
+import Link from 'next/link'
+import { Reveal } from '@/components/motion/Reveal'
+import { SplitHeading } from '@/components/motion/SplitHeading'
+import { services } from '@/content/about'
+import { localizedPath, type Locale } from '@/lib/i18n'
+import type { Dictionary } from '@/content/dictionary'
+
+type ServicesProps = {
+  locale: Locale
+  dictionary: Dictionary
+}
+
+/**
+ * Six numbered cells on a hairline grid, closing with an inline CTA row.
+ * The right border is suppressed on every third cell so the grid reads as
+ * ruled columns rather than a boxed table.
+ */
+export function Services({ locale, dictionary }: ServicesProps) {
+  return (
+    <section className="px-5 py-16 md:px-10 md:py-32">
+      <div className="shell">
+        <SplitHeading className="mb-12 font-serif text-[clamp(32px,4.5vw,64px)] leading-[1.05] font-light tracking-[-0.03em] md:mb-16">
+          {dictionary.common.whatIDo}
+        </SplitHeading>
+
+        <ul className="grid border-t border-[var(--color-border)] md:grid-cols-3">
+          {services.map((service) => (
+            <Reveal
+              key={service.number}
+              className="border-b border-[var(--color-border)] md:[&:not(:nth-child(3n))]:border-r md:[&:not(:nth-child(3n))]:border-[var(--color-border)]"
+            >
+              <li className="py-6 md:p-8">
+                <span className="text-[11px] text-[var(--color-text-muted)]">
+                  {service.number}
+                </span>
+                <h3 className="mt-5 font-serif text-[26px] leading-tight font-light md:mt-8 md:text-[30px]">
+                  {service.title[locale]}
+                </h3>
+                <p className="mt-3 text-[15px] leading-[1.55] text-[var(--color-text-muted)] md:mt-6 md:max-w-[34ch]">
+                  {service.description[locale]}
+                </p>
+              </li>
+            </Reveal>
+          ))}
+        </ul>
+
+        <Reveal>
+          <div className="flex flex-col items-start gap-6 border-b border-[var(--color-border)] py-12 md:flex-row md:items-center md:justify-between md:gap-10 md:px-8 md:py-14">
+            <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[28ch]">
+              <span className="text-gradient">
+                {locale === 'cs'
+                  ? 'Máte v hlavě projekt? Pojďme si promluvit.'
+                  : 'Have a project in mind? Let’s talk.'}
+              </span>
+            </p>
+            <Link
+              href={localizedPath(locale, '/contact')}
+              className="inline-flex h-12 items-center gap-2 rounded-full border border-white bg-white px-6 text-[15px] leading-none text-black transition-colors duration-200 hover:bg-transparent hover:text-white"
+            >
+              {dictionary.nav.contact}
+            </Link>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
