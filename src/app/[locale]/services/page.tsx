@@ -2,8 +2,10 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
+import { HoverSwapText } from '@/components/ui/HoverSwapText'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { services, servicesProcess, servicesFaqs } from '@/content/about'
+import { services } from '@/content/services'
+import { servicesProcess, servicesFaqs } from '@/content/about'
 import { getDictionary } from '@/content/dictionary'
 import { localizedPath, isLocale } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
@@ -11,7 +13,7 @@ import {
   graph,
   breadcrumbSchema,
   professionalServiceSchema,
-  webPageSchema,
+  collectionPageSchema,
   faqSchema,
 } from '@/lib/schema'
 
@@ -59,11 +61,19 @@ export default async function ServicesPage({ params }: PageProps) {
       <JsonLd
         data={graph(
           professionalServiceSchema(),
-          webPageSchema({
+          // A hub, so `CollectionPage` + `ItemList` rather than a plain
+          // `WebPage`: the six children are the point of the page, and this is
+          // what lets a crawler read them as a set of known entities instead of
+          // six links it has to discover by following.
+          collectionPageSchema({
             locale,
             path: '/services',
             title: TITLE,
             description: DESCRIPTION,
+            items: services.map((service) => ({
+              name: service.title[locale],
+              path: `/services/${service.slug}`,
+            })),
           }),
           breadcrumbSchema(locale, [{ name: 'Services', path: '/services' }]),
           faqSchema(
@@ -110,8 +120,24 @@ export default async function ServicesPage({ params }: PageProps) {
                   <span className="text-[11px] text-[var(--color-text-muted)]">
                     {service.number}
                   </span>
+                  {/* The heading is the link. Anchor text that reads "Web UI
+                      design" tells a crawler what the destination is about;
+                      "Learn more" repeated six times tells it nothing. */}
                   <h2 className="mt-4 max-w-[16ch] font-serif text-[clamp(26px,3vw,36px)] leading-[1.1] font-light tracking-[-0.02em]">
-                    {service.title[locale]}
+                    <Link
+                      href={localizedPath(locale, `/services/${service.slug}`)}
+                      className="group block"
+                    >
+                      {/* `leading-[1.1]` sits tight enough that the clip box
+                          would shave the descenders off the serif face; the
+                          padding buys them back. */}
+                      <HoverSwapText
+                        swap={dictionary.common.viewService}
+                        className="pb-[0.1em]"
+                      >
+                        {service.title[locale]}
+                      </HoverSwapText>
+                    </Link>
                   </h2>
                 </div>
 
@@ -120,22 +146,37 @@ export default async function ServicesPage({ params }: PageProps) {
                     {service.description[locale]}
                   </p>
 
-                  {service.deliverables ? (
-                    <ul className="mt-8 space-y-3 border-t border-[var(--color-border)] pt-8">
-                      {service.deliverables[locale].map((item) => (
-                        <li
-                          key={item}
-                          className="flex gap-3 text-[15px] leading-[1.55] text-[var(--color-text-muted)]"
-                        >
-                          <span
-                            aria-hidden
-                            className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-[var(--color-text-muted)]"
-                          />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
+                  <ul className="mt-8 space-y-3 border-t border-[var(--color-border)] pt-8">
+                    {service.deliverables[locale].map((item) => (
+                      <li
+                        key={item}
+                        className="flex gap-3 text-[15px] leading-[1.55] text-[var(--color-text-muted)]"
+                      >
+                        <span
+                          aria-hidden
+                          className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-[var(--color-text-muted)]"
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link
+                    href={localizedPath(locale, `/services/${service.slug}`)}
+                    className="group relative mt-8 inline-flex items-center gap-2 pb-1 text-[15px] text-white"
+                  >
+                    More on {service.title[locale].toLowerCase()}
+                    <span
+                      aria-hidden
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-white transition-transform duration-700 ease-out group-hover:scale-x-100"
+                    />
+                  </Link>
                 </div>
               </div>
             </Reveal>

@@ -1,4 +1,6 @@
 import type { Localized } from './types'
+import { pricingIsPublishable } from './pricing'
+import { testimonialsArePublishable } from './about'
 
 /**
  * Single source of identity for the whole site. Swap these values (and the
@@ -120,21 +122,67 @@ export const profileSocials = site.socials.filter((social) =>
   isProfileUrl(social.href),
 )
 
-export const navigation = [
+/**
+ * Header nav — also the mobile menu.
+ *
+ * This used to be three items, on the reasoning that a fourth broke the
+ * header's line rhythm. That constraint was solved in the header itself
+ * (tighter gaps and a slightly smaller face above `md`) rather than paid for in
+ * information architecture: leaving the pages that convert out of the primary
+ * nav to protect a typographic detail is the wrong trade.
+ *
+ * Order is by intent, not by importance to me: someone evaluating a designer
+ * looks at the work, then what it costs, then who they would be working with.
+ */
+const headerLinks = [
   { key: 'work', href: '/work' },
   { key: 'services', href: '/services' },
+  { key: 'pricing', href: '/pricing' },
   { key: 'about', href: '/about' },
+  { key: 'resume', href: '/resume' },
+  { key: 'articles', href: '/articles' },
 ] as const
 
 /**
- * Footer link column. Wider than the header nav on purpose: `/articles` has no
- * header entry (four items break the header's line rhythm) and was reachable
- * only from article cards, which left the whole editorial section hanging off a
- * single home-page module. A sitewide footer link is the cheapest fix — it puts
- * every article two clicks from any page and stops the section looking like an
- * afterthought to a crawler mapping the site's structure.
+ * Footer link column. Everything in the header, plus the pages that deserve a
+ * sitewide link but not a place in the primary nav.
+ *
+ * Two deliberate absences:
+ *
+ * - `/thank-you` is a conversion destination and permanently noindex. Linking
+ *   to it sitewide would let anyone reach it without sending anything.
+ *
+ * - `/ui-ux-designer-in-ahmedabad` is linked from the availability line at the
+ *   bottom of this same footer instead. It is a local landing page, and a nav
+ *   item reading "UI/UX designer in Ahmedabad" on every page of the site is
+ *   exactly the keyword-stuffed pattern the page is trying not to be.
  */
-export const footerNavigation = [
-  ...navigation,
-  { key: 'articles', href: '/articles' },
+const footerLinks = [
+  ...headerLinks,
+  { key: 'tools', href: '/tools' },
+  { key: 'testimonials', href: '/testimonials' },
 ] as const
+
+/**
+ * `/pricing` and `/testimonials` drop out of both navs while their content is
+ * not ready — each ships `noindex` until then, and a sitewide link to a noindex
+ * page spends crawl budget on a page that has asked not to be indexed.
+ *
+ * Derived rather than commented-out entries someone has to remember to restore.
+ * The failure mode that guards against is the quiet one: real prices get set,
+ * the page starts indexing, and nothing on the site links to it — an orphaned
+ * page with no internal links is a page that does not rank, and nothing about
+ * it looks broken.
+ */
+function isPublishable(key: string): boolean {
+  if (key === 'pricing') return pricingIsPublishable
+  if (key === 'testimonials') return testimonialsArePublishable
+  return true
+}
+
+/** Header nav and mobile menu. */
+export const navigation = headerLinks.filter((item) => isPublishable(item.key))
+
+export const footerNavigation = footerLinks.filter((item) =>
+  isPublishable(item.key),
+)

@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import Link from 'next/link'
-import { site } from '@/content/site'
+import { useRouter } from 'next/navigation'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
 import { cn } from '@/lib/cn'
@@ -14,30 +13,38 @@ type ContactFormProps = {
 
 type Errors = Partial<Record<'name' | 'email' | 'message', string>>
 
+/** Idle → sending → the terminal states the status line reports. */
+type Status = 'idle' | 'sending' | 'sent' | 'failed'
+
 const inputClasses =
   'w-full border-b border-[var(--color-border)] bg-transparent pb-3 text-[1.0625rem] text-[var(--color-text)] outline-none focus:outline-none focus-visible:outline-none transition-colors placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-text)]'
 
 /**
- * Contact form with no backend wired up.
+ * Contact form, posting to `/api/contact`.
  *
- * Submitting composes a `mailto:` so the site works the moment it is deployed,
- * with no third-party form service or API route to configure. Swap `onSubmit`
- * for a POST when a real endpoint exists — validation and state stay as-is.
+ * The fields are validated here for instant feedback, but the endpoint repeats
+ * every check — the browser can be bypassed, so the server's copy is the one
+ * that matters.
  */
 export function ContactForm({ locale, dictionary }: ContactFormProps) {
+  const router = useRouter()
   const [errors, setErrors] = useState<Errors>({})
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState<Status>('idle')
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
 
     // Honeypot: `company` is hidden from humans, so anything in it came from a
     // script. Abort into the same success state instead of showing a rejection,
     // which would only teach the bot to leave the field alone next time.
+    //
+    // Deliberately does not continue to `/thank-you`. That page is the
+    // conversion destination, so sending bots there would inflate whatever goal
+    // is eventually measured on it with traffic that never was an enquiry.
     if (String(data.get('company') ?? '').trim()) {
       setErrors({})
-      setSent(true)
+      setStatus('sent')
       return
     }
 
@@ -59,18 +66,42 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
       // The form is uncontrolled and never resets, so a second submit can follow
       // a successful one. Drop the latched confirmation or it sits under the new
       // errors still claiming the message is on its way.
-      setSent(false)
+      setStatus('idle')
       return
     }
 
-    const body = [message, '', `- ${name}`, email].join('\n')
+    setStatus('sending')
 
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject || `${dictionary.contact.message} - ${name}`,
-    )}&body=${encodeURIComponent(body)}`
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message }),
+      })
 
-    setSent(true)
+      if (!response.ok) {
+        setStatus('failed')
+        return
+      }
+
+      setStatus('sent')
+      // Only navigate once the send is confirmed, so `/thank-you` can state
+      // plainly that the message arrived. A failure keeps the visitor on the
+      // form with their text intact rather than stranding them on a
+      // confirmation page for something that never sent.
+      router.push(localizedPath(locale, '/thank-you'))
+    } catch {
+      // Offline, DNS failure, request blocked — nothing reached the server.
+      setStatus('failed')
+    }
   }
+
+  const statusMessage = {
+    idle: '',
+    sending: dictionary.contact.sending,
+    sent: dictionary.contact.success,
+    failed: dictionary.contact.error,
+  }[status]
 
   return (
     <form onSubmit={handleSubmit} noValidate>
@@ -141,26 +172,26 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
       <div className="mt-12 flex flex-col items-start gap-5">
         <button
           type="submit"
-          className="inline-flex h-12 items-center rounded-full border border-white bg-white px-8 text-[15px] leading-none text-black transition-colors duration-200 hover:bg-transparent hover:text-white active:scale-[0.97]"
+          disabled={status === 'sending'}
+          className="inline-flex h-12 items-center rounded-full border border-white bg-white px-8 text-[15px] leading-none text-black transition-colors duration-200 hover:bg-transparent hover:text-white active:scale-[0.97] disabled:pointer-events-none disabled:opacity-60"
         >
-          {dictionary.contact.send}
+          {status === 'sending'
+            ? dictionary.contact.sending
+            : dictionary.contact.send}
         </button>
 
-        <p className="max-w-[46ch] text-[13px] leading-[1.5] text-[var(--color-text-muted)]">
-          {dictionary.contact.consentBefore}{' '}
-          <Link
-            href={localizedPath(locale, '/privacy')}
-            className="underline underline-offset-4 transition-colors hover:text-[var(--color-text)]"
-          >
-            {dictionary.contact.consentLink}
-          </Link>
-          {dictionary.contact.consentAfter}
-        </p>
-
-        {/* Announced rather than shown inline so screen readers get the
-            confirmation even though the mail client steals focus. */}
-        <p role="status" aria-live="polite" className="text-[14px] text-white">
-          {sent ? dictionary.contact.success : ''}
+        {/* A live region rather than plain text: the send is asynchronous and
+            focus stays on the button, so a screen reader would otherwise never
+            learn whether the message went. */}
+        <p
+          role="status"
+          aria-live="polite"
+          className={cn(
+            'text-[14px]',
+            status === 'failed' ? 'text-[#ff8b7d]' : 'text-white',
+          )}
+        >
+          {statusMessage}
         </p>
       </div>
     </form>

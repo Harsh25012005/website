@@ -24,26 +24,57 @@ replaced by placeholders you own.
 npm install && npm run dev
 ```
 
-Placeholder imagery is committed, but you can regenerate it at any time:
+Article cover and gallery imagery is generated rather than drawn — the article
+title set on the site's palette, one accent and one motif per article:
 
 ```bash
-node scripts/generate-placeholders.mjs
+node scripts/generate-article-images.mjs
 ```
+
+Edit the `ARTICLES` array in that script when an article title changes, then
+re-run it. It uses `sharp` (already pulled in by Next.js) to rasterise SVG, and
+Georgia rather than Newsreader, because librsvg resolves fonts through the OS
+and the site's faces are woff2 files `next/font` fetches at build time.
+
+Case study imagery under `public/images/work/` is real design work and is not
+generated. `public/images/hero-portrait.png` is still a placeholder — replace it
+with a real photograph, since it feeds `image` on the Person schema and a
+generated gradient there is a wasted entity signal.
 
 ## Making it yours
 
 Everything user-facing lives under `src/content/` — no copy is hardcoded in a
 component.
 
-| File            | What it holds                                 |
-| --------------- | --------------------------------------------- |
-| `site.ts`       | Name, role, email, location, social links     |
-| `projects.ts`   | Case studies (listing + detail pages)         |
-| `articles.ts`   | Editorial entries                             |
-| `personal.ts`   | Photography / 2D / 3D galleries               |
-| `about.ts`      | Bio, services, skills, tools, testimonials    |
-| `privacy.ts`    | Privacy policy — **review before publishing** |
-| `dictionary.ts` | UI chrome strings (nav, buttons, form labels) |
+| File            | What it holds                                         |
+| --------------- | ----------------------------------------------------- |
+| `site.ts`       | Name, role, email, location, social links, footer nav |
+| `projects.ts`   | Case studies (listing + detail pages)                 |
+| `services.ts`   | The six services, one `/services/[slug]` page each    |
+| `pricing.ts`    | Packages — **figures are unset, see below**           |
+| `articles.ts`   | Editorial entries                                     |
+| `about.ts`      | Bio, process, FAQs, skills, tools, testimonials       |
+| `resume.ts`     | Résumé summary and experience                         |
+| `local.ts`      | Ahmedabad landing page copy                           |
+| `tools.ts`      | Tool stack with a note on each (`/tools`)             |
+| `dictionary.ts` | UI chrome strings (nav, buttons, form labels)         |
+
+### Pages kept out of the index
+
+Three routes ship `noindex, follow` and are absent from `sitemap.ts`. One is
+permanent; two unblock themselves as soon as their content is real:
+
+| Page            | Why                                    | To publish                                       |
+| --------------- | -------------------------------------- | ------------------------------------------------ |
+| `/pricing`      | every `from` in `pricing.ts` is `null` | set a real starting figure on all three packages |
+| `/testimonials` | `testimonials` in `about.ts` is empty  | add one real quote, with a real name attached    |
+| `/thank-you`    | conversion destination                 | permanent — nobody should land here from search  |
+
+`/pricing` and `/testimonials` are derived from the data rather than flagged by
+hand, so filling either in also restores its nav link and its sitemap entry. The
+point is the failure mode that removes: real prices get set, the page starts
+indexing, and nothing on the site links to it. An orphaned page does not rank,
+and nothing about it looks broken.
 
 Replace the files under `public/images/` with real assets, keeping the paths the
 content layer points at (or update the paths — `npm run test` will tell you if
@@ -77,8 +108,7 @@ Primitives live in `src/components/motion/`:
   scrub.
 - **Preloader / PageTransition** — four-column wipes; the preloader also counts
   0→100 and locks scroll while it runs.
-- **ParticleField**, **ImageSlideshow**, **MagneticButton**, **Marquee**,
-  **ScrollProgress**.
+- **ParticleField**, **ConvergeLines**, **ScrollProgress**, **CustomCursor**.
 
 Every primitive checks `prefers-reduced-motion` and degrades to a static,
 fully-visible layout.
@@ -98,9 +128,19 @@ CI runs all five on every push and pull request.
 
 ## Notes
 
-- The contact form composes a `mailto:` rather than posting anywhere, so the
-  site works on deploy with no form service. Swap `onSubmit` in
-  `ContactForm.tsx` for a POST when you have an endpoint.
+- The contact form posts to `/api/contact`, which sends the enquiry through
+  [Resend](https://resend.com). Set `RESEND_API_KEY` (and optionally
+  `CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`) — see `.env.example`. Without the
+  key the endpoint returns 500 and logs why, so the form fails visibly rather
+  than swallowing enquiries. Until a domain is verified with Resend, mail goes
+  out from their shared `onboarding@resend.dev`, which only delivers to the
+  address the Resend account was created with.
+- **There is no privacy policy.** The page and its consent line under the
+  contact form were both removed deliberately. The form still collects a name,
+  an email address and a message. If you add analytics, a form service or any
+  third-party script, or take enquiries from the EU or UK, publish a policy
+  before you do — GDPR and India's DPDP Act both expect a notice at the point of
+  collection. The deleted page is in git history if you want it back.
 - The layout, type scale and motion design are modelled on another designer's
   site. The words and pictures in this repo are placeholders — publishing it
   means replacing them with your own.

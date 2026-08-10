@@ -1,96 +1,14 @@
-import type { Localized, Service, Testimonial } from './types'
+import type { ContentSection, Faq, Localized, Testimonial } from './types'
 
-export const services: Service[] = [
-  {
-    number: '01',
-    title: { en: 'Web UI design' },
-    description: {
-      en: 'Responsive website and web app UI designed in Figma: landing pages, marketing sites and product screens built on a real grid, type scale and spacing system.',
-    },
-    deliverables: {
-      en: [
-        'Responsive page designs in Figma, desktop through mobile',
-        'Landing page, marketing site and web app screen design',
-        'Typography, spacing and component structure ready to build',
-      ],
-    },
-  },
-  {
-    number: '02',
-    title: { en: 'Design systems' },
-    description: {
-      en: 'Figma design system work: component libraries, tokens and documentation that keep a product team shipping consistent UI instead of rebuilding it every sprint.',
-    },
-    deliverables: {
-      en: [
-        'Figma component library with variants and auto layout',
-        'Colour, type and spacing tokens documented for developer handoff',
-        'Usage guidelines so new screens stay on-system',
-      ],
-    },
-  },
-  {
-    number: '03',
-    title: { en: 'Mobile app design' },
-    description: {
-      en: 'iOS and Android app UI/UX design: onboarding, navigation and core flows drawn around platform conventions, real content and a clickable Figma prototype.',
-    },
-    deliverables: {
-      en: [
-        'iOS and Android screen designs following platform conventions',
-        'Onboarding, navigation and core app flows, screen by screen',
-        'Clickable Figma prototype for user testing and dev handoff',
-      ],
-    },
-  },
-  {
-    number: '04',
-    title: { en: 'SaaS product design' },
-    description: {
-      en: 'SaaS dashboard and admin panel design: data-heavy screens, onboarding and settings flows that stay usable as features and edge cases pile up.',
-    },
-    deliverables: {
-      en: [
-        'Dashboard, admin panel and data table layouts that stay readable',
-        'Onboarding flows, empty states and error cases covered',
-        'Scalable UI patterns for features added after launch',
-      ],
-    },
-  },
-  {
-    number: '05',
-    title: { en: 'UX research & wireframing' },
-    description: {
-      en: 'User flows, wireframes and prototypes that test structure and validate the idea in Figma before anyone writes a line of production code.',
-    },
-    deliverables: {
-      en: [
-        'Low-fidelity wireframes to test structure before visual design',
-        'User flow diagrams mapping every screen and decision point',
-        'Clickable prototypes for stakeholder and user feedback',
-      ],
-    },
-  },
-  {
-    number: '06',
-    title: { en: 'Figma to React build' },
-    description: {
-      en: 'Design-to-code front-end builds in HTML, CSS, Tailwind, React and Next.js, so the live site matches the Figma file instead of drifting in handoff.',
-    },
-    deliverables: {
-      en: [
-        'Front-end build in HTML, CSS and Tailwind CSS, true to the design',
-        'React and Next.js components for interactive products',
-        'Responsive and cross-browser QA before launch',
-      ],
-    },
-  },
-]
+/**
+ * The service list itself now lives in `content/services.ts`, one entry per
+ * `/services/[slug]` page. It is re-exported here because `lib/schema.ts` and
+ * the home page section have always read it from this module, and the offer
+ * catalogue and the About page describe the same six offers.
+ */
+export { services, getService } from './services'
 
-export const servicesProcess: {
-  heading: Localized<string>
-  paragraphs: Localized<string[]>
-}[] = [
+export const servicesProcess: ContentSection[] = [
   {
     heading: { en: '01 - Discover' },
     paragraphs: {
@@ -141,10 +59,7 @@ export const servicesProcess: {
  * a minimum engagement), replace the scope-dependent wording below with it; the
  * specific answer always outperforms the careful one.
  */
-export const servicesFaqs: {
-  question: Localized<string>
-  answer: Localized<string>
-}[] = [
+export const servicesFaqs: Faq[] = [
   {
     question: { en: 'What does a UI/UX design project cost?' },
     answer: {
@@ -153,8 +68,15 @@ export const servicesFaqs: {
   },
   {
     question: { en: 'How long does a design project take?' },
+    // Previously ended "...and each project page on this site lists the
+    // timeline that project actually ran to". That stopped being true when the
+    // placeholder case studies were replaced: the current projects are
+    // self-initiated concept work with no client timeline to report, and their
+    // meta rows say so. An FAQ answer is rendered *and* emitted as `FAQPage`
+    // schema, so a claim about the site that the site contradicts is the exact
+    // mismatch that costs rich results.
     answer: {
-      en: 'It depends on the number of screens and how settled the product decisions are. The timeline is agreed at the brief stage, before design starts, and each project page on this site lists the timeline that project actually ran to, so you can compare against work of a similar size.',
+      en: 'It depends on the number of screens and how settled the product decisions are — a single landing page and a multi-screen product are different jobs. The timeline is agreed at the brief stage and written into the scope before design starts, so it is fixed before you commit rather than estimated as we go.',
     },
   },
   {
@@ -194,6 +116,20 @@ export const servicesFaqs: {
 /** Real client quotes go here once there are ones worth publishing. Never seed placeholders. */
 export const testimonials: Testimonial[] = []
 
+/**
+ * Derived, not a flag — the same pattern as `pricingIsPublishable` and
+ * `profileSocials`. While it is false, `/testimonials` ships `noindex, follow`,
+ * stays out of `sitemap.ts` and stays out of the footer nav. Add one real
+ * quote above and the page publishes itself.
+ *
+ * The empty state is deliberate too. A testimonials page carrying invented
+ * praise is the fastest way to lose a prospect who checks, and `schema.ts`
+ * already refuses to emit `aggregateRating` or `review` for the same reason.
+ * An honest "not yet" costs nothing; a fabricated quote attributed to a person
+ * who did not say it is a claim about a real third party.
+ */
+export const testimonialsArePublishable = testimonials.length > 0
+
 export const aboutIntro: Localized<string[]> = {
   en: [
     'I’m Harsh Vaghela, a freelance UI/UX and product designer based in Ahmedabad, Gujarat, India. I work on design systems, web UI, mobile app design and SaaS product design for founders and small teams, locally and remotely worldwide.',
@@ -201,10 +137,7 @@ export const aboutIntro: Localized<string[]> = {
   ],
 }
 
-export const aboutChapters: {
-  heading: Localized<string>
-  paragraphs: Localized<string[]>
-}[] = [
+export const aboutChapters: ContentSection[] = [
   {
     heading: { en: 'From BCA to UI/UX design' },
     paragraphs: {
@@ -234,10 +167,7 @@ export const aboutChapters: {
   },
 ]
 
-export const beyondScreens: {
-  heading: Localized<string>
-  paragraphs: Localized<string[]>
-} = {
+export const beyondScreens: ContentSection = {
   heading: { en: 'Beyond screens' },
   paragraphs: {
     en: [

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Reveal } from '@/components/motion/Reveal'
 import { SplitHeading } from '@/components/motion/SplitHeading'
+import { HoverSwapText } from '@/components/ui/HoverSwapText'
 import { services } from '@/content/about'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
@@ -29,16 +30,33 @@ export function Services({ locale, dictionary }: ServicesProps) {
               key={service.number}
               className="border-b border-[var(--color-border)] md:[&:not(:nth-child(3n))]:border-r md:[&:not(:nth-child(3n))]:border-[var(--color-border)]"
             >
-              <li className="py-6 md:p-8">
-                <span className="text-[11px] text-[var(--color-text-muted)]">
-                  {service.number}
-                </span>
-                <h3 className="mt-5 font-serif text-[26px] leading-tight font-light md:mt-8 md:text-[30px]">
-                  {service.title[locale]}
-                </h3>
-                <p className="mt-3 text-[15px] leading-[1.55] text-[var(--color-text-muted)] md:mt-6 md:max-w-[34ch]">
-                  {service.description[locale]}
-                </p>
+              <li>
+                {/* The whole cell is the link, and the anchor text is the
+                    service name — six descriptive internal links from the
+                    highest-equity page on the site straight into the six pages
+                    that carry the commercial terms.
+
+                    No `data-cursor-label` here, unlike the project cards. The
+                    custom cursor swells into a filled disc to hold the label,
+                    which on these cells lands directly over the copy it is
+                    sitting on top of and hides it. It works on `ProjectCard`
+                    because the cursor is over an image with nothing to read. */}
+                <Link
+                  href={localizedPath(locale, `/services/${service.slug}`)}
+                  className="group block py-6 md:p-8"
+                >
+                  <span className="text-[11px] text-[var(--color-text-muted)]">
+                    {service.number}
+                  </span>
+                  <h3 className="mt-5 font-serif text-[26px] leading-tight font-light md:mt-8 md:text-[30px]">
+                    <HoverSwapText swap={dictionary.common.viewService}>
+                      {service.title[locale]}
+                    </HoverSwapText>
+                  </h3>
+                  <p className="mt-3 text-[15px] leading-[1.55] text-[var(--color-text-muted)] md:mt-6 md:max-w-[34ch]">
+                    {service.description[locale]}
+                  </p>
+                </Link>
               </li>
             </Reveal>
           ))}

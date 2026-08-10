@@ -17,9 +17,9 @@ export const articles: Article[] = [
     date: '2026-06-16',
     readingTime: 9,
     cover: {
-      src: '/images/articles/render-series/cover.png',
+      src: '/images/articles/design-system-in-figma/cover.png',
       alt: {
-        en: 'Figma design system file showing a colour token palette and component library on a canvas',
+        en: 'Abstract violet, white and black graphic artwork',
       },
     },
     intro: {
@@ -41,9 +41,9 @@ export const articles: Article[] = [
           ],
         },
         image: {
-          src: '/images/articles/render-series/gallery-01.png',
+          src: '/images/articles/design-system-in-figma/gallery-01.png',
           alt: {
-            en: 'Audit board collecting every colour, text style and spacing value found across existing product screens',
+            en: '',
           },
         },
       },
@@ -60,9 +60,9 @@ export const articles: Article[] = [
           ],
         },
         image: {
-          src: '/images/articles/render-series/gallery-02.png',
+          src: '/images/articles/design-system-in-figma/gallery-02.png',
           alt: {
-            en: 'Figma variables panel showing primitive and semantic colour token collections with light and dark modes',
+            en: '',
           },
         },
       },
@@ -119,24 +119,26 @@ export const articles: Article[] = [
     ],
     gallery: [
       {
-        src: '/images/articles/render-series/gallery-03.png',
+        src: '/images/articles/design-system-in-figma/gallery-03.png',
         alt: {
-          en: 'Design system changelog page with date-stamped entries describing component updates',
+          en: '',
         },
       },
       {
-        src: '/images/articles/render-series/gallery-04.png',
+        src: '/images/articles/design-system-in-figma/gallery-04.png',
         alt: {
-          en: 'Component usage rules framed as side-by-side do and do not examples',
+          en: '',
         },
       },
       {
-        src: '/images/articles/render-series/gallery-05.png',
+        src: '/images/articles/design-system-in-figma/gallery-05.png',
         alt: {
-          en: 'Figma branch review dialog showing structural component edits isolated from the main file',
+          en: '',
         },
       },
     ],
+    relatedProjects: ['zenith'],
+    relatedServices: ['design-systems', 'saas-product-design'],
   },
   {
     slug: 'figma-to-react-handoff',
@@ -149,9 +151,9 @@ export const articles: Article[] = [
     date: '2026-04-21',
     readingTime: 8,
     cover: {
-      src: '/images/articles/printed-model/cover.png',
+      src: '/images/articles/figma-to-react-handoff/cover.png',
       alt: {
-        en: 'Figma component sheet placed next to the equivalent React component code in an editor',
+        en: 'Abstract orange, white and black graphic artwork',
       },
     },
     intro: {
@@ -173,9 +175,9 @@ export const articles: Article[] = [
           ],
         },
         image: {
-          src: '/images/articles/printed-model/gallery-01.png',
+          src: '/images/articles/figma-to-react-handoff/gallery-01.png',
           alt: {
-            en: 'A single card component drawn in default, hover, loading, empty and error states side by side',
+            en: '',
           },
         },
       },
@@ -192,9 +194,9 @@ export const articles: Article[] = [
           ],
         },
         image: {
-          src: '/images/articles/printed-model/gallery-02.png',
+          src: '/images/articles/figma-to-react-handoff/gallery-02.png',
           alt: {
-            en: 'Figma component property panel with size, variant and boolean icon properties named to match React props',
+            en: '',
           },
         },
       },
@@ -249,24 +251,26 @@ export const articles: Article[] = [
     ],
     gallery: [
       {
-        src: '/images/articles/printed-model/gallery-03.png',
+        src: '/images/articles/figma-to-react-handoff/gallery-03.png',
         alt: {
-          en: 'Dashboard layout shown at desktop, tablet and mobile breakpoints with column collapse annotated',
+          en: '',
         },
       },
       {
-        src: '/images/articles/printed-model/gallery-04.png',
+        src: '/images/articles/figma-to-react-handoff/gallery-04.png',
         alt: {
-          en: 'Design tokens mapped from Figma variables into a Tailwind theme configuration file',
+          en: '',
         },
       },
       {
-        src: '/images/articles/printed-model/gallery-05.png',
+        src: '/images/articles/figma-to-react-handoff/gallery-05.png',
         alt: {
-          en: 'Skeleton loading state matched to the final card layout to avoid layout shift',
+          en: '',
         },
       },
     ],
+    relatedProjects: ['stayease', 'ai-agent-landing'],
+    relatedServices: ['figma-to-react', 'web-ui-design'],
   },
   {
     slug: 'ui-design-mistakes',
@@ -279,9 +283,9 @@ export const articles: Article[] = [
     date: '2025-12-09',
     readingTime: 7,
     cover: {
-      src: '/images/articles/merch-system/cover.png',
+      src: '/images/articles/ui-design-mistakes/cover.png',
       alt: {
-        en: 'Before and after comparison of a product interface showing corrected typography, spacing and contrast',
+        en: 'Abstract red, white and black graphic artwork',
       },
     },
     intro: {
@@ -303,9 +307,9 @@ export const articles: Article[] = [
           ],
         },
         image: {
-          src: '/images/articles/merch-system/gallery-01.png',
+          src: '/images/articles/ui-design-mistakes/gallery-01.png',
           alt: {
-            en: 'Type ramp comparison showing an inconsistent set of font sizes reduced to a six-step scale',
+            en: '',
           },
         },
       },
@@ -333,9 +337,9 @@ export const articles: Article[] = [
           ],
         },
         image: {
-          src: '/images/articles/merch-system/gallery-02.png',
+          src: '/images/articles/ui-design-mistakes/gallery-02.png',
           alt: {
-            en: 'Contrast check on muted text, placeholder text and disabled buttons against accessibility thresholds',
+            en: '',
           },
         },
       },
@@ -399,24 +403,26 @@ export const articles: Article[] = [
     ],
     gallery: [
       {
-        src: '/images/articles/merch-system/gallery-03.png',
+        src: '/images/articles/ui-design-mistakes/gallery-03.png',
         alt: {
-          en: 'Empty state redesigned with an explanation of the feature and a primary action button',
+          en: '',
         },
       },
       {
-        src: '/images/articles/merch-system/gallery-04.png',
+        src: '/images/articles/ui-design-mistakes/gallery-04.png',
         alt: {
-          en: 'Form with persistent labels, inline validation messages and a reduced number of fields',
+          en: '',
         },
       },
       {
-        src: '/images/articles/merch-system/gallery-05.png',
+        src: '/images/articles/ui-design-mistakes/gallery-05.png',
         alt: {
-          en: 'Mobile layout with 44px touch targets and a visible keyboard focus ring on a button',
+          en: '',
         },
       },
     ],
+    relatedProjects: ['crave', 'cleaning-services-app'],
+    relatedServices: ['ux-research-wireframing', 'web-ui-design'],
   },
 ]
 

@@ -93,11 +93,6 @@ export function Footer({ locale, dictionary }: FooterProps) {
                   </InternalLink>
                 </li>
               ))}
-              <li>
-                <InternalLink href={localizedPath(locale, '/privacy')}>
-                  {dictionary.common.privacy}
-                </InternalLink>
-              </li>
             </ul>
           </div>
 
@@ -137,8 +132,17 @@ export function Footer({ locale, dictionary }: FooterProps) {
             >
               {user}@{domain}
             </a>
+            {/* The city is the link into the local landing page. It is the one
+                place on the site where "Ahmedabad" is already the natural
+                anchor text, so the page gets a sitewide internal link without
+                a nav item reading like a search query. */}
             <p className="mt-4 text-[var(--color-text-muted)]">
-              {dictionary.footer.availableFor} - {site.city[locale]}
+              {dictionary.footer.availableFor} -{' '}
+              <InternalLink
+                href={localizedPath(locale, '/ui-ux-designer-in-ahmedabad')}
+              >
+                {site.city[locale]}
+              </InternalLink>
             </p>
           </div>
         </div>

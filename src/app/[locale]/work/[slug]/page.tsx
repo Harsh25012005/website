@@ -7,6 +7,7 @@ import { ParallaxFrame } from '@/components/motion/ParallaxFrame'
 import { ProjectCard } from '@/components/sections/ProjectCard'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { projects, getProject, getRelatedProjects } from '@/content/projects'
+import { getArticle } from '@/content/articles'
 import { getDictionary } from '@/content/dictionary'
 import { isLocale, localizedPath, locales } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
@@ -58,6 +59,13 @@ export default async function ProjectPage({ params }: PageProps) {
 
   const dictionary = getDictionary(locale)
   const related = getRelatedProjects(slug)
+
+  // Filtered rather than asserted: a slug removed from `articles.ts` would
+  // otherwise render a heading above an empty list. The content test catches
+  // it first; this keeps the page correct if it ever gets past the test.
+  const furtherReading = (project.relatedArticles ?? [])
+    .map((articleSlug) => getArticle(articleSlug))
+    .filter((article) => article !== undefined)
 
   return (
     <>
@@ -126,9 +134,14 @@ export default async function ProjectPage({ params }: PageProps) {
       <section className="px-5 md:px-10">
         <div className="shell">
           <Reveal>
+            {/* `heroAspect` opts a project out of the shared crop when its
+                composition cannot take one — see the note on the type. */}
             <ParallaxFrame
               distance={36}
-              className="relative aspect-[4/3] w-full md:aspect-[16/9]"
+              className={cn(
+                'relative w-full',
+                project.heroAspect ?? 'aspect-[4/3] md:aspect-[16/9]',
+              )}
             >
               <Image
                 src={project.hero.src}
@@ -166,7 +179,11 @@ export default async function ProjectPage({ params }: PageProps) {
 
             {/* Gallery is split around the prose so images punctuate the
                 reading rather than piling up at the end. */}
-            <div className="mt-12 grid gap-4 md:mt-16 md:grid-cols-2 md:gap-x-8 md:gap-y-12">
+            {/* Twelve columns, so `span` can express quarters. Phone
+                screenshots are between 1:1.77 and 1:2.13, so width drives
+                height hard — at a third of the shell they still render taller
+                than the viewport they are being read in. */}
+            <div className="mt-12 grid grid-cols-12 gap-4 md:mt-16 md:gap-x-8 md:gap-y-12">
               {project.gallery
                 .slice(
                   sectionIndex * 3,
@@ -177,7 +194,15 @@ export default async function ProjectPage({ params }: PageProps) {
                 .map((item) => (
                   <Reveal
                     key={item.image.src}
-                    className={cn(item.span === 'full' && 'md:col-span-2')}
+                    className={cn(
+                      item.span === 'full' && 'col-span-12',
+                      item.span === 'half' && 'col-span-12 md:col-span-6',
+                      // Two-up on mobile for both narrow spans: a quarter of a
+                      // phone screen is unreadable on a phone, but full width
+                      // is a page of scrolling per image.
+                      item.span === 'third' && 'col-span-6 md:col-span-4',
+                      item.span === 'quarter' && 'col-span-6 md:col-span-3',
+                    )}
                   >
                     <figure>
                       <ParallaxFrame
@@ -191,7 +216,11 @@ export default async function ProjectPage({ params }: PageProps) {
                           sizes={
                             item.span === 'full'
                               ? '90vw'
-                              : '(max-width: 768px) 100vw, 45vw'
+                              : item.span === 'half'
+                                ? '(max-width: 768px) 100vw, 45vw'
+                                : item.span === 'third'
+                                  ? '(max-width: 768px) 50vw, 30vw'
+                                  : '(max-width: 768px) 50vw, 23vw'
                           }
                           className="object-cover"
                         />
@@ -242,6 +271,40 @@ export default async function ProjectPage({ params }: PageProps) {
           </Reveal>
         </div>
       </section>
+
+      {/* The return leg of the internal link graph. `/services` sends equity
+          into case studies; without this a case study is where it stops. */}
+      {furtherReading.length > 0 ? (
+        <section className="border-t border-[var(--color-border)] px-5 py-16 md:px-10 md:py-20">
+          <div className="shell">
+            <Reveal>
+              <h2 className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
+                {dictionary.common.furtherReading}
+              </h2>
+            </Reveal>
+
+            <ul className="mt-8 space-y-6">
+              {furtherReading.map((article, index) => (
+                <Reveal key={article.slug} delay={index * 0.06}>
+                  <li>
+                    <Link
+                      href={localizedPath(locale, `/articles/${article.slug}`)}
+                      className="group block md:max-w-[62ch]"
+                    >
+                      <span className="font-serif text-[clamp(20px,2.2vw,28px)] leading-[1.2] font-light tracking-[-0.02em] transition-colors group-hover:text-white">
+                        {article.title[locale]}
+                      </span>
+                      <span className="mt-2 block text-[15px] leading-[1.55] text-[var(--color-text-muted)]">
+                        {article.excerpt[locale]}
+                      </span>
+                    </Link>
+                  </li>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
 
       {related.length > 0 ? (
         <section className="px-5 py-16 md:px-10 md:py-32">

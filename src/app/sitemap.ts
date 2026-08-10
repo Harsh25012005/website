@@ -4,6 +4,9 @@ import { localizedPath, defaultLocale } from '@/lib/i18n'
 import { site } from '@/content/site'
 import { projects } from '@/content/projects'
 import { articles } from '@/content/articles'
+import { services } from '@/content/services'
+import { pricingIsPublishable } from '@/content/pricing'
+import { testimonialsArePublishable } from '@/content/about'
 
 /**
  * Every indexable URL, once each.
@@ -15,13 +18,16 @@ import { articles } from '@/content/articles'
  *    carrying the commercial keywords, and it was the one route absent from the
  *    sitemap.
  *
- * 2. **`/privacy` was included.** It is now `noindex`. Listing a noindex URL in
- *    a sitemap sends a crawler a direct contradiction — "index this" in one
- *    file, "do not" in the page — and Search Console reports it as an error
- *    against the whole submission.
+ * 2. **A `noindex` URL was listed.** Listing one sends a crawler a direct
+ *    contradiction — "index this" in one file, "do not" in the page — and
+ *    Search Console reports it as an error against the whole submission. Three
+ *    routes are `noindex` today and none of them appear below: `/thank-you`
+ *    permanently, `/pricing` and `/testimonials` until their content is real.
+ *    The last two are filtered by the same two flags that drive the nav links,
+ *    so the three can never disagree.
  *
  * 3. **`lastModified: new Date()`** stamped every URL with the build time, so a
- *    deploy that changed one typo claimed all fifteen pages had just changed.
+ *    deploy that changed one typo claimed every page had just changed.
  *    Once that is shown to be false a few times, the field stops being read at
  *    all — including on the article that genuinely did change. Dates below come
  *    from the content instead: an article's own publish date, and
@@ -55,13 +61,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/', lastModified: contentUpdated, priority: 1 },
     { path: '/work', lastModified: contentUpdated, priority: 0.9 },
     { path: '/services', lastModified: contentUpdated, priority: 0.9 },
+    // The six service pages sit level with the hub rather than below it: they
+    // are the pages carrying the commercial head terms, and the hub mainly
+    // exists to distribute traffic to them.
+    ...services.map((service) => ({
+      path: `/services/${service.slug}`,
+      lastModified: contentUpdated,
+      priority: 0.9,
+    })),
     { path: '/about', lastModified: contentUpdated, priority: 0.8 },
     { path: '/contact', lastModified: contentUpdated, priority: 0.8 },
+    {
+      path: '/ui-ux-designer-in-ahmedabad',
+      lastModified: contentUpdated,
+      priority: 0.8,
+    },
+    // Listed only once the page has something to say. Both are `noindex` until
+    // then, and a sitemap entry for a noindex URL is a direct contradiction —
+    // "index this" in one file, "do not" in the page — which Search Console
+    // reports as an error against the whole submission. The same two flags
+    // drive the footer links, so the three never disagree.
+    ...(pricingIsPublishable
+      ? [{ path: '/pricing', lastModified: contentUpdated, priority: 0.8 }]
+      : []),
+    ...(testimonialsArePublishable
+      ? [{ path: '/testimonials', lastModified: contentUpdated, priority: 0.6 }]
+      : []),
+    { path: '/resume', lastModified: contentUpdated, priority: 0.7 },
     {
       path: '/articles',
       lastModified: new Date(newestArticle),
       priority: 0.7,
     },
+    { path: '/tools', lastModified: contentUpdated, priority: 0.5 },
     ...projects
       // An upcoming project renders as an inert tile with no detail page, so
       // its URL would 404 for anyone who followed it out of the sitemap.

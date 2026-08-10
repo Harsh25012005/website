@@ -1,6 +1,6 @@
 import { site, profileSocials } from '@/content/site'
 import { services, skills, tools } from '@/content/about'
-import type { Article, Project } from '@/content/types'
+import type { Article, Project, Service } from '@/content/types'
 import { siteUrl } from './seo'
 import { localizedPath, type Locale } from './i18n'
 
@@ -149,19 +149,61 @@ export function professionalServiceSchema(): JsonLdNode {
       name: 'UI/UX and product design services',
       itemListElement: services.map((service) => ({
         '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: service.title.en,
-          description: service.description.en,
-          serviceType: service.title.en,
-          provider: { '@id': BUSINESS_ID },
-          areaServed: site.areaServed.map((name) => ({
-            '@type': 'Place',
-            name,
-          })),
-        },
+        // Each offer now resolves to a page that describes it. Before the
+        // services split there was one URL behind all six, so the catalogue
+        // named six distinct services and pointed a consumer at a single
+        // document for every one of them.
+        url: `${siteUrl}/services/${service.slug}`,
+        itemOffered: { '@id': serviceId(service.slug) },
       })),
     },
+  }
+}
+
+/* ── services ─────────────────────────────────────────────────────────────── */
+
+export function serviceId(slug: string): string {
+  return `${siteUrl}/services/${slug}#service`
+}
+
+/**
+ * One `Service` node per `/services/[slug]` page, sharing an `@id` with the
+ * stub the home page's OfferCatalog references — so the catalogue entry and the
+ * page that describes it are one entity rather than two similar ones.
+ *
+ * No `offers` block and no `priceRange`. Pricing is quoted per project and the
+ * figures on `/pricing` are still placeholders; publishing a price here that
+ * the site does not show a visitor is exactly the mismatch that costs rich
+ * results. Add `offers` here at the same time as the real numbers, not before.
+ */
+export function serviceSchema(service: Service, locale: Locale): JsonLdNode {
+  const url = `${siteUrl}${localizedPath(locale, `/services/${service.slug}`)}`
+
+  return {
+    '@type': 'Service',
+    '@id': serviceId(service.slug),
+    url,
+    name: service.title[locale],
+    serviceType: service.title[locale],
+    description: service.metaDescription,
+    provider: { '@id': BUSINESS_ID },
+    areaServed: site.areaServed.map((name) => ({ '@type': 'Place', name })),
+    availableChannel: {
+      '@type': 'ServiceChannel',
+      serviceUrl: url,
+      availableLanguage: site.languages,
+    },
+    // The deliverables list is the one part of the page that reads as a
+    // concrete, itemised promise, so it is what the catalogue exposes.
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: `${service.title[locale]} deliverables`,
+      itemListElement: service.deliverables[locale].map((item) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: item },
+      })),
+    },
+    mainEntityOfPage: { '@id': `${url}#webpage` },
   }
 }
 
@@ -201,7 +243,8 @@ export function webPageSchema({
   path: string
   title: string
   description: string
-  type?: 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage'
+  type?:
+    'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage' | 'ProfilePage'
 }): JsonLdNode {
   const url = `${siteUrl}${localizedPath(locale, path)}`
 
@@ -213,6 +256,12 @@ export function webPageSchema({
     description,
     isPartOf: { '@id': WEBSITE_ID },
     about: personRef,
+    // `ProfilePage` is the one type here that Google reads as "this document
+    // *is* the entity's profile" rather than "this document mentions it", and
+    // `mainEntity` is the property carrying that claim. It references the
+    // Person by `@id` instead of restating it — a third full Person block would
+    // be a third candidate entity to reconcile. See the note at the top.
+    ...(type === 'ProfilePage' ? { mainEntity: personRef } : {}),
     inLanguage: 'en',
     primaryImageOfPage: absolute(site.portrait),
   }

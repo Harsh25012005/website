@@ -41,7 +41,12 @@ export function Header({ locale, dictionary }: HeaderProps) {
             </Link>
           </div>
 
-          <nav className="hidden items-center gap-8 text-[15px] md:flex">
+          {/* The nav carries five items where it used to carry three, so the
+              gap and face step up with the viewport rather than being fixed at
+              the widest comfortable setting. At `md` this is tight but level;
+              by `lg` it is back to the original rhythm. `whitespace-nowrap`
+              stops "Get in touch" wrapping inside its pill at the crossover. */}
+          <nav className="hidden items-center gap-5 text-[14px] whitespace-nowrap md:flex lg:gap-8 lg:text-[15px]">
             {navigation.map((item) => (
               <UnderlineLink
                 key={item.key}

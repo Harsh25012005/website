@@ -7,6 +7,8 @@ import { ParallaxFrame } from '@/components/motion/ParallaxFrame'
 import { ArticleCard } from '@/components/sections/ArticleCard'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { articles, getArticle } from '@/content/articles'
+import { getProject } from '@/content/projects'
+import { getService } from '@/content/services'
 import { getDictionary } from '@/content/dictionary'
 import { isLocale, localizedPath, locales } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
@@ -59,6 +61,17 @@ export default async function ArticlePage({ params }: PageProps) {
 
   const dictionary = getDictionary(locale)
   const more = articles.filter((item) => item.slug !== slug)
+
+  const relatedWork = (article.relatedProjects ?? [])
+    .map((projectSlug) => getProject(projectSlug))
+    .filter((project) => project !== undefined)
+
+  // The commercial half of the interlinking: an article ranking for an
+  // informational query is worth far more when it routes the reader to the
+  // page that sells what they were reading about.
+  const relatedServices = (article.relatedServices ?? [])
+    .map((serviceSlug) => getService(serviceSlug))
+    .filter((service) => service !== undefined)
 
   const published = new Date(article.date).toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -215,6 +228,78 @@ export default async function ArticlePage({ params }: PageProps) {
           </div>
         </div>
       </article>
+
+      {relatedWork.length > 0 || relatedServices.length > 0 ? (
+        <section className="border-t border-[var(--color-border)] px-5 py-16 md:px-10 md:py-20">
+          <div className="shell">
+            <div className="grid gap-y-12 md:grid-cols-2 md:gap-x-12">
+              {relatedWork.length > 0 ? (
+                <div>
+                  <Reveal>
+                    <h2 className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
+                      {dictionary.common.relatedWork}
+                    </h2>
+                  </Reveal>
+                  <ul className="mt-8 space-y-6">
+                    {relatedWork.map((project, index) => (
+                      <Reveal key={project.slug} delay={index * 0.06}>
+                        <li>
+                          <Link
+                            href={localizedPath(
+                              locale,
+                              `/work/${project.slug}`,
+                            )}
+                            className="group block"
+                          >
+                            <span className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.2] font-light transition-colors group-hover:text-white">
+                              {project.title[locale]}
+                            </span>
+                            <span className="mt-1 block text-[14px] text-[var(--color-text-muted)]">
+                              {project.discipline[locale]}
+                            </span>
+                          </Link>
+                        </li>
+                      </Reveal>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              {relatedServices.length > 0 ? (
+                <div>
+                  <Reveal>
+                    <h2 className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
+                      {dictionary.common.servicesMentioned}
+                    </h2>
+                  </Reveal>
+                  <ul className="mt-8 space-y-6">
+                    {relatedServices.map((service, index) => (
+                      <Reveal key={service.slug} delay={index * 0.06}>
+                        <li>
+                          <Link
+                            href={localizedPath(
+                              locale,
+                              `/services/${service.slug}`,
+                            )}
+                            className="group block"
+                          >
+                            <span className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.2] font-light transition-colors group-hover:text-white">
+                              {service.title[locale]}
+                            </span>
+                            <span className="mt-1 block max-w-[40ch] text-[14px] leading-[1.5] text-[var(--color-text-muted)]">
+                              {service.description[locale]}
+                            </span>
+                          </Link>
+                        </li>
+                      </Reveal>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {more.length > 0 ? (
         <section className="px-5 py-16 md:px-10 md:py-32">
