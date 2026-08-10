@@ -129,7 +129,7 @@ export function CustomCursor() {
       >
         <span
           ref={labelRef}
-          className="absolute inset-0 flex flex-col items-center justify-center text-center text-[13px] leading-tight font-medium tracking-[0.02em] text-black opacity-0 whitespace-pre-line"
+          className="absolute inset-0 flex flex-col items-center justify-center text-center text-[13px] leading-tight font-medium tracking-[0.02em] whitespace-pre-line text-black opacity-0"
         />
       </div>
     </div>

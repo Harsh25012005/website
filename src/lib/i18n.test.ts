@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { localizedPath, stripLocale, isLocale, locales, defaultLocale } from './i18n'
+import {
+  localizedPath,
+  stripLocale,
+  isLocale,
+  locales,
+  defaultLocale,
+} from './i18n'
 
 describe('locales', () => {
   it('ships English only', () => {
