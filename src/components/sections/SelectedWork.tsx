@@ -1,8 +1,9 @@
+import Link from 'next/link'
 import { Reveal } from '@/components/motion/Reveal'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { ProjectCard } from './ProjectCard'
 import { featuredProjects } from '@/content/projects'
-import type { Locale } from '@/lib/i18n'
+import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
 
 type SelectedWorkProps = {
@@ -53,6 +54,31 @@ export function SelectedWork({ locale, dictionary }: SelectedWorkProps) {
             ))}
           </div>
         </div>
+
+        {/* The section showed six cards and offered no way to the listing page
+            that ranks for "UI/UX portfolio" — every path out went to a single
+            case study. Descriptive anchor text, because "View all" tells a
+            crawler nothing about the page it points at. */}
+        <Reveal>
+          <div className="mt-16 border-t border-[var(--color-border)] pt-8 md:mt-24 md:pt-10">
+            <Link
+              href={localizedPath(locale, '/work')}
+              className="group relative inline-flex items-center gap-2 pb-1 text-[1.0625rem] text-white md:text-[1.1875rem]"
+            >
+              {dictionary.common.allCaseStudies}
+              <span
+                aria-hidden
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              >
+                →
+              </span>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-white transition-transform duration-700 ease-out group-hover:scale-x-100"
+              />
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

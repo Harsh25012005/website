@@ -16,6 +16,12 @@ export async function generateMetadata({ params }: PageProps) {
     path: '/privacy',
     title: 'Privacy Policy',
     description: 'What this site collects, why, and what your rights are.',
+    // Boilerplate legal text competes with nothing and ranks for nothing, but
+    // it does dilute the topical signal of a nine-page site and can outrank the
+    // pages that matter on a brand-name query. `noindex, follow` keeps it out
+    // of the index while the contact and consent links on it stay crawlable —
+    // which is also why it is no longer listed in `sitemap.ts`.
+    noindex: true,
   })
 }
 

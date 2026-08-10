@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { ConvergeLines } from '@/components/motion/ConvergeLines'
 import { Reveal } from '@/components/motion/Reveal'
 import { getLenis } from '@/components/motion/SmoothScroll'
-import { site, navigation } from '@/content/site'
+import { site, footerNavigation } from '@/content/site'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
 
@@ -86,13 +86,18 @@ export function Footer({ locale, dictionary }: FooterProps) {
                   {dictionary.footer.home}
                 </InternalLink>
               </li>
-              {navigation.map((item) => (
+              {footerNavigation.map((item) => (
                 <li key={item.key}>
                   <InternalLink href={localizedPath(locale, item.href)}>
                     {dictionary.nav[item.key]}
                   </InternalLink>
                 </li>
               ))}
+              <li>
+                <InternalLink href={localizedPath(locale, '/privacy')}>
+                  {dictionary.common.privacy}
+                </InternalLink>
+              </li>
             </ul>
           </div>
 
@@ -103,7 +108,13 @@ export function Footer({ locale, dictionary }: FooterProps) {
             <ul className="flex flex-col items-start gap-3">
               {site.socials.map((social) => (
                 <li key={social.label}>
-                  <OutboundLink href={social.href} newTab>
+                  {/* `rel="me"` is the machine-readable half of the identity
+                      claim the JSON-LD `sameAs` makes: it links this site to
+                      the profile and, where the profile links back, closes the
+                      loop that lets a search engine treat both as the same
+                      person. It is inert while these remain placeholder
+                      domain roots — see the warning in `content/site.ts`. */}
+                  <OutboundLink href={social.href} newTab profile>
                     {social.label}
                   </OutboundLink>
                 </li>
@@ -122,7 +133,7 @@ export function Footer({ locale, dictionary }: FooterProps) {
             </p>
             <a
               href={`mailto:${site.email}`}
-              className="block text-[clamp(20px,2.2vw,30px)] leading-[1.2] font-light text-white break-all"
+              className="block text-[clamp(20px,2.2vw,30px)] leading-[1.2] font-light break-all text-white"
             >
               {user}@{domain}
             </a>
@@ -188,16 +199,24 @@ function OutboundLink({
   href,
   children,
   newTab = false,
+  profile = false,
 }: {
   href: string
   children: ReactNode
   newTab?: boolean
+  /** Adds `rel="me"` — this URL is another profile of the site's owner. */
+  profile?: boolean
 }) {
+  const rel =
+    [newTab && 'noopener noreferrer', profile && 'me']
+      .filter(Boolean)
+      .join(' ') || undefined
+
   return (
     <a
       href={href}
       target={newTab ? '_blank' : undefined}
-      rel={newTab ? 'noopener noreferrer' : undefined}
+      rel={rel}
       className="group relative inline-flex items-center gap-1 py-0.5 transition-colors hover:text-white"
     >
       {children}

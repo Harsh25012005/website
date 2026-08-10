@@ -8,11 +8,24 @@ import {
   skills,
   tools,
 } from '@/content/about'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { site } from '@/content/site'
 import { isLocale } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
+import {
+  graph,
+  breadcrumbSchema,
+  personSchema,
+  webPageSchema,
+} from '@/lib/schema'
 
 type PageProps = { params: Promise<{ locale: string }> }
+
+// Previously "About — Harsh Vaghela", which the layout template turned into
+// "About — Harsh Vaghela - Harsh Vaghela". The topic alone is what belongs here.
+const TITLE = 'About: UI/UX Designer & Front-End Developer'
+const DESCRIPTION =
+  'Harsh Vaghela is a freelance UI/UX and product designer in Ahmedabad, India, with 1.5+ years designing design systems, web UI, mobile app and SaaS products in Figma and building them in React and Next.js.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params
@@ -21,9 +34,15 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/about',
-    title: 'About — Harsh Vaghela',
-    description:
-      'Harsh Vaghela is a UI/UX and product designer working across design systems, web UI, mobile and SaaS design.',
+    title: TITLE,
+    description: DESCRIPTION,
+    imageAlt: `${site.name}, ${site.role[locale]} based in ${site.location[locale]}`,
+    keywords: [
+      'Harsh Vaghela',
+      'UI/UX designer Ahmedabad',
+      'freelance product designer',
+      'design to code designer',
+    ],
   })
 }
 
@@ -33,6 +52,24 @@ export default async function AboutPage({ params }: PageProps) {
 
   return (
     <>
+      {/* The one page besides home that restates Person in full: it is the
+          document the entity is actually about, so the `AboutPage` node and the
+          Person it describes need to sit in the same graph. Identical `@id`,
+          identical values — no second entity is created. */}
+      <JsonLd
+        data={graph(
+          personSchema(),
+          webPageSchema({
+            locale,
+            path: '/about',
+            title: TITLE,
+            description: DESCRIPTION,
+            type: 'AboutPage',
+          }),
+          breadcrumbSchema(locale, [{ name: 'About', path: '/about' }]),
+        )}
+      />
+
       <section className="relative px-5 pt-32 pb-16 md:px-10 md:pt-[8.75rem] md:pb-24">
         <div className="shell">
           <SplitHeading
@@ -41,7 +78,8 @@ export default async function AboutPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[22ch] font-serif text-[clamp(36px,5.4vw,5rem)] leading-[0.95] font-light tracking-[-0.04em]"
           >
-            I design and build digital products — UI/UX, design systems, and the SaaS and mobile experiences built on them.
+            I design and build digital products — UI/UX, design systems, and the
+            SaaS and mobile experiences built on them.
           </SplitHeading>
 
           <Reveal delay={0.35}>

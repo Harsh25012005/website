@@ -125,6 +125,72 @@ export const servicesProcess: {
   },
 ]
 
+/**
+ * Questions asked on nearly every enquiry, answered on the page instead of over
+ * email.
+ *
+ * These earn their place three times over: they are the copy that converts a
+ * reader who is comparing designers, they are the only part of the site written
+ * in the phrasing people actually search ("do you code the site too", "how much
+ * does UI/UX design cost"), and they are the source for the `FAQPage` schema on
+ * `/services`, which is what gets a passage of this page quoted directly in an
+ * AI answer or a featured snippet.
+ *
+ * ⚠️  Answers must stay literally true — schema turns them into claims Google
+ * holds the site to. Where a real number exists (a rate, a guaranteed turnaround,
+ * a minimum engagement), replace the scope-dependent wording below with it; the
+ * specific answer always outperforms the careful one.
+ */
+export const servicesFaqs: {
+  question: Localized<string>
+  answer: Localized<string>
+}[] = [
+  {
+    question: { en: 'What does a UI/UX design project cost?' },
+    answer: {
+      en: 'Every project is quoted individually, because a landing page and a multi-screen SaaS product are not the same job. Tell me the scope, the screens involved and your timeline, and you get a fixed price for a defined deliverable rather than an open-ended hourly rate.',
+    },
+  },
+  {
+    question: { en: 'How long does a design project take?' },
+    answer: {
+      en: 'It depends on the number of screens and how settled the product decisions are. The timeline is agreed at the brief stage, before design starts, and each project page on this site lists the timeline that project actually ran to, so you can compare against work of a similar size.',
+    },
+  },
+  {
+    question: { en: 'Do you build the website as well as design it?' },
+    answer: {
+      en: 'Yes. I build front ends in HTML, CSS, Tailwind CSS, React and Next.js, so on projects that need it the approved Figma design is delivered as a working, responsive build rather than a file someone else has to interpret. Design-only engagements are equally fine if you already have developers.',
+    },
+  },
+  {
+    question: { en: 'Do you work with clients outside India?' },
+    answer: {
+      en: 'Yes. I am based in Ahmedabad, Gujarat, India and work remotely with founders and small teams worldwide, keeping enough overlap with your working day for reviews and calls. All work and communication is in English.',
+    },
+  },
+  {
+    question: { en: 'What do I receive at the end of a project?' },
+    answer: {
+      en: 'Organised Figma files with the components, colour, type and spacing tokens documented, a clickable prototype where the project calls for one, and — on build engagements — the responsive coded front end, QA-tested across browsers.',
+    },
+  },
+  {
+    question: {
+      en: 'Can you redesign an existing product rather than start over?',
+    },
+    answer: {
+      en: 'Yes, and it is often the better option. A redesign starts with reviewing the screens you already have, so the work targets the parts that are costing you users instead of rebuilding what already works.',
+    },
+  },
+  {
+    question: { en: 'How do we start?' },
+    answer: {
+      en: 'Send a few lines about the product, the scope and your timeline through the contact page or by email. I read everything and usually reply within a couple of working days, and the first step is a short call or written brief before any design work begins.',
+    },
+  },
+]
+
 /** Real client quotes go here once there are ones worth publishing. Never seed placeholders. */
 export const testimonials: Testimonial[] = []
 

@@ -2,12 +2,20 @@ import { notFound } from 'next/navigation'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
 import { WorkFilter } from '@/components/sections/WorkFilter'
-import { projects } from '@/content/projects'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { projects, featuredProjects } from '@/content/projects'
 import { getDictionary } from '@/content/dictionary'
 import { isLocale } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
+import { graph, breadcrumbSchema, collectionPageSchema } from '@/lib/schema'
 
 type PageProps = { params: Promise<{ locale: string }> }
+
+// "Work" alone ranks for nothing and tells a searcher nothing; the topic has to
+// carry the query, with the layout template supplying the brand.
+const TITLE = 'UI/UX Design Portfolio and Case Studies'
+const DESCRIPTION =
+  'Selected UI/UX case studies by Harsh Vaghela: SaaS dashboards, mobile app design, design systems and brand-led websites, each with the brief, the process and the outcome.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params
@@ -16,9 +24,15 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     locale,
     path: '/work',
-    title: 'Work',
-    description:
-      'Selected projects across product design, websites, systems and brand.',
+    title: TITLE,
+    description: DESCRIPTION,
+    imageAlt: 'Selected UI/UX design case studies by Harsh Vaghela',
+    keywords: [
+      'UI/UX portfolio',
+      'design case studies',
+      'SaaS dashboard design',
+      'mobile app design portfolio',
+    ],
   })
 }
 
@@ -30,6 +44,25 @@ export default async function WorkPage({ params }: PageProps) {
 
   return (
     <>
+      {/* Only shipped case studies go in the ItemList — an upcoming project has
+          no page to send anyone to, so listing it would publish a URL that
+          isn't there. */}
+      <JsonLd
+        data={graph(
+          collectionPageSchema({
+            locale,
+            path: '/work',
+            title: TITLE,
+            description: DESCRIPTION,
+            items: featuredProjects.map((project) => ({
+              name: project.title[locale],
+              path: `/work/${project.slug}`,
+            })),
+          }),
+          breadcrumbSchema(locale, [{ name: 'Work', path: '/work' }]),
+        )}
+      />
+
       <section className="px-5 pt-32 pb-16 md:px-10 md:pt-[8.75rem] md:pb-32">
         <div className="shell">
           <SplitHeading
@@ -43,7 +76,8 @@ export default async function WorkPage({ params }: PageProps) {
 
           <Reveal delay={0.35}>
             <p className="mt-8 max-w-[52ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-              Selected projects across product design, websites, systems and brand-led experiences, independently and as part of teams.
+              Selected projects across product design, websites, systems and
+              brand-led experiences, independently and as part of teams.
             </p>
           </Reveal>
 

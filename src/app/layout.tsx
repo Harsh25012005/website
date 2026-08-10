@@ -25,15 +25,25 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: `${site.name} - ${site.role.en}`,
+    // Every page passes a bare topic ("UI/UX Design Services") and gets the
+    // name appended here. A page that needs the name inside its own title —
+    // the home page, an article headline — must set `titleIsAbsolute` in
+    // `buildMetadata`, or the name lands twice.
     template: `%s - ${site.name}`,
   },
-  description:
-    'Portfolio of a digital product designer working on interfaces, design systems and websites.',
+  description: `Portfolio of ${site.name}, a freelance ${site.role.en.toLowerCase()} in ${site.location.en}. Design systems, web UI, mobile app and SaaS product design, built in React and Next.js.`,
+  applicationName: site.name,
+  manifest: '/manifest.webmanifest',
   robots: { index: true, follow: true },
+  // Icons belong in the metadata object, not in a hand-written `<head>`. Next
+  // renders these into the head itself; declaring both meant two competing sets
+  // of icon links pointing at two different files.
   icons: {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    shortcut: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
     apple: [{ url: '/apple-icon.svg', type: 'image/svg+xml' }],
   },
+  formatDetection: { telephone: false, address: false, email: false },
 }
 
 export const viewport: Viewport = {
@@ -54,11 +64,6 @@ export default function RootLayout({
       className={`${newsreader.variable} ${instrumentSans.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="shortcut icon" href="/favicon.svg" />
-        <link rel="apple-touch-icon" href="/favicon.svg" />
-      </head>
       <body suppressHydrationWarning>{children}</body>
     </html>
   )
