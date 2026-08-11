@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
 import { ContactForm } from '@/components/sections/ContactForm'
+import { serviceSelectOptions } from '@/content/services'
+import { budgetBands } from '@/content/pricing'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getDictionary } from '@/content/dictionary'
 import { site } from '@/content/site'
@@ -40,7 +42,7 @@ export default async function ContactPage({ params }: PageProps) {
   const dictionary = getDictionary(locale)
 
   return (
-    <section className="flex min-h-[calc(100svh-5rem)] flex-col justify-center px-5 pt-42 pb-20 md:px-10 md:pt-44 md:pb-28">
+    <section className="flex min-h-svh flex-col justify-center px-5 pt-24 pb-10 md:px-10 md:pt-28 md:pb-12 lg:min-h-screen lg:py-0">
       <JsonLd
         data={graph(
           webPageSchema({
@@ -90,7 +92,14 @@ export default async function ContactPage({ params }: PageProps) {
           </div>
 
           <div className="md:col-span-6 md:col-start-7">
-            <ContactForm locale={locale} dictionary={dictionary} />
+            {/* The select options are built here, on the server, so the whole
+                of `content/services.ts` stays out of the client bundle. */}
+            <ContactForm
+              locale={locale}
+              dictionary={dictionary}
+              serviceOptions={serviceSelectOptions(locale)}
+              budgetBands={budgetBands}
+            />
           </div>
         </div>
       </div>

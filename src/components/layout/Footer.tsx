@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { ConvergeLines } from '@/components/motion/ConvergeLines'
 import { Reveal } from '@/components/motion/Reveal'
 import { getLenis } from '@/components/motion/SmoothScroll'
-import { site, footerNavigation } from '@/content/site'
+import { site, footerNavigation, legalNavigation } from '@/content/site'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
 
@@ -153,6 +153,17 @@ export function Footer({ locale, dictionary }: FooterProps) {
           </p>
 
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            {/* Bottom bar rather than the menu column: reachable from every
+                page, which a privacy notice has to be once a form collects
+                anything, without competing with the pages that convert. */}
+            {legalNavigation.map((item) => (
+              <InternalLink
+                key={item.key}
+                href={localizedPath(locale, item.href)}
+              >
+                {dictionary.nav[item.key]}
+              </InternalLink>
+            ))}
             <span>
               {dictionary.common.builtBy} {site.name}
             </span>

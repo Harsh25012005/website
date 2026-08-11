@@ -3,8 +3,10 @@ import Link from 'next/link'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
 import { ProjectCard } from '@/components/sections/ProjectCard'
+import { ServicePricing } from '@/components/sections/ServicePricing'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { services, getService } from '@/content/services'
+import { services, getService, servicesByPillar } from '@/content/services'
+import { pillars, pillarPath, otherPillar } from '@/content/pillars'
 import { getProject } from '@/content/projects'
 import { getDictionary } from '@/content/dictionary'
 import { isLocale, localizedPath, locales } from '@/lib/i18n'
@@ -56,7 +58,16 @@ export default async function ServicePage({ params }: PageProps) {
     .map((projectSlug) => getProject(projectSlug))
     .filter((project) => project !== undefined)
 
-  const siblings = services.filter((item) => item.slug !== slug)
+  // Same pillar only. Before the split this was every other service, which at
+  // fifteen entries is a link dump at the foot of the page rather than
+  // navigation — and it sent a design reader to `wordpress-development` as
+  // readily as to `design-systems`. The cross-pillar link below is the
+  // deliberate, single route to the other half.
+  const pillar = pillars[service.pillar]
+  const siblings = servicesByPillar(service.pillar).filter(
+    (item) => item.slug !== slug,
+  )
+  const other = pillars[otherPillar(service.pillar)]
 
   return (
     <>
@@ -69,8 +80,12 @@ export default async function ServicePage({ params }: PageProps) {
             title: service.metaTitle,
             description: service.metaDescription,
           }),
+          // Three levels since the pillar hubs exist. The trail has to match
+          // the links the page actually renders — the eyebrow below is the
+          // visible half of this same path.
           breadcrumbSchema(locale, [
             { name: 'Services', path: '/services' },
+            { name: pillar.title[locale], path: pillarPath(service.pillar) },
             { name: service.title[locale], path: `/services/${slug}` },
           ]),
           faqSchema(
@@ -85,12 +100,21 @@ export default async function ServicePage({ params }: PageProps) {
       <section className="px-5 pt-32 pb-16 md:px-10 md:pt-[8.75rem] md:pb-24">
         <div className="shell">
           <Reveal y={12}>
-            <Link
-              href={localizedPath(locale, '/services')}
-              className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase transition-colors hover:text-white"
-            >
-              {dictionary.nav.services}
-            </Link>
+            <p className="flex flex-wrap items-center gap-x-2 text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
+              <Link
+                href={localizedPath(locale, '/services')}
+                className="transition-colors hover:text-white"
+              >
+                {dictionary.nav.services}
+              </Link>
+              <span aria-hidden>/</span>
+              <Link
+                href={localizedPath(locale, pillarPath(service.pillar))}
+                className="transition-colors hover:text-white"
+              >
+                {pillar.title[locale]}
+              </Link>
+            </p>
           </Reveal>
 
           <SplitHeading
@@ -189,6 +213,11 @@ export default async function ServicePage({ params }: PageProps) {
         </section>
       ) : null}
 
+      {/* After the proof, before the objections. Value, then evidence, then
+          price, then the questions the price raises — moving this above the
+          case studies asks for a decision before anything has been shown. */}
+      <ServicePricing locale={locale} service={service} />
+
       <section
         className="border-t border-[var(--color-border)] px-5 py-16 md:px-10 md:py-24"
         aria-labelledby="service-faq-heading"
@@ -255,6 +284,25 @@ export default async function ServicePage({ params }: PageProps) {
               </li>
             ))}
           </ul>
+
+          {/* The one route across to the other pillar. Siblings above are
+              same-pillar, so without this a design page has no path to the
+              development side except back up through `/services`. */}
+          <Reveal>
+            <p className="mt-10 text-[15px] text-[var(--color-text-muted)]">
+              {pillar.crossLink[locale]}{' '}
+              <Link
+                href={localizedPath(locale, pillarPath(other.pillar))}
+                className="group relative inline-block pb-0.5 text-white"
+              >
+                {other.title[locale]}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-current transition-transform duration-500 ease-out group-hover:scale-x-100"
+                />
+              </Link>
+            </p>
+          </Reveal>
         </div>
       </section>
 

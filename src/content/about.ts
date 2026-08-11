@@ -4,9 +4,14 @@ import type { ContentSection, Faq, Localized, Testimonial } from './types'
  * The service list itself now lives in `content/services.ts`, one entry per
  * `/services/[slug]` page. It is re-exported here because `lib/schema.ts` and
  * the home page section have always read it from this module, and the offer
- * catalogue and the About page describe the same six offers.
+ * catalogue and the About page describe the same offers.
  */
-export { services, getService } from './services'
+export {
+  services,
+  getService,
+  servicesByPillar,
+  featuredServices,
+} from './services'
 
 export const servicesProcess: ContentSection[] = [
   {

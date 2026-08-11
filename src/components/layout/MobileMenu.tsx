@@ -18,6 +18,31 @@ type MobileMenuProps = {
 
 const COLUMNS = 4
 
+/* ────────────────────────────────────────────────────────────────────────────
+ * ⚠️  `y: 0` IS LOAD-BEARING. DO NOT DROP IT FROM THESE TWO OBJECTS.  ⚠️
+ *
+ * The panels ship with an inline `transform: translateY(-100%)` so they are off
+ * screen on first paint, before hydration. GSAP does not read that as "-100%":
+ * it reads the computed matrix and stores it as `y: -812px` (the panel's own
+ * height in CSS pixels), then applies `yPercent` as a *separate* transform
+ * component stacked on top.
+ *
+ * So `gsap.set(panels, { yPercent: -100 })` produced `y: -812` + `yPercent:
+ * -100` — a panel sitting at -200%, twice as far up as intended. The open tween
+ * then animated `yPercent` back to 0 and left `y: -812` untouched, so the panels
+ * finished the animation still completely off screen while the menu text faded
+ * in on schedule. The result was a menu with no background: the page behind it
+ * showed through and the hero heading rendered straight over the nav links.
+ *
+ * Pinning `y: 0` alongside every `yPercent` zeroes the pixel component and
+ * leaves the percentage as the only thing moving the panel. The open timeline
+ * additionally uses `fromTo` rather than `to`, so its start state is declared
+ * on every run and cannot be inherited from whatever `ctx.revert()` restored on
+ * the previous close.
+ * ──────────────────────────────────────────────────────────────────────────── */
+const PANEL_HIDDEN = { yPercent: -100, y: 0 } as const
+const PANEL_SHOWN = { yPercent: 0, y: 0 } as const
+
 /**
  * Full-screen menu for small viewports. Four panels drop in sequence, then the
  * links stagger up — the same choreography as the preloader so the two read as
@@ -49,7 +74,7 @@ export function MobileMenu({
     if (firstRender.current) {
       firstRender.current = false
       if (!open) {
-        gsap.set(panels, { yPercent: -100 })
+        gsap.set(panels, PANEL_HIDDEN)
         gsap.set(content, { autoAlpha: 0 })
         gsap.set(items, { autoAlpha: 0, y: 14 })
         return
@@ -58,7 +83,7 @@ export function MobileMenu({
 
     const ctx = gsap.context(() => {
       if (reduced) {
-        gsap.set(panels, { yPercent: open ? 0 : -100 })
+        gsap.set(panels, open ? PANEL_SHOWN : PANEL_HIDDEN)
         gsap.set(content, { autoAlpha: open ? 1 : 0 })
         gsap.set(items, { autoAlpha: open ? 1 : 0, y: 0 })
         return
@@ -67,8 +92,12 @@ export function MobileMenu({
       if (open) {
         gsap
           .timeline()
-          .to(panels, {
-            yPercent: 0,
+          // `fromTo`, not `to`: the previous close tore its context down with
+          // `ctx.revert()`, which restores the panels' original inline
+          // transform. Declaring the start state here means the drop plays the
+          // same way on the first open and the twentieth.
+          .fromTo(panels, PANEL_HIDDEN, {
+            ...PANEL_SHOWN,
             duration: 0.65,
             stagger: 0.05,
             ease: 'expo.out',
@@ -82,7 +111,7 @@ export function MobileMenu({
           .to(
             panels,
             {
-              yPercent: -100,
+              ...PANEL_HIDDEN,
               duration: 0.55,
               stagger: { each: 0.04, from: 'end' },
               ease: 'expo.inOut',

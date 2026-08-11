@@ -63,7 +63,7 @@ export function personSchema(): JsonLdNode {
     url: siteUrl,
     image: absolute(site.portrait),
     jobTitle: site.jobTitle,
-    description: `${site.jobTitle} in ${site.location.en}, working on design systems, web UI, mobile app and SaaS product design, and building the front end in React and Next.js.`,
+    description: `${site.jobTitle} in ${site.location.en}, working on design systems, web UI, mobile app and SaaS product design, and building the front end in React, Next.js, Webflow and WordPress.`,
     email: `mailto:${site.email}`,
     address: postalAddress,
     homeLocation: {
@@ -148,7 +148,10 @@ export function professionalServiceSchema(): JsonLdNode {
     url: siteUrl,
     image: absolute(site.portrait),
     email: `mailto:${site.email}`,
-    description: `Freelance UI/UX and product design studio of ${site.name}, covering web UI, design systems, mobile app and SaaS product design, delivered from Figma through to a coded React and Next.js front end.`,
+    // Names both pillars because the catalogue below now lists both. A
+    // description that says "design studio" over fifteen offers, nine of which
+    // are development, is the site describing a smaller version of itself.
+    description: `Freelance design and front-end development practice of ${site.name}, covering UI/UX design for web, mobile and SaaS, and custom development in React, Next.js, Webflow, Framer and WordPress. Front end only — no back-end or native app builds.`,
     founder: personRef,
     employee: personRef,
     address: postalAddress,
@@ -158,13 +161,15 @@ export function professionalServiceSchema(): JsonLdNode {
     slogan: site.availability,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'UI/UX and product design services',
+      name: 'Design and development services',
       itemListElement: services.map((service) => ({
         '@type': 'Offer',
-        // Each offer now resolves to a page that describes it. Before the
-        // services split there was one URL behind all six, so the catalogue
-        // named six distinct services and pointed a consumer at a single
-        // document for every one of them.
+        // Each offer resolves to a page that describes it. Before the services
+        // split there was one URL behind all six, so the catalogue named six
+        // distinct services and pointed a consumer at a single document for
+        // every one of them. The two pillar hubs are deliberately absent: a hub
+        // is not an offer, and listing one would put something unbuyable in the
+        // catalogue.
         url: `${siteUrl}/services/${service.slug}`,
         itemOffered: { '@id': serviceId(service.slug) },
       })),

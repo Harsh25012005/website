@@ -16,9 +16,9 @@ import { graph, breadcrumbSchema, webPageSchema, faqSchema } from '@/lib/schema'
 
 type PageProps = { params: Promise<{ locale: string }> }
 
-const TITLE = 'UI/UX Design Pricing and Packages'
+const TITLE = 'Design and Development Pricing'
 const DESCRIPTION =
-  'What UI/UX design costs: starting prices for a landing page, a multi-screen product design project, and a design-and-build engagement. Fixed scope, fixed quote.'
+  'What design and development cost: starting prices for a landing page, a multi-screen product design, a build from your existing design, and a full design-and-build. Fixed scope, fixed quote.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params
@@ -34,14 +34,15 @@ export async function generateMetadata({ params }: PageProps) {
       'UI/UX design pricing',
       'how much does UI UX design cost',
       'freelance designer rates',
-      'website design cost',
+      'website design and development cost',
+      'front-end development pricing',
       'SaaS design pricing',
     ],
     // A pricing page whose every price reads "on request" answers the query it
     // would rank for with nothing, which earns a bounce and teaches Google the
     // page is a poor result for that query — a lesson it is slow to unlearn
     // once the real figures land. Better to stay out of the index until the
-    // page can do its job. Set the three `from` values in `content/pricing.ts`
+    // page can do its job. Set the four `from` values in `content/pricing.ts`
     // and this flips itself.
     noindex: !pricingIsPublishable,
   })
@@ -88,15 +89,16 @@ export default async function PricingPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[18ch] font-serif text-[clamp(40px,5.6vw,88px)] leading-[1.02] font-light tracking-[-0.04em] md:max-w-[20ch]"
           >
-            What design costs, before you have to ask
+            What it costs, before you have to ask
           </SplitHeading>
 
           <Reveal delay={0.35}>
             <p className="mt-8 max-w-[54ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-              Three ways to work together, with a starting figure for each so
-              you can tell in thirty seconds whether we are in the same range.
-              Every project is quoted as a fixed price against a scope agreed
-              before any work begins. No hourly billing, no open-ended estimate.
+              Four ways to work together — design, build, or both — with a
+              starting figure for each so you can tell in thirty seconds whether
+              we are in the same range. Every project is quoted as a fixed price
+              against a scope agreed before any work begins. No hourly billing,
+              no open-ended estimate.
             </p>
           </Reveal>
         </div>
@@ -104,7 +106,11 @@ export default async function PricingPage({ params }: PageProps) {
 
       <section className="border-t border-[var(--color-border)] px-5 py-16 md:px-10 md:py-20">
         <div className="shell">
-          <div className="grid gap-x-8 gap-y-12 md:grid-cols-3">
+          {/* Two columns, not three. At four packages a three-column grid
+              leaves one card alone on the second row, and the pairing this
+              produces is the useful one anyway: design on the top row, build on
+              the bottom. Revisit if a fifth is ever added. */}
+          <div className="grid gap-x-8 gap-y-12 md:grid-cols-2">
             {pricingPackages.map((pkg, index) => (
               <Reveal key={pkg.slug} delay={index * 0.06}>
                 <article className="flex h-full flex-col border-t border-[var(--color-border)] pt-8">
@@ -158,8 +164,9 @@ export default async function PricingPage({ params }: PageProps) {
                     ))}
                   </ul>
 
-                  {/* Pushes the service links to the bottom edge so the three
-                      cards line up regardless of how long the list above is. */}
+                  {/* Pushes the service links to the bottom edge so the cards
+                      in a row line up regardless of how long the list above
+                      is. */}
                   <div className="mt-auto pt-8">
                     <p className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
                       Services involved

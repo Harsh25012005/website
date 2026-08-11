@@ -20,7 +20,19 @@ export const runtime = 'nodejs'
  * Length caps. Generous enough that no real enquiry hits them, small enough
  * that the endpoint can't be used to push megabytes into an inbox.
  */
-const LIMITS = { name: 100, email: 200, subject: 200, message: 5000 } as const
+const LIMITS = {
+  name: 100,
+  email: 200,
+  subject: 200,
+  message: 5000,
+  // Optional fields. `phone` is capped well above any real number so extensions
+  // and country codes survive; `budget` and `service` come from fixed lists in
+  // the UI, but the endpoint cannot assume that — a hand-rolled POST can put
+  // anything in them, so they are truncated like everything else.
+  phone: 40,
+  budget: 60,
+  service: 80,
+} as const
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -111,6 +123,11 @@ export async function POST(request: NextRequest) {
   const email = field(payload.email, LIMITS.email)
   const subject = field(payload.subject, LIMITS.subject)
   const message = field(payload.message, LIMITS.message)
+  // Not validated beyond trimming and truncation: all three are optional, and
+  // a phone number has no format worth enforcing across countries.
+  const phone = field(payload.phone, LIMITS.phone)
+  const budget = field(payload.budget, LIMITS.budget)
+  const service = field(payload.service, LIMITS.service)
 
   // Mirrors the client-side checks. The browser can be bypassed entirely, so
   // this is the validation that actually counts; the client copy exists only to
@@ -141,13 +158,22 @@ export async function POST(request: NextRequest) {
     // `from` has to be an owned domain, so the visitor's address goes here.
     // Hitting reply in the mail client then answers the enquirer directly.
     replyTo: email,
-    subject: subject || `New enquiry from ${name}`,
+    // Service and budget go in the subject line when they were chosen: those
+    // are the two facts that decide whether an enquiry gets answered today or
+    // on Friday, and an inbox list shows the subject and nothing else.
+    subject:
+      subject ||
+      [service, budget].filter(Boolean).join(' · ') ||
+      `New enquiry from ${name}`,
     text: [
       message,
       '',
       '---',
       `Name: ${name}`,
       `Email: ${email}`,
+      phone ? `Phone: ${phone}` : null,
+      service ? `Service: ${service}` : null,
+      budget ? `Budget: ${budget}` : null,
       subject ? `Subject: ${subject}` : null,
       `Sent from the contact form on ${site.name}'s site.`,
     ]

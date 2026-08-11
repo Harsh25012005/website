@@ -3,8 +3,11 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { projects, getProject, getRelatedProjects } from './projects'
 import { articles, getArticle } from './articles'
-import { services, getService } from './services'
-import { pricingPackages } from './pricing'
+import { services, getService, servicesByPillar } from './services'
+import { pillars, pillarOrder, pillarSlugs } from './pillars'
+import { processPhases, processFaqs } from './process'
+import { legalDocuments } from './legal'
+import { pricingPackages, getPackagesForService } from './pricing'
 import { getDictionary } from './dictionary'
 import { locales } from '@/lib/i18n'
 
@@ -210,6 +213,149 @@ describe('services', () => {
   })
 })
 
+/**
+ * The pillar layer. Two of these guard failures that produce no error at all —
+ * a page that silently never renders, and a home page grid that silently loses
+ * its bottom edge.
+ */
+describe('service pillars', () => {
+  /**
+   * The important one.
+   *
+   * `/services/ui-ux-design` and `/services/custom-development` are static
+   * route segments sitting beside `[slug]`. Next.js resolves a static segment
+   * first, so a service whose slug matched one would never render its page:
+   * the hub would render instead, the build would succeed, the sitemap would
+   * list the URL, and nothing anywhere would report a problem.
+   */
+  it('no service slug collides with a pillar hub route', () => {
+    for (const service of services) {
+      expect(
+        pillarSlugs,
+        `service "${service.slug}" is shadowed by the pillar hub route of the same name`,
+      ).not.toContain(service.slug)
+    }
+  })
+
+  it('assigns every service to a pillar that has a hub', () => {
+    for (const service of services) {
+      expect(pillarOrder, service.slug).toContain(service.pillar)
+    }
+  })
+
+  it('leaves neither hub empty', () => {
+    for (const key of pillarOrder) {
+      expect(servicesByPillar(key).length, `${key} hub`).toBeGreaterThan(0)
+    }
+  })
+
+  /**
+   * The home page grid is `md:grid-cols-3` with the right border suppressed on
+   * every third cell. At any count that is not a multiple of three it ends on a
+   * ragged row with a stray border, which is a visual bug nobody thinks to look
+   * for after editing a content file.
+   */
+  it('features exactly six services, filling two rows of three', () => {
+    const featured = services.filter((service) => service.featured)
+    expect(featured).toHaveLength(6)
+  })
+
+  it('numbers each pillar from 01 without gaps or repeats', () => {
+    for (const key of pillarOrder) {
+      const numbers = servicesByPillar(key).map((service) => service.number)
+      const expected = numbers.map((_, index) =>
+        String(index + 1).padStart(2, '0'),
+      )
+      expect(numbers, `${key} numbering`).toEqual(expected)
+    }
+  })
+
+  it('carries copy for every locale', () => {
+    for (const key of pillarOrder) {
+      const page = pillars[key]
+      for (const locale of locales) {
+        expect(page.title[locale]).toBeTruthy()
+        expect(page.heading[locale]).toBeTruthy()
+        expect(page.intro[locale]).toBeTruthy()
+        expect(page.linkLabel[locale]).toBeTruthy()
+        expect(page.crossLink[locale]).toBeTruthy()
+        expect(page.sections.length).toBeGreaterThan(0)
+        expect(page.faqs.length).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  /**
+   * A hub and a service competing for the same `<title>` is the exact problem
+   * the pillar split was meant to solve, not create.
+   */
+  it('does not share a meta title with any service', () => {
+    const serviceTitles = new Set(services.map((service) => service.metaTitle))
+
+    for (const key of pillarOrder) {
+      expect(serviceTitles).not.toContain(pillars[key].metaTitle)
+    }
+    expect(new Set(pillarOrder.map((key) => pillars[key].metaTitle)).size).toBe(
+      pillarOrder.length,
+    )
+  })
+})
+
+describe('process', () => {
+  it('carries copy and an output for every phase', () => {
+    expect(processPhases.length).toBeGreaterThan(0)
+
+    for (const phase of processPhases) {
+      for (const locale of locales) {
+        expect(phase.heading[locale]).toBeTruthy()
+        expect(phase.paragraphs[locale].length).toBeGreaterThan(0)
+        // The field the page exists for. A phase with no stated output is the
+        // agency-process-page failure this page was written to avoid.
+        expect(phase.output[locale], phase.number).toBeTruthy()
+      }
+    }
+  })
+
+  /**
+   * `/process`, `/services` and every service page each emit `FAQPage` markup.
+   * The same question answered on two URLs is duplicate structured data
+   * competing with itself, so the sets have to stay disjoint.
+   */
+  it('asks nothing already answered on a service page', () => {
+    const asked = new Set(
+      services.flatMap((service) =>
+        service.faqs.map((faq) => faq.question.en.toLowerCase()),
+      ),
+    )
+
+    for (const faq of processFaqs) {
+      expect(asked, faq.question.en).not.toContain(faq.question.en.toLowerCase())
+    }
+  })
+})
+
+describe('legal documents', () => {
+  it('has unique slugs and parseable updated dates', () => {
+    const slugs = legalDocuments.map((doc) => doc.slug)
+    expect(new Set(slugs).size).toBe(slugs.length)
+
+    for (const doc of legalDocuments) {
+      expect(Number.isNaN(Date.parse(doc.updated)), doc.slug).toBe(false)
+    }
+  })
+
+  it('carries copy for every locale', () => {
+    for (const doc of legalDocuments) {
+      for (const locale of locales) {
+        expect(doc.title[locale]).toBeTruthy()
+        expect(doc.heading[locale]).toBeTruthy()
+        expect(doc.intro[locale].length).toBeGreaterThan(0)
+        expect(doc.sections.length).toBeGreaterThan(0)
+      }
+    }
+  })
+})
+
 describe('pricing', () => {
   it('has unique slugs and references services that exist', () => {
     const slugs = pricingPackages.map((pkg) => pkg.slug)
@@ -220,6 +366,26 @@ describe('pricing', () => {
       for (const slug of pkg.services) {
         expect(getService(slug)).toBeDefined()
       }
+    }
+  })
+
+  /**
+   * Every service page renders a "What it costs" block. A service in no
+   * package and with no `pricingNote` renders "Quoted per project" and nothing
+   * else — technically true, and a dead end for the reader who came to that
+   * page precisely to find out. This is the check that a new service cannot be
+   * added without deciding how it is priced.
+   */
+  it('gives every service either a package or a pricing note', () => {
+    for (const service of services) {
+      const covered =
+        getPackagesForService(service.slug).length > 0 ||
+        Boolean(service.pricingNote)
+
+      expect(
+        covered,
+        `service "${service.slug}" appears in no pricing package and has no pricingNote — its "What it costs" block would say nothing`,
+      ).toBe(true)
     }
   })
 

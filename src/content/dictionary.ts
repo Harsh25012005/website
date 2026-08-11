@@ -21,8 +21,14 @@ const dictionaries = {
       resume: 'Résumé',
       articles: 'Articles',
       tools: 'Tools',
+      process: 'Process',
       testimonials: 'Testimonials',
       contact: 'Get in touch',
+      // Bottom-bar links rather than nav items. They belong on every page for
+      // trust and are the two nobody should have to hunt for, but a legal
+      // notice in the primary nav buys nothing.
+      privacy: 'Privacy',
+      terms: 'Terms',
       openMenu: 'Open menu',
       closeMenu: 'Close menu',
       language: 'Language',
@@ -30,7 +36,11 @@ const dictionaries = {
     },
     common: {
       selectedWork: 'Selected UI/UX work',
-      whatIDo: 'UI/UX design services',
+      // The `h2` above the home page service grid. It stopped saying "UI/UX
+      // design services" when development became half the catalogue — a
+      // heading that names one pillar over a grid showing both is the kind of
+      // small mismatch that reads as carelessness.
+      whatIDo: 'Design and development services',
       kindWords: 'Kind words',
       worthSharing: 'Articles on design and code',
       moreProjects: 'More case studies',
@@ -39,7 +49,7 @@ const dictionaries = {
       // the most inbound equity, and anchor text is a direct relevance signal —
       // so they name the destination rather than saying "View all".
       allCaseStudies: 'See all case studies',
-      allServices: 'Explore all design services',
+      allServices: 'Explore all services',
       allArticles: 'Read all articles',
       workTogether: 'Let’s work together',
       soon: 'Soon',
@@ -52,11 +62,25 @@ const dictionaries = {
       backToWork: 'Back to all work',
       backToArticles: 'Back to all articles',
       backToServices: 'Back to all services',
-      otherServices: 'Other design services',
+      // Scoped to the service's own pillar since the split — listing the other
+      // fourteen at the foot of every detail page was a link dump, not
+      // navigation.
+      otherServices: 'Other services in this area',
       relatedWork: 'Related case studies',
       furtherReading: 'Further reading',
       servicesMentioned: 'Related services',
       whatYouGet: 'What you get',
+      // The pricing block on a service page. `priceOnRequest` is the state
+      // every service is in until real figures land in `content/pricing.ts` —
+      // it is the honest version of a number, not a placeholder for one.
+      whatItCosts: 'What it costs',
+      priceFrom: 'From',
+      priceOnRequest: 'Price on request',
+      // Not "Quoted per project": one of the three services that lands on this
+      // fallback is a monthly retainer, and its own note says so a line below.
+      // The label has to be true for every service that can reach it.
+      quotedIndividually: 'Quoted individually',
+      seePricing: 'Compare all packages',
       overview: 'Overview',
       outcome: 'Outcome',
       builtBy: 'Designed and built by',
@@ -76,7 +100,7 @@ const dictionaries = {
       languages: 'Languages',
       openFor: 'Available for',
       // Rendered in a tight two-column grid — keep values under ~35 chars.
-      focusValue: 'Design systems, SaaS & app UI',
+      focusValue: 'Product UI, design systems & code',
       languagesValue: 'English',
       openForValue: 'Freelance & contract projects',
     },
@@ -89,6 +113,16 @@ const dictionaries = {
       namePlaceholder: 'Your name',
       emailPlaceholder: 'you@domain.com',
       subjectPlaceholder: 'What’s it about?',
+      // Phone, budget and service are all optional. Requiring a budget is the
+      // fastest way to lose the enquiry from someone who genuinely does not
+      // know yet, and that enquiry is often the better project.
+      phone: 'Phone number',
+      phonePlaceholder: 'With country code, optional',
+      budget: 'Budget',
+      budgetPlaceholder: 'Select a range',
+      service: 'Service',
+      servicePlaceholder: 'Select a service',
+      optional: 'Optional',
       messagePlaceholder:
         'A few lines about the product, scope, timeline and budget.',
       send: 'Send message',
@@ -100,7 +134,7 @@ const dictionaries = {
     },
     notFound: {
       title: 'This page isn’t here.',
-      body: 'The link may be out of date, or the page has moved. Start again from the homepage: the case studies, design services and articles are all one click from there.',
+      body: 'The link may be out of date, or the page has moved. Start again from the homepage: the case studies, the design and development services and the articles are all one click from there.',
       cta: 'Back to homepage',
     },
     footer: {
@@ -113,6 +147,7 @@ const dictionaries = {
       availableFor: 'Available for freelance work',
       backToTop: 'Back to top',
       rights: 'All rights reserved',
+      legal: 'Legal',
     },
   },
 } as const

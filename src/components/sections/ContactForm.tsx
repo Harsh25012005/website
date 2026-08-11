@@ -1,14 +1,28 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import { CustomSelect, type SelectOption } from '@/components/ui/CustomSelect'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
 import { cn } from '@/lib/cn'
 
+export type ServiceOption = {
+  value: string
+  label: string
+  pillar: 'design' | 'development'
+}
+
 type ContactFormProps = {
   locale: Locale
   dictionary: Dictionary
+  /**
+   * Built on the server by `serviceSelectOptions()`. Passed in rather than
+   * imported so `content/services.ts` — every service's prose and FAQs — stays
+   * out of the client bundle.
+   */
+  serviceOptions: ServiceOption[]
+  budgetBands: readonly string[]
 }
 
 type Errors = Partial<Record<'name' | 'email' | 'message', string>>
@@ -26,10 +40,36 @@ const inputClasses =
  * every check — the browser can be bypassed, so the server's copy is the one
  * that matters.
  */
-export function ContactForm({ locale, dictionary }: ContactFormProps) {
+export function ContactForm({
+  locale,
+  dictionary,
+  serviceOptions,
+  budgetBands,
+}: ContactFormProps) {
   const router = useRouter()
   const [errors, setErrors] = useState<Errors>({})
   const [status, setStatus] = useState<Status>('idle')
+
+  /**
+   * The submitted value is the human label, not the slug: it lands in an email
+   * that a person reads, and "Webflow development" is worth more there than
+   * "webflow-development". Nothing downstream matches on it.
+   */
+  const serviceChoices = useMemo<SelectOption[]>(
+    () =>
+      serviceOptions.map((option) => ({
+        value: option.label,
+        label: option.label,
+        group:
+          option.pillar === 'design' ? 'UI/UX design' : 'Custom development',
+      })),
+    [serviceOptions],
+  )
+
+  const budgetChoices = useMemo<SelectOption[]>(
+    () => budgetBands.map((band) => ({ value: band, label: band })),
+    [budgetBands],
+  )
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -52,6 +92,12 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
     const email = String(data.get('email') ?? '').trim()
     const message = String(data.get('message') ?? '').trim()
     const subject = String(data.get('subject') ?? '').trim()
+    // All three optional, and unvalidated on purpose. A phone number has no
+    // format worth enforcing across countries, and rejecting a blank budget or
+    // service would cost the enquiry from someone who has not decided yet.
+    const phone = String(data.get('phone') ?? '').trim()
+    const budget = String(data.get('budget') ?? '').trim()
+    const service = String(data.get('service') ?? '').trim()
 
     const nextErrors: Errors = {}
     if (!name) nextErrors.name = dictionary.contact.required
@@ -76,7 +122,15 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, subject, message }),
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          budget,
+          service,
+          subject,
+          message,
+        }),
       })
 
       if (!response.ok) {
@@ -105,7 +159,7 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
 
   return (
     <form onSubmit={handleSubmit} noValidate>
-      <div className="grid gap-y-10 md:grid-cols-2 md:gap-x-10">
+      <div className="grid gap-y-6 md:grid-cols-2 md:gap-x-10 lg:gap-y-8">
         <Field
           id="name"
           label={dictionary.contact.name}
@@ -123,7 +177,17 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
         />
       </div>
 
-      <div className="mt-10">
+      {/* Phone beside subject, then the two selects on their own row. Service
+          and budget are the pair that decide whether an enquiry is worth a
+          call, so they sit together where they read as one question. */}
+      <div className="mt-6 grid gap-y-6 md:grid-cols-2 md:gap-x-10 lg:mt-8 lg:gap-y-8">
+        <Field
+          id="phone"
+          type="tel"
+          label={dictionary.contact.phone}
+          placeholder={dictionary.contact.phonePlaceholder}
+          autoComplete="tel"
+        />
         <Field
           id="subject"
           label={dictionary.contact.subject}
@@ -131,7 +195,22 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
         />
       </div>
 
-      <div className="mt-10">
+      <div className="mt-6 grid gap-y-6 md:grid-cols-2 md:gap-x-10 lg:mt-8 lg:gap-y-8">
+        <CustomSelect
+          name="service"
+          label={dictionary.contact.service}
+          placeholder={dictionary.contact.servicePlaceholder}
+          options={serviceChoices}
+        />
+        <CustomSelect
+          name="budget"
+          label={dictionary.contact.budget}
+          placeholder={dictionary.contact.budgetPlaceholder}
+          options={budgetChoices}
+        />
+      </div>
+
+      <div className="mt-6 lg:mt-8">
         <label
           htmlFor="message"
           className="block text-[0.6875rem] tracking-[0.08em] text-[var(--color-text-muted)] uppercase"
@@ -142,7 +221,7 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
         <textarea
           id="message"
           name="message"
-          rows={5}
+          rows={3}
           required
           placeholder={dictionary.contact.messagePlaceholder}
           aria-invalid={Boolean(errors.message)}
@@ -169,7 +248,7 @@ export function ContactForm({ locale, dictionary }: ContactFormProps) {
         </label>
       </div>
 
-      <div className="mt-12 flex flex-col items-start gap-5">
+      <div className="mt-8 flex flex-col items-start gap-5 lg:mt-10">
         <button
           type="submit"
           disabled={status === 'sending'}
@@ -205,6 +284,7 @@ function Field({
   type = 'text',
   error,
   required = false,
+  autoComplete,
 }: {
   id: string
   label: string
@@ -212,6 +292,7 @@ function Field({
   type?: string
   error?: string
   required?: boolean
+  autoComplete?: string
 }) {
   return (
     <div>
@@ -227,6 +308,7 @@ function Field({
         name={id}
         type={type}
         required={required}
+        autoComplete={autoComplete}
         placeholder={placeholder}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : undefined}

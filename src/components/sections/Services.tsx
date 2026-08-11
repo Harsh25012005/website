@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Reveal } from '@/components/motion/Reveal'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { HoverSwapText } from '@/components/ui/HoverSwapText'
-import { services } from '@/content/about'
+import { featuredServices } from '@/content/about'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
 
@@ -15,6 +15,12 @@ type ServicesProps = {
  * Six numbered cells on a hairline grid, closing with an inline CTA row.
  * The right border is suppressed on every third cell so the grid reads as
  * ruled columns rather than a boxed table.
+ *
+ * Six is a layout constraint, not a coincidence: two rows of three. It maps
+ * cells to `featuredServices` rather than the full catalogue, which is fifteen
+ * entries and would turn the home page into a price list. Keep the `featured`
+ * flag in `services.ts` at six — three per pillar — or this grid loses its
+ * bottom edge.
  */
 export function Services({ locale, dictionary }: ServicesProps) {
   return (
@@ -25,9 +31,11 @@ export function Services({ locale, dictionary }: ServicesProps) {
         </SplitHeading>
 
         <ul className="grid border-t border-[var(--color-border)] md:grid-cols-3">
-          {services.map((service) => (
+          {featuredServices.map((service) => (
             <Reveal
-              key={service.number}
+              // Not `service.number` — numbering restarts inside each pillar,
+              // so a design and a development service both carry '01'.
+              key={service.slug}
               className="border-b border-[var(--color-border)] md:[&:not(:nth-child(3n))]:border-r md:[&:not(:nth-child(3n))]:border-[var(--color-border)]"
             >
               <li>

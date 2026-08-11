@@ -16,11 +16,22 @@ import { testimonialsArePublishable } from './about'
  */
 export const site = {
   name: 'Harsh Vaghela',
+  /**
+   * Was 'UI/UX & Product Designer'. It changed when the site grew a
+   * development pillar: nine service pages selling coded builds, under a
+   * `Person.jobTitle` claiming only design, is the site contradicting itself on
+   * the one field a knowledge panel reads first.
+   *
+   * This describes the freelance practice, not the in-house job — `employer`
+   * below still carries "Product Designer at Code Theorem", which is a separate
+   * and equally true claim. If the development work ever stops, revert both
+   * this and `jobTitle` in the same edit; they must always match.
+   */
   role: {
-    en: 'UI/UX & Product Designer',
+    en: 'UI/UX Designer & Front-End Developer',
   } satisfies Localized<string>,
   /** Schema-facing mirror of `role` — Person.jobTitle / ProfessionalService. */
-  jobTitle: 'UI/UX & Product Designer',
+  jobTitle: 'UI/UX Designer & Front-End Developer',
   email: 'design.harsh25@gmail.com',
   /**
    * Rendered as a standalone line (About footer, mobile menu) and as the
@@ -181,8 +192,25 @@ const headerLinks = [
  */
 const footerLinks = [
   ...headerLinks,
+  { key: 'process', href: '/process' },
   { key: 'tools', href: '/tools' },
   { key: 'testimonials', href: '/testimonials' },
+] as const
+
+/**
+ * Bottom-bar links, beside the copyright line.
+ *
+ * Separate from `footerLinks` on purpose. These two are a trust requirement
+ * rather than navigation — the contact form collects personal data, so a
+ * privacy notice has to be reachable from every page — and putting them in the
+ * menu column would rank them alongside the pages that actually sell something.
+ *
+ * They are indexable and in the sitemap. A commercial site with no findable
+ * privacy policy looks like a commercial site that has not thought about it.
+ */
+export const legalNavigation = [
+  { key: 'privacy', href: '/privacy-policy' },
+  { key: 'terms', href: '/terms' },
 ] as const
 
 /**

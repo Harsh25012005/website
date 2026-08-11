@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Hero } from '@/components/sections/Hero'
 import { SelectedWork } from '@/components/sections/SelectedWork'
 import { Services } from '@/components/sections/Services'
+import { PricingTeaser } from '@/components/sections/PricingTeaser'
 import { ArticlesTeaser } from '@/components/sections/ArticlesTeaser'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getDictionary } from '@/content/dictionary'
@@ -18,9 +19,13 @@ import {
 
 type PageProps = { params: Promise<{ locale: string }> }
 
-const TITLE = `${site.name} - UI/UX & Product Designer for Web and SaaS`
+// Derived from `site.jobTitle` rather than repeating it, so the home page
+// `<title>`, the Person schema and the résumé header can never drift into three
+// different claims about the same practice. Dropping the old "for Web and SaaS"
+// tail keeps this inside the ~60 characters a SERP shows.
+const TITLE = `${site.name} - ${site.jobTitle}`
 const DESCRIPTION =
-  'Freelance UI/UX and product designer in Ahmedabad, India, working with founders and teams worldwide. Design systems, web UI, mobile app and SaaS product design, built in Figma and shipped in React and Next.js.'
+  'Freelance UI/UX designer and front-end developer in Ahmedabad, India, working with founders and teams worldwide. Design systems, web, app and SaaS product design in Figma, built in React, Next.js, Webflow and WordPress.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params
@@ -74,6 +79,10 @@ export default async function HomePage({ params }: PageProps) {
       <Hero locale={locale} dictionary={dictionary} />
       <SelectedWork locale={locale} dictionary={dictionary} />
       <Services locale={locale} dictionary={dictionary} />
+      {/* Directly after the services grid: that grid answers "what does he
+          do", and "what does it cost" is the next question every visitor has.
+          Before this it went unanswered until they found the nav. */}
+      <PricingTeaser locale={locale} dictionary={dictionary} />
       <ArticlesTeaser locale={locale} dictionary={dictionary} />
     </>
   )

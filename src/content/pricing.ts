@@ -1,22 +1,32 @@
 import type { Faq, PricingPackage } from './types'
 
 /* ────────────────────────────────────────────────────────────────────────────
- * ⚠️  THE FIGURES BELOW ARE NOT SET.  ⚠️
+ * ⚠️  THESE ARE LIVE PUBLIC PRICES.  ⚠️
  *
- * Every `from` is `null`, which is a deliberate holding state rather than an
- * oversight. Set each one to a real starting price you are willing to be held
- * to publicly — a complete display string with the currency symbol, e.g.
- * `'₹40,000'` or `'$1,200'`.
+ * All four figures are set, so `pricingIsPublishable` is true and the page has
+ * published itself: `/pricing` is indexable, it is in the sitemap, it is back
+ * in the header and footer nav, and every service page and the home page show a
+ * real starting figure instead of "Price on request".
  *
- * Until all three are set:
- *   - `/pricing` renders "Price on request" instead of inventing a number,
- *   - the page ships `noindex, follow`,
- *   - `sitemap.ts` leaves it out,
- *   - no `Offer` / `priceRange` schema is emitted anywhere on the site.
+ * Setting any `from` back to `null` reverses all of that in one edit — the page
+ * returns to `noindex`, drops out of the sitemap and the navs, and the figures
+ * revert to "Price on request" everywhere. There is no flag to remember.
  *
- * All four of those are derived from `pricingIsPublishable` below, so there is
- * no flag to remember to flip and no way to half-launch the page. Fill in the
- * three numbers and it publishes itself.
+ * Each figure is a **starting** price: the smallest version of that engagement,
+ * not the average. They are display strings including the currency symbol, so
+ * changing currency is an edit here and nowhere else.
+ *
+ * Chosen against 1.5+ years of experience, a portfolio that is currently
+ * concept-led, and no published testimonials. All four should rise once two or
+ * three real client case studies and some quotes are on the site — that is the
+ * thing holding them down, not the work.
+ *
+ * ⚠️  One package is still missing and is deliberately absent rather than
+ * forgotten: website maintenance is a monthly retainer, not a fixed project
+ * price, so it does not fit this shape. Adding it here would mean a `unit` of
+ * "per month" sitting in a grid of per-project figures, which reads as a
+ * cheaper project rather than a different kind of arrangement. Give it its own
+ * block on the page when there is a real monthly figure to publish.
  *
  * A starting price is a filter, not a quote. Pitch it at the smallest job you
  * would genuinely take on: too low and it attracts enquiries you do not want,
@@ -27,7 +37,7 @@ export const pricingPackages: PricingPackage[] = [
   {
     slug: 'landing-page',
     name: { en: 'Landing page' },
-    from: null,
+    from: '$149',
     unit: { en: 'per page' },
     summary: {
       en: 'A single high-intent page for a product launch, campaign or waiting list, designed to convert and handed over ready to build.',
@@ -48,7 +58,7 @@ export const pricingPackages: PricingPackage[] = [
   {
     slug: 'product-design',
     name: { en: 'Product design' },
-    from: null,
+    from: '$1,099',
     unit: { en: 'per project' },
     summary: {
       en: 'Multi-screen design for a web app, SaaS dashboard or mobile app: the flows, the core screens, the states everyone forgets, and a prototype to test it with.',
@@ -72,9 +82,38 @@ export const pricingPackages: PricingPackage[] = [
     ],
   },
   {
+    slug: 'development',
+    name: { en: 'Development only' },
+    from: '$599',
+    unit: { en: 'per project' },
+    summary: {
+      en: 'You already have the design. It gets built as a responsive front end on the platform that suits whoever maintains it afterwards — React and Next.js, Webflow, Framer, or WordPress templates.',
+    },
+    bestFor: {
+      en: 'Teams with a designer, or an approved Figma file, and no front-end developer free to build it.',
+    },
+    includes: {
+      en: [
+        'Front-end build from your Figma file, whoever drew it',
+        'React and Next.js, Webflow, Framer or WordPress templates',
+        'Every breakpoint checked against the design, not approximated',
+        'Keyboard navigation, focus states and colour contrast covered',
+        'Cross-browser QA on desktop and mobile before launch',
+        'Source code in your repository, or the site in your own platform account',
+      ],
+    },
+    services: [
+      'custom-web-development',
+      'figma-to-react',
+      'webflow-development',
+      'framer-development',
+      'wordpress-development',
+    ],
+  },
+  {
     slug: 'design-and-build',
     name: { en: 'Design and build' },
-    from: null,
+    from: '$1,999 ',
     unit: { en: 'per project' },
     summary: {
       en: 'The design work above, continued into a working responsive front end in React, Next.js and Tailwind CSS, so nothing is lost between the file and the live site.',
@@ -92,9 +131,56 @@ export const pricingPackages: PricingPackage[] = [
         'Source code delivered in your repository',
       ],
     },
-    services: ['figma-to-react', 'web-ui-design', 'design-systems'],
+    services: [
+      'figma-to-react',
+      'web-ui-design',
+      'design-systems',
+      'landing-page-development',
+      'website-redesign',
+    ],
   },
 ]
+
+/**
+ * Budget bands for the contact form.
+ *
+ * They live here rather than in the form because they only make sense against
+ * the figures above: the bands straddle the four starting prices so that a
+ * visitor who has read `/pricing` finds their number sitting inside a band
+ * rather than on a boundary. Change a price and check these still do that.
+ *
+ * "Not sure yet" is deliberately last and deliberately present. Without it the
+ * honest answer for an early-stage enquiry is to abandon the form, and a
+ * missing enquiry is worth less than an imprecise one.
+ */
+export const budgetBands = [
+  'Under $500',
+  '$500 – $1,500',
+  '$1,500 – $3,000',
+  '$3,000 – $6,000',
+  'Over $6,000',
+  'Not sure yet',
+] as const
+
+/**
+ * The packages a given service appears in — the reverse of the `services`
+ * arrays above, so a service page can show what it costs without either file
+ * hand-maintaining a second mapping that drifts from the first.
+ *
+ * Returns an empty array for three services on purpose:
+ *
+ *   - `ui-ux-audit` and `performance-accessibility-audit` are scoped against
+ *     the size of the thing being audited, not against a package;
+ *   - `website-maintenance` is a monthly retainer and does not fit a
+ *     per-project figure at all.
+ *
+ * Those pages render an honest "quoted per project" line instead of being
+ * forced into a package that would misdescribe them. If a package is ever added
+ * for them, they pick it up here with no further edit.
+ */
+export function getPackagesForService(slug: string): PricingPackage[] {
+  return pricingPackages.filter((pkg) => pkg.services.includes(slug))
+}
 
 /**
  * True only when every package carries a real starting figure.
@@ -138,8 +224,14 @@ export const pricingFaqs: Faq[] = [
   },
   {
     question: { en: 'What is not included?' },
+    // "Ongoing maintenance after handoff" used to be on this list. It came off
+    // when `/services/website-maintenance` was published — an FAQ answer is
+    // emitted as `FAQPage` schema, so a page saying a service is not offered
+    // while another page sells it is the site contradicting itself in markup a
+    // crawler reads. The other exclusions are unchanged and still true; they
+    // are stated in the same words on the service pages that mention them.
     answer: {
-      en: 'Back-end development, databases and infrastructure, native iOS and Android builds, copywriting, photography and illustration, and ongoing maintenance after handoff. Where a project needs any of these I will say so at the brief stage rather than after the estimate.',
+      en: 'Back-end development, databases and infrastructure, native iOS and Android builds, WordPress plugin development, copywriting, photography and illustration. Ongoing maintenance after handoff is available, but as a separate monthly arrangement rather than part of a project price. Where a project needs anything on this list I will say so at the brief stage rather than after the estimate.',
     },
   },
   {

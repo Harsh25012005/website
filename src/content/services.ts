@@ -1,4 +1,5 @@
-import type { Service } from './types'
+import type { Locale } from '@/lib/i18n'
+import type { Service, ServicePillar } from './types'
 
 /**
  * One entry per service, and one `/services/[slug]` page per entry.
@@ -11,16 +12,29 @@ import type { Service } from './types'
  * can answer it completely, and turns `/services` into a hub whose internal
  * links point somewhere.
  *
+ * The list is now grouped into two pillars — design and development — because
+ * the site sells two things bought by different people at different moments: a
+ * Figma file, and a running site. Array order is display order, design first,
+ * and `number` restarts at `01` inside each pillar.
+ *
  * ⚠️  Everything here is a public commercial claim. Only describe work that
  * will actually be taken on, and keep the FAQ answers literally true — they are
  * rendered *and* emitted as `FAQPage` schema, so Google holds the site to them.
  * Where a real number exists (a rate, a turnaround, a minimum engagement),
  * replace the scope-dependent wording with it; the specific answer always
  * outperforms the careful one.
+ *
+ * ⚠️  Three limits are stated in the FAQs below and repeated in `pricing.ts`:
+ * no back-end APIs, databases or infrastructure; no native iOS or Android
+ * builds; no WordPress plugin or server-side application development. They are
+ * load-bearing. If any of them stops being true, change it everywhere at once —
+ * a site that contradicts itself on scope is worse than one that says no.
  */
 export const services: Service[] = [
   {
     slug: 'web-ui-design',
+    pillar: 'design',
+    featured: true,
     number: '01',
     title: { en: 'Web UI design' },
     description: {
@@ -103,6 +117,8 @@ export const services: Service[] = [
   },
   {
     slug: 'design-systems',
+    pillar: 'design',
+    featured: true,
     number: '02',
     title: { en: 'Design systems' },
     description: {
@@ -189,6 +205,8 @@ export const services: Service[] = [
   },
   {
     slug: 'mobile-app-design',
+    pillar: 'design',
+    featured: true,
     number: '03',
     title: { en: 'Mobile app design' },
     description: {
@@ -275,6 +293,8 @@ export const services: Service[] = [
   },
   {
     slug: 'saas-product-design',
+    pillar: 'design',
+    featured: true,
     number: '04',
     title: { en: 'SaaS product design' },
     description: {
@@ -363,6 +383,7 @@ export const services: Service[] = [
   },
   {
     slug: 'ux-research-wireframing',
+    pillar: 'design',
     number: '05',
     title: { en: 'UX research & wireframing' },
     description: {
@@ -448,8 +469,180 @@ export const services: Service[] = [
     relatedProjects: ['cleaning-services-app', 'crave'],
   },
   {
-    slug: 'figma-to-react',
+    slug: 'ui-ux-audit',
+    pillar: 'design',
     number: '06',
+    title: { en: 'UI/UX audit' },
+    description: {
+      en: 'A structured review of the product you already have: where people hesitate, what is causing it, and a prioritised fix list you can act on without a full redesign.',
+    },
+    deliverables: {
+      en: [
+        'Heuristic review of the flows and screens that carry the most traffic',
+        'Findings written up with the screen, the problem and the reason',
+        'A prioritised fix list, ordered by impact against effort',
+      ],
+    },
+    metaTitle: 'UI/UX Audit and Usability Review',
+    metaDescription:
+      'A structured UI/UX audit of your website or product: heuristic review of the real flows, annotated findings, and a prioritised fix list you can act on without a redesign.',
+    keywords: [
+      'UI UX audit',
+      'usability review service',
+      'website UX audit',
+      'heuristic evaluation',
+      'product design review',
+      'UX audit for SaaS',
+    ],
+    heading: {
+      en: 'A UI/UX audit that ends in a fix list, not a slide deck',
+    },
+    intro: {
+      en: 'A structured review of the product you already have — where people hesitate, what is causing it, and what to change first — delivered as a prioritised list your team can start on next sprint.',
+    },
+    sections: [
+      {
+        heading: { en: 'Most redesigns start as an audit question' },
+        paragraphs: {
+          en: [
+            '"Should we redesign?" is almost never the real question. The real one is which parts of the product are costing you users, and a rebuild is an expensive way to find out — it changes everything at once, including the parts that were already working.',
+            'An audit separates the two before any money goes into design. Plenty of them end with a handful of targeted changes rather than a redesign, which is a good outcome even though it is the smaller invoice.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Every finding carries its reason' },
+        paragraphs: {
+          en: [
+            'A finding names the screen, shows it, describes what a user is likely to do there and why that is a problem. Without the reason it is just taste, and taste is the easiest thing in the world for a stakeholder to overrule.',
+            'That also makes the list arguable in a useful way. If your team disagrees with a finding they can disagree with the reasoning rather than with an opinion, and sometimes they are right — they know constraints an outside reviewer does not.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Prioritised, because everything cannot be first' },
+        paragraphs: {
+          en: [
+            'Findings are ordered by what they cost you against what they cost to fix. A contrast failure in the primary button and an inconsistent icon set are not the same urgency, and a flat list of forty issues gets read once and filed.',
+            'The top of the list is deliberately short: the few changes worth doing this month. Everything else stays on the list for when there is room.',
+          ],
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: { en: 'How is an audit different from a redesign?' },
+        answer: {
+          en: 'An audit diagnoses; a redesign treats. The audit tells you what is wrong and what it would take to fix, and it is deliberately useful on its own — your own team can act on the list without me. A redesign is a separate, larger piece of work that some audits recommend and many do not.',
+        },
+      },
+      {
+        question: { en: 'Do you audit the code and page speed as well?' },
+        answer: {
+          en: 'Not in this one. This audit covers the interface and the flows: structure, hierarchy, states, copy and usability. Core Web Vitals, load performance and WCAG accessibility testing are a separate technical audit, and the two are often booked together because they answer different halves of the same complaint.',
+        },
+      },
+      {
+        question: { en: 'Do you fix what the audit finds?' },
+        answer: {
+          en: 'If you want me to, as a separate scoped piece of work. There is no obligation and no discount tied to it — an audit that exists to sell a redesign is not an audit, so the deliverable is written to be useful in the hands of a team that never hires me again.',
+        },
+      },
+    ],
+    relatedProjects: ['zenith', 'stayease'],
+    pricingNote: {
+      en: 'An audit is quoted against the size of what is being reviewed — how many flows, how many screens — rather than from a package, because a five-screen product and a fifty-screen one are not the same read.',
+    },
+  },
+  {
+    slug: 'custom-web-development',
+    pillar: 'development',
+    featured: true,
+    number: '01',
+    title: { en: 'Custom web development' },
+    description: {
+      en: 'Websites and web apps built front-end-first in React, Next.js and Tailwind CSS — no template to fight, and source code your own developers can read on day one.',
+    },
+    deliverables: {
+      en: [
+        'Custom front end in React, Next.js and Tailwind CSS',
+        'Responsive, accessible and cross-browser tested before launch',
+        'Source code in your repository, structured for your team to maintain',
+      ],
+    },
+    metaTitle: 'Custom Web Development in React & Next.js',
+    metaDescription:
+      'Custom website and web app development in React, Next.js and Tailwind CSS: fast, accessible, responsive front ends delivered as readable source code in your own repository.',
+    keywords: [
+      'custom web development',
+      'React development services',
+      'Next.js developer',
+      'custom website development',
+      'Tailwind CSS development',
+      'freelance front-end developer',
+    ],
+    heading: {
+      en: 'Custom web development, by the person who designed it',
+    },
+    intro: {
+      en: 'Websites and web apps built from scratch in React, Next.js and Tailwind CSS, for the projects where a template is the thing you will spend the next two years working around.',
+    },
+    sections: [
+      {
+        heading: { en: 'When a template is the better answer' },
+        paragraphs: {
+          en: [
+            'If you need a five-page site next month and the content is conventional, a good template on Webflow or Framer will get you there faster and cheaper, and I will say so. Custom development is not a status upgrade.',
+            'It pays for itself when the site has a job the template does not do: an interface with real states, a component set that has to stay consistent across dozens of pages, content shapes nobody has a plugin for, or a performance target a page builder cannot hit.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Front end first, and honest about the line' },
+        paragraphs: {
+          en: [
+            'I build the front end. Where a project needs a back end, a database, authentication or a payment integration, I build the interface and work alongside your back-end developers, and that half is scoped by them rather than guessed at by me.',
+            'Saying this at the brief stage costs a conversation. Discovering it in week three costs a project, and it is the most common way a one-person build goes wrong.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Performance and accessibility are build decisions' },
+        paragraphs: {
+          en: [
+            'Static rendering wherever the content allows it, images sized and served in modern formats, fonts subset, and JavaScript kept to what the page actually needs. Speed is not a pass at the end; it is a hundred decisions made while building.',
+            'The same goes for accessibility: semantic markup, a sensible focus order, visible focus states and contrast that holds. Retrofitting these later is a rebuild of the markup, which is why they are not a phase two.',
+          ],
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: { en: 'Do you build the back end as well?' },
+        answer: {
+          en: 'No. I build front ends: HTML, CSS, Tailwind CSS, JavaScript, React and Next.js, plus PHP where a site sits on an existing stack. Back-end APIs, databases, authentication systems and infrastructure are outside what I take on, so on full-stack projects I build the interface and work alongside your back-end developers.',
+        },
+      },
+      {
+        question: { en: 'What if we do not have a design yet?' },
+        answer: {
+          en: 'Then the project starts on the design side and continues into the build, which is the arrangement most of these engagements use. If you would rather bring your own designer or an existing Figma file, that works too — I build from other people’s files regularly.',
+        },
+      },
+      {
+        question: { en: 'Do we own the code, and can our team maintain it?' },
+        answer: {
+          en: 'Yes. The code is yours, delivered in your repository, using the same React, Next.js and Tailwind conventions your developers already know. There is no bespoke framework to learn and no licence to keep paying, and nothing in the build depends on me staying involved.',
+        },
+      },
+    ],
+    relatedProjects: ['stayease', 'ai-agent-landing'],
+  },
+  {
+    slug: 'figma-to-react',
+    pillar: 'development',
+    featured: true,
+    number: '02',
     title: { en: 'Figma to React build' },
     description: {
       en: 'Design-to-code front-end builds in HTML, CSS, Tailwind, React and Next.js, so the live site matches the Figma file instead of drifting in handoff.',
@@ -533,8 +726,639 @@ export const services: Service[] = [
     ],
     relatedProjects: ['stayease', 'ai-agent-landing'],
   },
+  {
+    slug: 'landing-page-development',
+    pillar: 'development',
+    number: '03',
+    title: { en: 'Landing page design & build' },
+    description: {
+      en: 'One high-intent page taken end to end: section structure, responsive design, a built page on the platform that suits you, and the events to tell whether it worked.',
+    },
+    deliverables: {
+      en: [
+        'One page designed in Figma, desktop through mobile',
+        'Built as a fast, responsive page in Next.js, Webflow or Framer',
+        'Event hooks wired into your analytics so the page can be measured',
+      ],
+    },
+    metaTitle: 'Landing Page Design and Development',
+    metaDescription:
+      'A single high-intent landing page designed and built end to end: section hierarchy, a responsive build in Next.js, Webflow or Framer, and event hooks for your analytics.',
+    keywords: [
+      'landing page design and development',
+      'landing page developer',
+      'product launch page design',
+      'high converting landing page',
+      'Next.js landing page',
+      'Webflow landing page',
+    ],
+    heading: {
+      en: 'One page, designed and built by one person',
+    },
+    intro: {
+      en: 'A launch page, campaign page or waiting list designed and shipped as a working page — not a Figma file that then waits three weeks for a developer with other priorities.',
+    },
+    sections: [
+      {
+        heading: { en: 'The structure is the design' },
+        paragraphs: {
+          en: [
+            'A landing page converts on the order of its arguments, not on its gradients. The work starts by deciding what the page has to prove, in what sequence, and what the reader needs to believe before the button makes sense.',
+            'That is why the design begins as a section outline rather than a hero shot. If the sequence is wrong, no amount of visual polish rescues it, and polish is the expensive part to redo.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Built on whichever platform suits who edits it' },
+        paragraphs: {
+          en: [
+            'Next.js when the page is part of a product site or has to be fast under paid traffic. Webflow when your marketing team will keep editing it. Framer when the motion is the argument and the page will be replaced after the campaign.',
+            'The platform is chosen around who touches the page after launch, which is a question about your team rather than a technical preference of mine.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Measurable, or it is decoration' },
+        paragraphs: {
+          en: [
+            'The page ships with events on the things worth counting — the primary button, the secondary path, the form completion — wired into whichever analytics tool you already use.',
+            'Without that, the only available verdict after launch is whether people liked the look of it, which is the one thing that does not matter.',
+          ],
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: { en: 'Do you write the copy?' },
+        answer: {
+          en: 'No. Copywriting is not something I take on. I structure the page and will tell you plainly where a section is not earning its place or where a claim needs proof next to it, but the words come from you or from a copywriter. Pages where the copy arrives last are the ones that go badly.',
+        },
+      },
+      {
+        question: {
+          en: 'How is this different from the web UI design service?',
+        },
+        answer: {
+          en: 'Web UI design is the design on its own, handed to your developers. This is a single page designed and built, live at the end of it. If you have a development team already, the design-only route is usually the cheaper one.',
+        },
+      },
+      {
+        question: { en: 'Can you set up an A/B test?' },
+        answer: {
+          en: 'A second variant of the page can be added to the scope, and I will wire it to the testing tool you use. Choosing the tool, funding the traffic and calling the result stay with you — a test on a page with a few hundred visitors a month will not tell you anything, and I would rather say that first.',
+        },
+      },
+    ],
+    relatedProjects: ['ai-agent-landing', 'stayease'],
+  },
+  {
+    slug: 'website-redesign',
+    pillar: 'development',
+    number: '04',
+    title: { en: 'Website redesign' },
+    description: {
+      en: 'A staged redesign and rebuild of a site that has stopped working: what to keep, what to change, and a launch that does not lose the traffic you already have.',
+    },
+    deliverables: {
+      en: [
+        'Review of the current site: structure, content, speed and conversion points',
+        'Redesigned pages in Figma, then built as a responsive front end',
+        'A URL and redirect map applied before launch, not after',
+      ],
+    },
+    metaTitle: 'Website Redesign and Rebuild Services',
+    metaDescription:
+      'Website redesign and rebuild: a review of what already works, redesigned pages in Figma, a new responsive front end, and a redirect map that protects your existing rankings.',
+    keywords: [
+      'website redesign services',
+      'website redesign and rebuild',
+      'website revamp service',
+      'redesign without losing SEO',
+      'business website redesign',
+      'site refresh service',
+    ],
+    heading: {
+      en: 'A redesign that does not throw away what already works',
+    },
+    intro: {
+      en: 'Most redesigns lose something on launch day — a page that ranked, a form that converted, a URL someone linked to years ago. This one starts by finding those and keeping them.',
+    },
+    sections: [
+      {
+        heading: { en: 'Start from what is working' },
+        paragraphs: {
+          en: [
+            'Before anything is drawn, the current site gets read the way a visitor and a crawler read it: which pages get traffic, which ones convert, where people leave, and which URLs other sites link to.',
+            'That list is the constraint the redesign is built inside. A site that looks better and performs worse is a very expensive way to lose ground, and it is the normal outcome when the new design is briefed only on how the old one looks.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Redirects are part of the design' },
+        paragraphs: {
+          en: [
+            'The single most common way a redesign costs money is URLs. Pages move, slugs get tidied, a section is merged into another, and everything that pointed at the old address lands on a 404 — including the search results that were sending you customers.',
+            'Every existing URL is mapped to its destination on the new site before launch, and the ones with nothing equivalent get a deliberate decision rather than a default. This is unglamorous and it is the part that protects the investment.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Ship in stages where it helps' },
+        paragraphs: {
+          en: [
+            'A full-site relaunch on one date is the riskiest version of this work. Where the site allows it, the redesign goes out in stages — the templates that carry the most traffic first — so problems surface on one section rather than on all of them at once.',
+            'It also means value arrives earlier. The pages that matter get better in month one instead of everything getting better in month five.',
+          ],
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: { en: 'Will a redesign hurt our search rankings?' },
+        answer: {
+          en: 'It can, and it usually does when URLs change without a redirect map, when page content is cut back, or when the new build is slower than the old one. Those are the three causes, and all three are avoidable — which is why the URL map and a performance check are part of the work rather than an add-on. Nobody can promise rankings will hold, but they can be protected deliberately instead of hoped for.',
+        },
+      },
+      {
+        question: { en: 'Can you redesign without rebuilding?' },
+        answer: {
+          en: 'Yes. Plenty of these are design-only: the redesigned pages are delivered as Figma files and your developers build them. The redirect and structure work is still worth doing in that case, and I will hand it over as part of the design.',
+        },
+      },
+      {
+        question: {
+          en: 'Our site is on WordPress or Webflow. Does that change anything?',
+        },
+        answer: {
+          en: 'It changes what the rebuild looks like, not whether it is possible. A WordPress site is usually rebuilt as theme templates, a Webflow site inside Webflow, and either can move to a Next.js front end if there is a reason to. Where the current stack has custom back-end functionality, that part stays with your developers.',
+        },
+      },
+    ],
+    relatedProjects: ['stayease', 'zenith'],
+  },
+  {
+    slug: 'webflow-development',
+    pillar: 'development',
+    number: '05',
+    title: { en: 'Webflow development' },
+    description: {
+      en: 'Webflow builds from a Figma design with a class structure that stays readable and a CMS your team can publish from without a developer in the loop.',
+    },
+    deliverables: {
+      en: [
+        'Figma design built in Webflow, responsive across every breakpoint',
+        'CMS collections set up so content is editable without touching layout',
+        'Handover walkthrough, and a site your team can publish from',
+      ],
+    },
+    metaTitle: 'Webflow Development and Figma to Webflow',
+    metaDescription:
+      'Webflow development from a Figma design: readable class structure, responsive breakpoints, CMS collections your team can publish from, and a handover that actually sticks.',
+    keywords: [
+      'Webflow developer',
+      'Figma to Webflow',
+      'Webflow development services',
+      'Webflow CMS setup',
+      'freelance Webflow designer',
+      'Webflow website build',
+    ],
+    heading: {
+      en: 'Webflow, built to be handed over',
+    },
+    intro: {
+      en: 'A Webflow build from your design with classes that mean something, breakpoints that hold under real content, and a CMS set up so the next content change does not come back to me.',
+    },
+    sections: [
+      {
+        heading: { en: 'Choose Webflow for who maintains it' },
+        paragraphs: {
+          en: [
+            'Webflow is the right answer when your team needs to edit and publish without a developer, and the wrong one when the site has to do something Webflow’s model fights. That is a question about your team first and the technology second.',
+            'If the honest answer is that nobody will ever edit the site, a coded build is usually faster and cheaper to run. I would rather point that out than sell the subscription.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Classes and structure, not a pile of divs' },
+        paragraphs: {
+          en: [
+            'Webflow will happily let a site grow eighty near-identical classes, and the result is a project nobody can safely change six months later. The build starts from a naming convention and a set of shared base styles, so a spacing or colour change happens once.',
+            'It is the same discipline as a design system, applied inside the builder. It costs a little more at the start and it is the entire difference between a site your team maintains and a site your team asks someone to look at.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'The CMS is the deliverable' },
+        paragraphs: {
+          en: [
+            'Collections, fields and reference relationships are designed around the content you actually publish, not around the pages that exist today. A blog, a case study library and a team page all have different shapes, and getting them wrong shows up the first time someone adds a record.',
+            'Handover includes a walkthrough of how to add, edit and publish, so the site does not quietly stop being updated a month after launch.',
+          ],
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: { en: 'Webflow or a custom React build?' },
+        answer: {
+          en: 'Webflow when your team publishes content and the site is broadly conventional in structure. A custom build when the interface has real product behaviour, when the content shapes are unusual, or when you do not want a monthly platform cost. Both are on offer here, so the recommendation is not a sales decision.',
+        },
+      },
+      {
+        question: { en: 'Do we pay for Webflow separately?' },
+        answer: {
+          en: 'Yes. The Webflow site plan and hosting are billed by Webflow directly to you, in your own account, and the project is transferred into it. I do not hold client hosting accounts or resell platform subscriptions — you should be able to remove me and keep everything running.',
+        },
+      },
+      {
+        question: { en: 'Can you take over an existing Webflow project?' },
+        answer: {
+          en: 'Usually, and it starts with a look at how it was built. A project with a coherent class structure is straightforward to take on; one built entirely from one-off styles sometimes costs more to work inside than to rebuild, and you get that assessment before committing to either.',
+        },
+      },
+    ],
+    relatedProjects: ['stayease', 'ai-agent-landing'],
+  },
+  {
+    slug: 'framer-development',
+    pillar: 'development',
+    number: '06',
+    title: { en: 'Framer development' },
+    description: {
+      en: 'Framer sites for launches and marketing pages, where the design, the motion and the published page are one artefact instead of three handoffs.',
+    },
+    deliverables: {
+      en: [
+        'Site designed and published in Framer, responsive across breakpoints',
+        'Scroll and interaction motion designed in the same file that ships',
+        'Custom domain connected, in your own Framer account',
+      ],
+    },
+    metaTitle: 'Framer Website Design and Development',
+    metaDescription:
+      'Framer website design and development: marketing sites and launch pages where the design, the motion and the published page are one file, published to your own account.',
+    keywords: [
+      'Framer developer',
+      'Framer website design',
+      'Figma to Framer',
+      'Framer development services',
+      'Framer landing page',
+      'freelance Framer designer',
+    ],
+    heading: {
+      en: 'Framer, when the design and the live site should be one file',
+    },
+    intro: {
+      en: 'For marketing sites and launch pages where the motion is part of the argument and a written spec would lose it — the thing you review is the thing that ships.',
+    },
+    sections: [
+      {
+        heading: { en: 'One artefact instead of three' },
+        paragraphs: {
+          en: [
+            'The usual chain is design file, spec, build — and every link in it loses something, particularly timing and easing, which are almost impossible to describe accurately in writing.',
+            'In Framer the file is the site. What you approve in review is what goes live, which removes an entire round of "that is not quite how it moved in the prototype".',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Motion that is designed, not sprinkled' },
+        paragraphs: {
+          en: [
+            'Scroll and interaction motion earns its place by directing attention — showing what is related to what, and what just changed. Motion applied evenly across a page cancels itself out and mostly costs performance.',
+            'Reduced-motion preferences are respected as standard, so the site stays usable for people who have asked their device for less movement rather than breaking for them.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'What Framer is not the right tool for' },
+        paragraphs: {
+          en: [
+            'Deep content structures, complex product interfaces and anything that has to integrate closely with your own application are all better served by a coded build. Framer is at its best on marketing surfaces that change often and are meant to be replaced.',
+            'If a project is drifting past that line, the honest recommendation is Webflow or a Next.js build, and it costs nothing to say so before the work starts rather than after.',
+          ],
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: { en: 'Framer or Webflow?' },
+        answer: {
+          en: 'Framer for motion-led marketing sites and launch pages that will be edited by a small team or replaced after a campaign. Webflow when the content library is the point — a real blog, case studies, structured collections that multiple people publish into. Both are built here, so ask before choosing.',
+        },
+      },
+      {
+        question: { en: 'Can we edit the site ourselves afterwards?' },
+        answer: {
+          en: 'Yes. Framer’s editing model is close enough to a document that a marketing team picks it up quickly, and the handover covers it. Structural changes — new page types, new components — are where you would come back, and that is true of every platform.',
+        },
+      },
+      {
+        question: { en: 'Whose account does the site live in?' },
+        answer: {
+          en: 'Yours. The project is transferred to your Framer account and the plan is billed to you directly, so the site and the domain stay under your control regardless of whether we work together again.',
+        },
+      },
+    ],
+    relatedProjects: ['ai-agent-landing', 'stayease'],
+  },
+  {
+    slug: 'wordpress-development',
+    pillar: 'development',
+    number: '07',
+    title: { en: 'WordPress development' },
+    description: {
+      en: 'Front-end WordPress work: custom theme templates built to match the design, on sites that already run on WordPress or need a CMS every client already knows.',
+    },
+    deliverables: {
+      en: [
+        'Custom theme templates built to match the approved design',
+        'Editable pages and blocks your content team can actually use',
+        'Responsive and cross-browser QA before launch',
+      ],
+    },
+    metaTitle: 'WordPress Development and Custom Theme Builds',
+    metaDescription:
+      'Front-end WordPress development: custom theme templates built to match the design, editable pages your content team can use, responsive and cross-browser tested before launch.',
+    keywords: [
+      'WordPress developer',
+      'custom WordPress theme',
+      'WordPress development services',
+      'Figma to WordPress',
+      'WordPress front-end developer',
+      'PHP theme development',
+    ],
+    heading: {
+      en: 'WordPress front-end work, without the template look',
+    },
+    intro: {
+      en: 'Custom theme templates in PHP, HTML and CSS for sites that live on WordPress — built to the design rather than bent out of a purchased theme, and editable without a developer.',
+    },
+    sections: [
+      {
+        heading: { en: 'Where WordPress still wins' },
+        paragraphs: {
+          en: [
+            'It runs a large share of the web for a reason: your team probably already knows it, every content person has used it, and the editing model is familiar enough that nobody needs training to publish a post.',
+            'Where it goes wrong is the purchased theme with forty options nobody uses, a page builder stacked on top, and a site that loads two megabytes to show a paragraph. A custom template removes all three.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'The front end is the part I do' },
+        paragraphs: {
+          en: [
+            'Theme templates, the markup, the styles and the front-end behaviour: that is the work. It usually means a design becoming a set of templates on a site that is already running, rather than a greenfield platform build.',
+            'Custom plugins, server-side application logic, membership systems and payment flows are outside what I take on. On projects that need them I build the front end and work with your WordPress developer, and I will say which side of that line a request falls on at the brief stage.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Editable without being breakable' },
+        paragraphs: {
+          en: [
+            'The templates are built so that editing content cannot destroy the layout: fields and blocks for the parts that change, fixed structure for the parts that should not.',
+            'It is the boring constraint that keeps a site looking designed a year later, when four different people have added pages and nobody remembers what the original rules were.',
+          ],
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: {
+          en: 'Do you build custom plugins or back-end functionality?',
+        },
+        answer: {
+          en: 'No. Theme templates and front-end work only. Anything requiring a custom plugin, server-side application logic, a membership system or payment processing is outside what I take on, and I will tell you that at the brief stage rather than after an estimate.',
+        },
+      },
+      {
+        question: { en: 'Do you work with Elementor or WPBakery sites?' },
+        answer: {
+          en: 'I build with theme templates and blocks rather than page builders, because that is what keeps a site fast and predictable. Taking over an existing builder-based site is possible and starts with an honest look at it — sometimes working inside it costs more than rebuilding the templates, and you get that answer before committing.',
+        },
+      },
+      {
+        question: { en: 'Can you move our existing design onto WordPress?' },
+        answer: {
+          en: 'Yes, and it is a common request: a design that exists in Figma, or a site currently built somewhere else, turned into templates on WordPress. Where the design has gaps the CMS will expose — missing states, content that varies in length — I will flag them before the build rather than improvise.',
+        },
+      },
+    ],
+    relatedProjects: ['stayease', 'zenith'],
+  },
+  {
+    slug: 'website-maintenance',
+    pillar: 'development',
+    number: '08',
+    title: { en: 'Website maintenance' },
+    description: {
+      en: 'Ongoing front-end care for a site that is already live: content and layout changes, dependency upgrades, and the small improvements that never reach a project plan.',
+    },
+    deliverables: {
+      en: [
+        'Content, layout and component changes as they come up',
+        'Framework and dependency upgrades, tested before they ship',
+        'A written log of what changed, when, and why',
+      ],
+    },
+    metaTitle: 'Website Maintenance and Front-End Support',
+    metaDescription:
+      'Ongoing website maintenance: content and layout changes, framework upgrades tested before release, and a written record of every change made to your front end.',
+    keywords: [
+      'website maintenance services',
+      'website support retainer',
+      'front-end maintenance',
+      'Next.js maintenance',
+      'Webflow maintenance',
+      'website update service',
+    ],
+    heading: {
+      en: 'The small changes that otherwise wait six months',
+    },
+    intro: {
+      en: 'A monthly arrangement for a site that is already live, covering the queue of ten-minute changes nobody ever schedules and the upgrades that turn into migrations if they are skipped.',
+    },
+    sections: [
+      {
+        heading: { en: 'What a retainer is actually for' },
+        paragraphs: {
+          en: [
+            'Every live site accumulates a list: a date to change, a section that should move up, a form field nobody needs, a new logo on the client wall. Individually none of them justify opening a project, so collectively they sit there for a year.',
+            'A standing monthly arrangement is what clears that list. The work is small by definition, which is exactly why it needs somewhere to go rather than a quote each time.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Upgrades before they become migrations' },
+        paragraphs: {
+          en: [
+            'A framework version skipped for two years is not an upgrade any more, it is a rebuild. Kept current on a regular cycle, the same work is an afternoon with tests run against it.',
+            'Upgrades go out after they have been checked rather than on the day they are released, because the point of maintenance is that nothing visibly changes.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'A record of what changed' },
+        paragraphs: {
+          en: [
+            'Every change is logged with what it was and why it was made. Six months in, that log is the difference between a site your next developer can pick up and one they want to replace.',
+            'It also keeps the arrangement honest. You can see what the month bought without asking for a report.',
+          ],
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: { en: 'What is not covered?' },
+        answer: {
+          en: 'Back-end systems, servers, databases and security incident response, since I do not take those on. Hosting stays in your own account and is billed to you directly. Anything that is really a new project rather than a change — a new section, a new template, a redesign — is quoted separately, and I will say when a request has crossed that line.',
+        },
+      },
+      {
+        question: { en: 'Does the site have to have been built by you?' },
+        answer: {
+          en: 'No, but it starts with a look at the code. Some sites are cheap to maintain and some are expensive because of how they were built, and I would rather tell you which one yours is before either of us commits to a monthly arrangement.',
+        },
+      },
+      {
+        question: { en: 'How does the arrangement work?' },
+        answer: {
+          en: 'As a fixed monthly scope agreed in writing before the first month, rather than an open-ended hourly account. What is included, how requests are sent, and the notice either side needs to end it are all written down at the start, so neither of us is interpreting it later.',
+        },
+      },
+    ],
+    relatedProjects: ['stayease', 'ai-agent-landing'],
+    pricingNote: {
+      en: 'Maintenance is a fixed monthly arrangement rather than a project price, agreed in writing before the first month, with the notice either side needs to end it agreed at the same time.',
+    },
+  },
+  {
+    slug: 'performance-accessibility-audit',
+    pillar: 'development',
+    number: '09',
+    title: { en: 'Performance & accessibility audit' },
+    description: {
+      en: 'A technical front-end audit: what is actually slowing the site down, where it fails WCAG, and the specific change that fixes each one — not a screenshot of a score.',
+    },
+    deliverables: {
+      en: [
+        'Core Web Vitals and the load waterfall reviewed on your real pages',
+        'Keyboard, screen reader and contrast testing against WCAG 2.2 AA',
+        'Fix list ordered by impact, with the change described per issue',
+      ],
+    },
+    metaTitle: 'Website Performance and Accessibility Audit',
+    metaDescription:
+      'Front-end audit of Core Web Vitals and WCAG 2.2 AA accessibility: what is slowing your site down, where it fails, and the specific fix for each issue, ordered by impact.',
+    keywords: [
+      'website performance audit',
+      'Core Web Vitals audit',
+      'accessibility audit service',
+      'WCAG 2.2 audit',
+      'website speed optimisation',
+      'accessibility review',
+    ],
+    heading: {
+      en: 'A score is not a fix list',
+    },
+    intro: {
+      en: 'Render-blocking assets, oversized images, keyboard traps and contrast failures — found on your real pages, in the browsers your visitors use, and written up as changes someone can actually make.',
+    },
+    sections: [
+      {
+        heading: { en: 'Lab scores and real users disagree' },
+        paragraphs: {
+          en: [
+            'A tool run on a fast connection from one location tells you what the page could do. Field data tells you what it does for the people loading it on a mid-range phone on mobile data, which is usually a different and less flattering story.',
+            'Both get looked at, and where they disagree the field numbers win. Chasing a lab score to ninety while real visitors wait four seconds is optimising the measurement.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Accessibility is tested, not scanned' },
+        paragraphs: {
+          en: [
+            'Automated checkers find contrast ratios, missing alt attributes and broken landmarks, and they are worth running first. They cannot tell you that the focus order jumps across the page, that a modal traps a keyboard user, or that a label describes the wrong field.',
+            'So the pass is manual as well: through the site with a keyboard only, then with a screen reader, on the flows that matter most — sign-up, checkout, contact, whatever yours are.',
+          ],
+        },
+      },
+      {
+        heading: { en: 'Each issue with the change that fixes it' },
+        paragraphs: {
+          en: [
+            'Every finding names the page, the problem, who it affects and the specific change — this image is 2.4 MB and should be served at 600px wide in AVIF; this control is a div and should be a button.',
+            'That is the difference between a report that gets forwarded to a developer and one that gets acted on. A list of failures with no remedies attached is work moved, not work done.',
+          ],
+        },
+      },
+    ],
+    faqs: [
+      {
+        question: { en: 'Do you fix the issues or only report them?' },
+        answer: {
+          en: 'Either. The audit is written to be actionable by your own developers and is deliberately useful on its own. If you would rather I implement the fixes, that is scoped separately once the list exists and we both know how big the job is.',
+        },
+      },
+      {
+        question: { en: 'Is this a legal accessibility certification?' },
+        answer: {
+          en: 'No. It is a technical review against WCAG 2.2 AA carried out by a front-end practitioner — not a legal conformance statement, not a VPAT, and not legal advice. If you need a formal certification for procurement or compliance, you need a specialist accessibility auditor, and I will say so rather than take the work.',
+        },
+      },
+      {
+        question: { en: 'Which platforms can you audit?' },
+        answer: {
+          en: 'Any site I can load in a browser — WordPress, Webflow, Shopify, a custom build, anything. What changes is how the fixes get applied afterwards: on some platforms I can make them, on others the list goes to whoever maintains the site.',
+        },
+      },
+    ],
+    relatedProjects: ['stayease', 'ai-agent-landing'],
+    pricingNote: {
+      en: 'Quoted against how much site there is to test — the number of templates and the flows that matter — rather than from a package. Fixing what the audit finds is scoped separately, once the list exists and we both know its size.',
+    },
+  },
 ]
 
 export function getService(slug: string): Service | undefined {
   return services.find((service) => service.slug === slug)
+}
+
+/**
+ * The services in one pillar, in display order.
+ *
+ * Used by the two hub pages, the grouped listing on `/services`, and the
+ * sibling links at the foot of every detail page. Filtering at the call site
+ * instead would put the pillar rule in four places and let them drift.
+ */
+export function servicesByPillar(pillar: ServicePillar): Service[] {
+  return services.filter((service) => service.pillar === pillar)
+}
+
+/**
+ * The six that appear on the home page grid. Derived rather than sliced, so
+ * reordering the array never silently changes what the home page shows — and
+ * so the count is a property of the content, not of a magic number in a
+ * component.
+ */
+export const featuredServices = services.filter((service) => service.featured)
+
+/**
+ * A flat, tiny shape for the contact form's service `<select>`.
+ *
+ * Built on the server and passed down as a prop rather than importing
+ * `services` into the form. `ContactForm` is a client component, and importing
+ * this module there would ship every service's prose, FAQs and metadata — tens
+ * of kilobytes of copy nobody reads — into the browser bundle to populate a
+ * dropdown that needs fifteen strings.
+ */
+export function serviceSelectOptions(
+  locale: Locale,
+): { value: string; label: string; pillar: ServicePillar }[] {
+  return services.map((service) => ({
+    value: service.slug,
+    label: service.title[locale],
+    pillar: service.pillar,
+  }))
 }

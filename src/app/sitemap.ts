@@ -5,6 +5,8 @@ import { site } from '@/content/site'
 import { projects } from '@/content/projects'
 import { articles } from '@/content/articles'
 import { services } from '@/content/services'
+import { pillarOrder, pillarPath } from '@/content/pillars'
+import { legalDocuments } from '@/content/legal'
 import { pricingIsPublishable } from '@/content/pricing'
 import { testimonialsArePublishable } from '@/content/about'
 
@@ -61,9 +63,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/', lastModified: contentUpdated, priority: 1 },
     { path: '/work', lastModified: contentUpdated, priority: 0.9 },
     { path: '/services', lastModified: contentUpdated, priority: 0.9 },
-    // The six service pages sit level with the hub rather than below it: they
-    // are the pages carrying the commercial head terms, and the hub mainly
-    // exists to distribute traffic to them.
+    // The two pillar hubs. They carry the broad head terms ("UI/UX design
+    // services", "custom development services") that the individual pages are
+    // too specific to reach, so they sit level with `/services` rather than
+    // below it.
+    ...pillarOrder.map((key) => ({
+      path: pillarPath(key),
+      lastModified: contentUpdated,
+      priority: 0.9,
+    })),
+    // The service pages sit level with the hubs rather than below them: they
+    // are the pages carrying the commercial head terms, and the hubs mainly
+    // exist to distribute traffic to them.
     ...services.map((service) => ({
       path: `/services/${service.slug}`,
       lastModified: contentUpdated,
@@ -87,6 +98,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...(testimonialsArePublishable
       ? [{ path: '/testimonials', lastModified: contentUpdated, priority: 0.6 }]
       : []),
+    { path: '/process', lastModified: contentUpdated, priority: 0.7 },
     { path: '/resume', lastModified: contentUpdated, priority: 0.7 },
     {
       path: '/articles',
@@ -107,6 +119,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       path: `/articles/${article.slug}`,
       lastModified: new Date(article.date),
       priority: 0.6,
+    })),
+    // Indexable, at the bottom of the hierarchy. These carry their own
+    // `updated` date rather than `site.contentUpdated`, because a legal notice
+    // restamped by an unrelated copy edit misreports the one date on the site a
+    // reader may actually rely on.
+    ...legalDocuments.map((doc) => ({
+      path: `/${doc.slug}`,
+      lastModified: new Date(doc.updated),
+      priority: 0.3,
     })),
   ]
 

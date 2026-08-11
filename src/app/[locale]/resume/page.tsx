@@ -14,9 +14,12 @@ import { graph, breadcrumbSchema, webPageSchema } from '@/lib/schema'
 
 type PageProps = { params: Promise<{ locale: string }> }
 
-const TITLE = 'Résumé: UI/UX & Product Designer'
+// Derived, because the page body already renders `site.jobTitle` directly
+// under the heading — a `<title>` naming a different role than the h1 area is
+// the mismatch a crawler resolves by trusting neither.
+const TITLE = `Résumé: ${site.jobTitle}`
 const DESCRIPTION =
-  'The résumé of Harsh Vaghela, UI/UX and product designer in Ahmedabad: Product Designer at Code Theorem, freelance experience, education, skills and tools.'
+  'The résumé of Harsh Vaghela, UI/UX designer and front-end developer in Ahmedabad: Product Designer at Code Theorem, freelance experience, education, skills and tools.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params

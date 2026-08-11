@@ -118,6 +118,23 @@ export type ContentSection = {
 }
 
 /**
+ * Which half of the practice a service belongs to.
+ *
+ * The site sells two things that are bought by different people at different
+ * moments — a Figma file, and a running site — and a flat list of fifteen
+ * services asks a visitor to work out which is which. The pillar drives the
+ * grouping on `/services`, the two hub pages beneath it, and which siblings a
+ * detail page links out to.
+ *
+ * ⚠️  These two values are also static route segments
+ * (`/services/ui-ux-design`, `/services/custom-development`). No entry in
+ * `services.ts` may use either as its `slug` — a static segment silently wins
+ * over `[slug]` in the app router, so the service page would never render and
+ * nothing would fail. `content.test.ts` asserts it.
+ */
+export type ServicePillar = 'design' | 'development'
+
+/**
  * One service, and everything its own page needs.
  *
  * The detail fields are required rather than optional on purpose: every service
@@ -132,7 +149,22 @@ export type ContentSection = {
  */
 export type Service = {
   slug: string
+  pillar: ServicePillar
+  /**
+   * Display index within the pillar, so both groups read `01…n` on the hub.
+   * It is therefore **not unique across the array** — anything keying a list on
+   * a service must key on `slug`.
+   */
   number: string
+  /**
+   * Surfaces this service in the six-cell grid on the home page.
+   *
+   * The grid used to render every service. That was fine at six and is a wall
+   * at fifteen, and the home page's job is to route a visitor to the hub, not
+   * to enumerate the catalogue. Keep this to six — three per pillar — so the
+   * grid stays a 3×2 block.
+   */
+  featured?: boolean
   /** Short label — home page card, hub row, breadcrumb trail. */
   title: Localized<string>
   /** Summary line under the title in listings. */
@@ -151,6 +183,85 @@ export type Service = {
   faqs: Faq[]
   /** Case study slugs surfaced as proof. Must resolve in `projects.ts`. */
   relatedProjects: string[]
+  /**
+   * One line under the pricing block, for a service whose cost does not work
+   * the way the packages do — an audit scoped against the size of the site, a
+   * monthly retainer. Required in practice for any service no package lists,
+   * or the block falls back to a generic sentence that says nothing.
+   */
+  pricingNote?: Localized<string>
+}
+
+/**
+ * A plain-prose legal page — `/privacy-policy`, `/terms`.
+ *
+ * `updated` is its own field rather than `site.contentUpdated`: a legal notice
+ * dated today because a heading elsewhere changed is a false claim about when
+ * the terms last changed, and it is the one date on the site a reader may
+ * genuinely rely on.
+ */
+export type LegalDocument = {
+  slug: string
+  /** Breadcrumb and footer label. */
+  title: Localized<string>
+  metaTitle: string
+  metaDescription: string
+  heading: Localized<string>
+  /** ISO date, e.g. `'2026-08-11'`. Bump only when the terms themselves change. */
+  updated: string
+  intro: Localized<string[]>
+  sections: ContentSection[]
+}
+
+/**
+ * One phase on `/process`.
+ *
+ * Deliberately not a `ContentSection`: `output` is the field that makes the
+ * page worth publishing. A process page that describes activity without naming
+ * what exists at the end of each stage is the genre's standard failure — every
+ * agency has one, they all say "discover, define, design, deliver", and none of
+ * them tell a client what they will be holding in three weeks.
+ */
+export type ProcessPhase = {
+  number: string
+  heading: Localized<string>
+  paragraphs: Localized<string[]>
+  /** What exists at the end of this phase, in a few words. */
+  output: Localized<string>
+}
+
+/**
+ * One of the two hub pages between `/services` and a service detail page.
+ *
+ * These are static routes (`/services/ui-ux-design`,
+ * `/services/custom-development`) rather than entries in `services.ts`, because
+ * a hub is not an offer: it has no deliverables, no related case studies and no
+ * `Service` schema node. Modelling it as one would put two more `Offer`s in the
+ * catalogue that nobody can buy.
+ */
+export type ServicePillarPage = {
+  pillar: ServicePillar
+  /** Route segment under `/services`. Must not collide with a service slug. */
+  slug: string
+  /** Short label — breadcrumb trail, cross-links, the `/services` group header. */
+  title: Localized<string>
+  metaTitle: string
+  metaDescription: string
+  keywords: string[]
+  /** The hub page `h1`. */
+  heading: Localized<string>
+  intro: Localized<string>
+  sections: ContentSection[]
+  faqs: Faq[]
+  /**
+   * Anchor text for the link into this hub, authored in full rather than
+   * composed from `title`. Lowercasing the title to fit it into a sentence
+   * produced "more on ui/ux design" — an acronym is not a word, and the
+   * general lesson is that display strings are written, not derived.
+   */
+  linkLabel: Localized<string>
+  /** Sentence introducing the link across to the other pillar. */
+  crossLink: Localized<string>
 }
 
 export type ToolGroup = {
