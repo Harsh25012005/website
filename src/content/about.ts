@@ -76,7 +76,7 @@ export const servicesFaqs: Faq[] = [
     // schema, so a claim about the site that the site contradicts is the exact
     // mismatch that costs rich results.
     answer: {
-      en: 'It depends on the number of screens and how settled the product decisions are — a single landing page and a multi-screen product are different jobs. The timeline is agreed at the brief stage and written into the scope before design starts, so it is fixed before you commit rather than estimated as we go.',
+      en: 'It depends on the number of screens and how settled the product decisions are: a single landing page and a multi-screen product are different jobs. The timeline is agreed at the brief stage and written into the scope before design starts, so it is fixed before you commit rather than estimated as we go.',
     },
   },
   {
@@ -94,7 +94,7 @@ export const servicesFaqs: Faq[] = [
   {
     question: { en: 'What do I receive at the end of a project?' },
     answer: {
-      en: 'Organised Figma files with the components, colour, type and spacing tokens documented, a clickable prototype where the project calls for one, and — on build engagements — the responsive coded front end, QA-tested across browsers.',
+      en: 'Organised Figma files with the components, colour, type and spacing tokens documented, a clickable prototype where the project calls for one, and on build engagements the responsive coded front end, QA-tested across browsers.',
     },
   },
   {
@@ -132,7 +132,7 @@ export const testimonialsArePublishable = testimonials.length > 0
 
 export const aboutIntro: Localized<string[]> = {
   en: [
-    'I’m Harsh Vaghela, a freelance UI/UX and product designer based in Ahmedabad, Gujarat, India. I work on design systems, web UI, mobile app design and SaaS product design for founders and small teams, locally and remotely worldwide.',
+    'I’m Harsh Vaghela, a UI/UX and product designer based in Ahmedabad, Gujarat, India. I work as a Product Designer at Code Theorem, and take on freelance design systems, web UI, mobile app design and SaaS product design for founders and small teams, locally and remotely worldwide.',
     'I design in Figma, Framer, Webflow and Sketch, then build the front end in HTML, CSS, JavaScript, React, Next.js, Tailwind CSS and PHP, so what ships stays close to what was designed. I completed my BCA at Bholabhai Patel College of Computer Studies and am pursuing my MCA at Bhagwan Swaminarayan Institute of Technology.',
   ],
 }
@@ -160,8 +160,8 @@ export const aboutChapters: ContentSection[] = [
     heading: { en: 'Design and code today' },
     paragraphs: {
       en: [
-        'With 1.5+ years in the field, I now work across design systems, web UI, mobile app design and SaaS product design, usually for founders and small teams who want both the design file and a working build. I’m completing my MCA at Bhagwan Swaminarayan Institute of Technology alongside client work.',
-        'I take on freelance and collaborative projects, particularly design system work, SaaS dashboards, and web UI that has to go from Figma to a live, responsive site.',
+        'With 1.5+ years in the field, I’m now a Product Designer at Code Theorem in Ahmedabad, working on client products in a team alongside developers. The work runs across design systems, web UI, mobile app design and SaaS product design, and I’m completing my MCA at Bhagwan Swaminarayan Institute of Technology alongside it.',
+        'I also keep taking on freelance and collaborative projects outside that role, particularly design system work, SaaS dashboards, and web UI that has to go from Figma to a live, responsive site, usually for founders and small teams who want both the design file and a working build.',
       ],
     },
   },

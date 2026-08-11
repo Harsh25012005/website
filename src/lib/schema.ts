@@ -90,7 +90,19 @@ export function personSchema(): JsonLdNode {
       occupationLocation: { '@type': 'City', name: 'Ahmedabad' },
       skills: skills.join(', '),
     },
-    worksFor: { '@id': BUSINESS_ID },
+    // Two employers because there are two, concurrently: the in-house role and
+    // the freelance practice behind this site. `worksFor` accepts a list, and
+    // dropping either one would publish a half-truth — naming only the employer
+    // contradicts a site that sells freelance services, naming only the
+    // practice contradicts the résumé page's first entry.
+    worksFor: [
+      {
+        '@type': 'Organization',
+        name: site.employer.name,
+        url: site.employer.url,
+      },
+      { '@id': BUSINESS_ID },
+    ],
     // Empty when every social is still a placeholder domain root — an absent
     // `sameAs` is neutral, a wrong one is actively harmful. See `site.ts`.
     ...(profileSocials.length
@@ -136,7 +148,7 @@ export function professionalServiceSchema(): JsonLdNode {
     url: siteUrl,
     image: absolute(site.portrait),
     email: `mailto:${site.email}`,
-    description: `Freelance UI/UX and product design studio of ${site.name} — web UI, design systems, mobile app and SaaS product design, delivered from Figma through to a coded React and Next.js front end.`,
+    description: `Freelance UI/UX and product design studio of ${site.name}, covering web UI, design systems, mobile app and SaaS product design, delivered from Figma through to a coded React and Next.js front end.`,
     founder: personRef,
     employee: personRef,
     address: postalAddress,
@@ -322,7 +334,7 @@ export function projectSchema(project: Project, locale: Locale): JsonLdNode {
     '@id': `${url}#case-study`,
     url,
     name: project.title[locale],
-    headline: `${project.title[locale]} — ${project.discipline[locale]}`,
+    headline: `${project.title[locale]}: ${project.discipline[locale]}`,
     description: project.summary[locale],
     genre: project.discipline[locale],
     creator: personRef,

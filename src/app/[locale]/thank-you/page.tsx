@@ -90,7 +90,7 @@ export default async function ThankYouPage({ params }: PageProps) {
                 >
                   {site.email}
                 </a>{' '}
-                directly — it reaches the same inbox.
+                directly. It reaches the same inbox.
               </p>
             </Reveal>
 

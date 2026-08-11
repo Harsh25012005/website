@@ -30,7 +30,7 @@ export const pricingPackages: PricingPackage[] = [
     from: null,
     unit: { en: 'per page' },
     summary: {
-      en: 'A single high-intent page — product launch, campaign or waiting list — designed to convert and handed over ready to build.',
+      en: 'A single high-intent page for a product launch, campaign or waiting list, designed to convert and handed over ready to build.',
     },
     bestFor: {
       en: 'Founders validating an idea, or a launch that needs one page to do the whole job.',
@@ -77,7 +77,7 @@ export const pricingPackages: PricingPackage[] = [
     from: null,
     unit: { en: 'per project' },
     summary: {
-      en: 'The design work above, continued into a working responsive front end in React, Next.js and Tailwind CSS — so nothing is lost between the file and the live site.',
+      en: 'The design work above, continued into a working responsive front end in React, Next.js and Tailwind CSS, so nothing is lost between the file and the live site.',
     },
     bestFor: {
       en: 'Teams without a front-end developer, or anyone who wants one person accountable for how it looks and how it ships.',

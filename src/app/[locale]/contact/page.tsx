@@ -13,7 +13,7 @@ type PageProps = { params: Promise<{ locale: string }> }
 
 const TITLE = 'Contact: Start a UI/UX Design Project'
 const DESCRIPTION =
-  'Hire Harsh Vaghela for UI/UX, design system, mobile app or SaaS product design. Send a brief with scope and timeline — replies usually within a couple of working days.'
+  'Hire Harsh Vaghela for UI/UX, design system, mobile app or SaaS product design. Send a brief with scope and timeline. Replies usually go out within a couple of working days.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params

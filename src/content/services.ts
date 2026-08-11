@@ -35,7 +35,7 @@ export const services: Service[] = [
     },
     metaTitle: 'Web UI Design Services for Websites & Web Apps',
     metaDescription:
-      'Freelance web UI design in Figma — landing pages, marketing sites and web app screens built on a real grid and type scale, responsive from desktop to mobile.',
+      'Freelance web UI design in Figma: landing pages, marketing sites and web app screens built on a real grid and type scale, responsive from desktop to mobile.',
     keywords: [
       'web UI design services',
       'website UI designer',
@@ -48,7 +48,7 @@ export const services: Service[] = [
       en: 'Web UI design that holds up on every screen size',
     },
     intro: {
-      en: 'Landing pages, marketing sites and web app screens designed in Figma on a grid, type scale and spacing system that survives contact with real content — not a hero shot that falls apart on the second page.',
+      en: 'Landing pages, marketing sites and web app screens designed in Figma on a grid, type scale and spacing system that survives contact with real content, not a hero shot that falls apart on the second page.',
     },
     sections: [
       {
@@ -65,7 +65,7 @@ export const services: Service[] = [
         paragraphs: {
           en: [
             'Desktop, tablet and mobile are designed together, not adapted afterwards. Breakpoints are chosen around where the content actually stops working, rather than around device widths that stopped being accurate years ago.',
-            'Long headlines, short headlines, missing images, eight nav items instead of four — the layout is tested against the awkward cases while it is still cheap to change them.',
+            'Long headlines, short headlines, missing images, eight nav items instead of four: the layout is tested against the awkward cases while it is still cheap to change them.',
           ],
         },
       },
@@ -74,7 +74,7 @@ export const services: Service[] = [
         paragraphs: {
           en: [
             'Because I also write front-end code, the file that gets handed over is one a developer can read: components rather than detached groups, auto layout that maps to how CSS actually behaves, and tokens for colour, type and spacing.',
-            'If you would rather not hand it over at all, the same project can continue into a coded build — see Figma to React build.',
+            'If you would rather not hand it over at all, the same project can continue into a coded build. See Figma to React build.',
           ],
         },
       },
@@ -95,7 +95,7 @@ export const services: Service[] = [
       {
         question: { en: 'Can you work with our existing brand guidelines?' },
         answer: {
-          en: 'Yes. If you already have a logo, palette, typefaces or a brand book, the UI is designed inside those constraints. Where the guidelines do not cover something an interface needs — states, data density, error messaging — I extend them in the same spirit rather than inventing a second visual language.',
+          en: 'Yes. If you already have a logo, palette, typefaces or a brand book, the UI is designed inside those constraints. Where the guidelines do not cover something an interface needs (states, data density, error messaging), I extend them in the same spirit rather than inventing a second visual language.',
         },
       },
     ],
@@ -130,7 +130,7 @@ export const services: Service[] = [
       en: 'Design systems that a team can actually keep using',
     },
     intro: {
-      en: 'A component library, a token set and the documentation that makes both stick — so the fifth screen your team builds looks like the first, without a designer reviewing every pull request.',
+      en: 'A component library, a token set and the documentation that makes both stick, so the fifth screen your team builds looks like the first, without a designer reviewing every pull request.',
     },
     sections: [
       {
@@ -147,7 +147,7 @@ export const services: Service[] = [
         paragraphs: {
           en: [
             'Colour, type, spacing and radius are defined as tokens before any component is drawn, so a change to the scale propagates instead of being repeated forty times by hand.',
-            'Components are then built on those tokens with variants and auto layout, structured to match how they will be implemented in code — which keeps the Figma library and the codebase from drifting into two different systems with the same names.',
+            'Components are then built on those tokens with variants and auto layout, structured to match how they will be implemented in code, which keeps the Figma library and the codebase from drifting into two different systems with the same names.',
           ],
         },
       },
@@ -223,7 +223,7 @@ export const services: Service[] = [
         heading: { en: 'Flows before screens' },
         paragraphs: {
           en: [
-            'An app is a sequence, not a gallery. The work starts by mapping the paths a user takes — first launch, the main job they came to do, the recovery path when something goes wrong — before any screen gets visual design.',
+            'An app is a sequence, not a gallery. The work starts by mapping the paths a user takes (first launch, the main job they came to do, the recovery path when something goes wrong) before any screen gets visual design.',
             'Mapping first is what surfaces the screens nobody remembered to ask for: the empty state, the expired session, the half-finished form someone came back to three days later.',
           ],
         },
@@ -242,7 +242,7 @@ export const services: Service[] = [
         paragraphs: {
           en: [
             'The deliverable is a clickable Figma prototype, not a slide of screens. That is what makes it possible to hand your phone to five people and watch where they hesitate, while changing the answer still costs a Figma edit rather than a sprint.',
-            'The same prototype is what developers use to understand intent — transitions, states and what happens on tap are demonstrated rather than described in a comment.',
+            'The same prototype is what developers use to understand intent: transitions, states and what happens on tap are demonstrated rather than described in a comment.',
           ],
         },
       },
@@ -253,7 +253,7 @@ export const services: Service[] = [
           en: 'Do you design for both iOS and Android?',
         },
         answer: {
-          en: 'Yes. Which platforms are in scope is agreed at the brief stage, since designing for both is more work than designing for one — the shared screens carry over, but navigation, system controls and platform-specific patterns are designed separately.',
+          en: 'Yes. Which platforms are in scope is agreed at the brief stage, since designing for both is more work than designing for one: the shared screens carry over, but navigation, system controls and platform-specific patterns are designed separately.',
         },
       },
       {
@@ -267,7 +267,7 @@ export const services: Service[] = [
           en: 'Can you design an app icon and store screenshots?',
         },
         answer: {
-          en: 'Yes, both can be added to the scope. They are quoted separately from the app UI because they are a different job with different constraints — store listing assets are marketing artwork subject to Apple and Google sizing rules.',
+          en: 'Yes, both can be added to the scope. They are quoted separately from the app UI because they are a different job with different constraints: store listing assets are marketing artwork subject to Apple and Google sizing rules.',
         },
       },
     ],
@@ -302,7 +302,7 @@ export const services: Service[] = [
       en: 'SaaS product design for screens that get denser every quarter',
     },
     intro: {
-      en: 'Dashboards, admin panels and settings flows designed for the version of your product that has ten more features than it does today — including the empty states, permission cases and error paths that demos always skip.',
+      en: 'Dashboards, admin panels and settings flows designed for the version of your product that has ten more features than it does today, including the empty states, permission cases and error paths that demos always skip.',
     },
     sections: [
       {
@@ -327,7 +327,7 @@ export const services: Service[] = [
         heading: { en: 'Patterns that scale with the roadmap' },
         paragraphs: {
           en: [
-            'Features get added after launch. Rather than designing each screen as a one-off, the work establishes patterns — how a settings page is laid out, how a destructive action is confirmed, how a table filters — so the next feature has an answer to follow.',
+            'Features get added after launch. Rather than designing each screen as a one-off, the work establishes patterns (how a settings page is laid out, how a destructive action is confirmed, how a table filters), so the next feature has an answer to follow.',
             'This is where SaaS design and design system work overlap, and on longer engagements they are usually the same project.',
           ],
         },
@@ -347,7 +347,7 @@ export const services: Service[] = [
           en: 'Do you work with our developers during the build?',
         },
         answer: {
-          en: 'Yes. Handoff is not a single moment — questions come up while the build is underway, and I stay available to answer them, review implementations against the design and adjust where the code reveals something the file did not. How much of that time is included is agreed in the scope.',
+          en: 'Yes. Handoff is not a single moment. Questions come up while the build is underway, and I stay available to answer them, review implementations against the design and adjust where the code reveals something the file did not. How much of that time is included is agreed in the scope.',
         },
       },
       {
@@ -355,7 +355,7 @@ export const services: Service[] = [
           en: 'Do you do user research, or design from our requirements?',
         },
         answer: {
-          en: 'Both are possible. If you have research, analytics or support tickets, that is the strongest starting point and I will design from it. If you do not, I can run lightweight research — flow mapping, a usability pass on the current product, prototype testing — scoped as part of the project.',
+          en: 'Both are possible. If you have research, analytics or support tickets, that is the strongest starting point and I will design from it. If you do not, I can run lightweight research (flow mapping, a usability pass on the current product, prototype testing) scoped as part of the project.',
         },
       },
     ],
@@ -377,7 +377,7 @@ export const services: Service[] = [
     },
     metaTitle: 'UX Research, Wireframing & Prototyping',
     metaDescription:
-      'User flows, low-fidelity wireframes and clickable prototypes that test whether the structure works — before visual design starts and long before anything is built.',
+      'User flows, low-fidelity wireframes and clickable prototypes that test whether the structure works, before visual design starts and long before anything is built.',
     keywords: [
       'UX research services',
       'wireframing services',
@@ -390,7 +390,7 @@ export const services: Service[] = [
       en: 'Wireframes and prototypes that answer the question before the build does',
     },
     intro: {
-      en: 'Flow maps, low-fidelity wireframes and clickable prototypes that test whether the structure of a product works — at the stage where being wrong costs a Figma edit rather than a sprint.',
+      en: 'Flow maps, low-fidelity wireframes and clickable prototypes that test whether the structure of a product works, at the stage where being wrong costs a Figma edit rather than a sprint.',
     },
     sections: [
       {
@@ -416,7 +416,7 @@ export const services: Service[] = [
         paragraphs: {
           en: [
             'A clickable prototype turns opinion into observation. Watching five people attempt the main task tells you more than a stakeholder review, and it tells you before the estimate has been written.',
-            'What comes out is a prioritised list of what to fix, with the structure already validated — which is what the visual design and build stages are then built on.',
+            'What comes out is a prioritised list of what to fix, with the structure already validated, which is what the visual design and build stages are then built on.',
           ],
         },
       },
@@ -441,7 +441,7 @@ export const services: Service[] = [
           en: 'We have no research at all. Is that a problem?',
         },
         answer: {
-          en: 'No — it is the normal starting point. Existing analytics, support tickets or sales call notes help if you have them, but the flow mapping and prototype testing work without any of it. Starting from nothing is far better than starting from assumptions nobody has checked.',
+          en: 'No. It is the normal starting point. Existing analytics, support tickets or sales call notes help if you have them, but the flow mapping and prototype testing work without any of it. Starting from nothing is far better than starting from assumptions nobody has checked.',
         },
       },
     ],
@@ -476,7 +476,7 @@ export const services: Service[] = [
       en: 'Figma to React, without the fidelity lost in handoff',
     },
     intro: {
-      en: 'Your approved design built as responsive front-end code in React, Next.js and Tailwind CSS — by the person who reads design files for a living, so the spacing, type and states survive the trip.',
+      en: 'Your approved design built as responsive front-end code in React, Next.js and Tailwind CSS, by the person who reads design files for a living, so the spacing, type and states survive the trip.',
     },
     sections: [
       {
@@ -513,7 +513,7 @@ export const services: Service[] = [
           en: 'Can you build a design someone else made?',
         },
         answer: {
-          en: 'Yes — that is a large part of this service. I work from your Figma file whether or not I designed it. If the file is missing states, breakpoints or edge cases, I will flag what needs deciding before the build rather than guessing and showing you the result later.',
+          en: 'Yes. That is a large part of this service. I work from your Figma file whether or not I designed it. If the file is missing states, breakpoints or edge cases, I will flag what needs deciding before the build rather than guessing and showing you the result later.',
         },
       },
       {

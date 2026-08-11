@@ -11,9 +11,9 @@ import { graph, breadcrumbSchema, webPageSchema } from '@/lib/schema'
 
 type PageProps = { params: Promise<{ locale: string }> }
 
-const TITLE = 'Tools — Design and Front-End Stack'
+const TITLE = 'Tools: Design and Front-End Stack'
 const DESCRIPTION =
-  'The design and front-end tools behind the work: Figma, Framer and Webflow through React, Next.js and Tailwind CSS — and why each one is still in the stack.'
+  'The design and front-end tools behind the work: Figma, Framer and Webflow through React, Next.js and Tailwind CSS, and why each one is still in the stack.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params

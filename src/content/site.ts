@@ -42,7 +42,29 @@ export const site = {
   countryCode: 'IN',
   /** LocalBusiness/ProfessionalService `areaServed`, widest-last. */
   areaServed: ['Ahmedabad', 'Gujarat', 'India'],
-  availability: 'Available for freelance and contract product design work',
+  availability:
+    'Open to freelance and contract product design work alongside a full-time role',
+  /**
+   * The current in-house role. It lives here rather than only in `resume.ts`
+   * because `Person.worksFor` has to name the same employer the résumé page
+   * shows: schema that claims one employer while the visible page shows another
+   * is exactly the mismatch that gets an annotation set discounted wholesale.
+   *
+   * `url` must be the employer's own site. It is what lets a consumer resolve
+   * "Code Theorem" to a known organisation instead of an unresolvable string,
+   * and it is the only part of this block a reader cannot verify from the page.
+   *
+   * Freelance work continues alongside this, so `worksFor` emits both the
+   * employer and the freelance practice rather than replacing one with the
+   * other. Delete this block if the role ends — an employer left in schema
+   * after the fact is a false present-tense claim, not a stale nicety.
+   */
+  employer: {
+    name: 'Code Theorem',
+    url: 'https://codetheorem.co',
+    jobTitle: 'Product Designer',
+    location: 'Ahmedabad, Gujarat, India',
+  },
   /**
    * Person portrait for JSON-LD `image`. Google wants a real photo of the named
    * entity here, not the OG card — it is one of the inputs to knowledge-panel
@@ -72,7 +94,7 @@ export const site = {
    * tells crawlers the entire site changed on every deploy, which is false and
    * gets the signal discounted wholesale.
    */
-  contentUpdated: '2026-08-10',
+  contentUpdated: '2026-08-11',
   /**
    * ⚠️ PLACEHOLDER URLS — REPLACE BEFORE LAUNCH. ⚠️
    *

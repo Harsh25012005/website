@@ -29,7 +29,7 @@ export const localSections: ContentSection[] = [
     heading: { en: 'Working with a designer in the same city' },
     paragraphs: {
       en: [
-        'Most of my work is remote, and remote works well — but there is a stage in almost every project, usually the first one, where an hour in the same room beats a week of messages. If you are in or near Ahmedabad, that hour is available.',
+        'Most of my work is remote, and remote works well, but there is a stage in almost every project, usually the first one, where an hour in the same room beats a week of messages. If you are in or near Ahmedabad, that hour is available.',
         'It matters most at the start, when the brief is still forming and the useful conversation is the unstructured one. After that the project runs on shared Figma files and scheduled reviews like any other, because that is what keeps a record of what was decided.',
       ],
     },
@@ -66,7 +66,7 @@ export const localFaqs: Faq[] = [
       en: 'Do you only work with clients in Gujarat?',
     },
     answer: {
-      en: 'No. Ahmedabad is where I am based, not the limit of who I work with. Most projects are remote, with clients elsewhere in India and worldwide, and the process is the same either way — the only thing being local changes is whether meeting in person is an option.',
+      en: 'No. Ahmedabad is where I am based, not the limit of who I work with. Most projects are remote, with clients elsewhere in India and worldwide, and the process is the same either way. The only thing being local changes is whether meeting in person is an option.',
     },
   },
   {

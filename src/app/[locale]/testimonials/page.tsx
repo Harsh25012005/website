@@ -75,7 +75,7 @@ export default async function TestimonialsPage({ params }: PageProps) {
             <p className="mt-8 max-w-[52ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
               {testimonialsArePublishable
                 ? 'What it has been like to work together, in the words of the people who did.'
-                : 'Nothing here yet — and nothing invented to fill the space.'}
+                : 'Nothing here yet, and nothing invented to fill the space.'}
             </p>
           </Reveal>
         </div>

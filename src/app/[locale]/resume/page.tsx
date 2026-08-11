@@ -14,9 +14,9 @@ import { graph, breadcrumbSchema, webPageSchema } from '@/lib/schema'
 
 type PageProps = { params: Promise<{ locale: string }> }
 
-const TITLE = 'Résumé — UI/UX & Product Designer'
+const TITLE = 'Résumé: UI/UX & Product Designer'
 const DESCRIPTION =
-  'The résumé of Harsh Vaghela, freelance UI/UX and product designer in Ahmedabad: experience, education, design and front-end skills, and the tools behind them.'
+  'The résumé of Harsh Vaghela, UI/UX and product designer in Ahmedabad: Product Designer at Code Theorem, freelance experience, education, skills and tools.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params
@@ -67,7 +67,7 @@ export default async function ResumePage({ params }: PageProps) {
             <div className="md:col-span-9">
               <Reveal y={12}>
                 <p className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
-                  {site.jobTitle} — {site.location[locale]}
+                  {site.jobTitle} · {site.location[locale]}
                 </p>
               </Reveal>
 

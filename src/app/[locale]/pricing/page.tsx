@@ -96,8 +96,7 @@ export default async function PricingPage({ params }: PageProps) {
               Three ways to work together, with a starting figure for each so
               you can tell in thirty seconds whether we are in the same range.
               Every project is quoted as a fixed price against a scope agreed
-              before any work begins — no hourly billing, no open-ended
-              estimate.
+              before any work begins. No hourly billing, no open-ended estimate.
             </p>
           </Reveal>
         </div>

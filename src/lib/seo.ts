@@ -31,7 +31,7 @@ if (!rawSiteUrl && process.env.NODE_ENV === 'production') {
   console.warn(
     '\n[seo] NEXT_PUBLIC_SITE_URL is not set. Canonicals, hreflang, the sitemap,\n' +
       '[seo] robots.txt and all OG image URLs will be emitted as\n' +
-      '[seo] http://localhost:3000 — this site will not be indexable.\n',
+      '[seo] http://localhost:3000. This site will not be indexable.\n',
   )
 }
 

@@ -25,7 +25,7 @@ import type { Localized, ToolGroup } from './types'
  */
 
 export const toolsIntro: Localized<string> = {
-  en: 'The tools behind the work, and the reason each one is still here. Nothing on this list is a recommendation for anyone else — it is what happens to fit the way I work between a Figma file and a deployed front end.',
+  en: 'The tools behind the work, and the reason each one is still here. Nothing on this list is a recommendation for anyone else. It is what happens to fit the way I work between a Figma file and a deployed front end.',
 }
 
 export const toolGroups: ToolGroup[] = [
@@ -76,7 +76,7 @@ export const toolGroups: ToolGroup[] = [
       {
         name: 'Next.js',
         note: {
-          en: 'App Router and server components by default. Most of what I build is content-led and should ship as static HTML — this site included.',
+          en: 'App Router and server components by default. Most of what I build is content-led and should ship as static HTML, this site included.',
         },
       },
       {
@@ -100,7 +100,7 @@ export const toolGroups: ToolGroup[] = [
       {
         name: 'PHP',
         note: {
-          en: 'For projects on existing PHP stacks — usually a front end that has to slot into something already running rather than a greenfield build.',
+          en: 'For projects on existing PHP stacks, usually a front end that has to slot into something already running rather than a greenfield build.',
         },
       },
     ],
@@ -120,7 +120,7 @@ export const toolGroups: ToolGroup[] = [
       {
         name: 'Lenis',
         note: {
-          en: 'Smooth scrolling, driven from the GSAP ticker rather than its own animation frame — on a separate loop, pinned and parallax elements lag the scroll position by a frame.',
+          en: 'Smooth scrolling, driven from the GSAP ticker rather than its own animation frame. On a separate loop, pinned and parallax elements lag the scroll position by a frame.',
         },
       },
       {

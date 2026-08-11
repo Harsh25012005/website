@@ -78,7 +78,7 @@ export default async function AboutPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[22ch] font-serif text-[clamp(36px,5.4vw,5rem)] leading-[0.95] font-light tracking-[-0.04em]"
           >
-            I design and build digital products — UI/UX, design systems, and the
+            I design and build digital products: UI/UX, design systems, and the
             SaaS and mobile experiences built on them.
           </SplitHeading>
 

@@ -126,7 +126,7 @@ export async function POST(request: NextRequest) {
   if (!apiKey) {
     // A missing key is a deployment mistake, not a visitor error. Log loudly so
     // it surfaces in the host's logs rather than failing quietly for weeks.
-    console.error('[contact] RESEND_API_KEY is not set — email was not sent.')
+    console.error('[contact] RESEND_API_KEY is not set. Email was not sent.')
     return NextResponse.json(
       { error: 'Email is not configured on the server.' },
       { status: 500 },
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     text: [
       message,
       '',
-      '—',
+      '---',
       `Name: ${name}`,
       `Email: ${email}`,
       subject ? `Subject: ${subject}` : null,
