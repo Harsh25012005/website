@@ -285,20 +285,20 @@ export default async function ProjectPage({ params }: PageProps) {
 
             <ul className="mt-8 space-y-6">
               {furtherReading.map((article, index) => (
-                <Reveal key={article.slug} delay={index * 0.06}>
-                  <li>
-                    <Link
-                      href={localizedPath(locale, `/articles/${article.slug}`)}
-                      className="group block md:max-w-[62ch]"
-                    >
-                      <span className="font-serif text-[clamp(20px,2.2vw,28px)] leading-[1.2] font-light tracking-[-0.02em] transition-colors group-hover:text-white">
-                        {article.title[locale]}
-                      </span>
-                      <span className="mt-2 block text-[15px] leading-[1.55] text-[var(--color-text-muted)]">
-                        {article.excerpt[locale]}
-                      </span>
-                    </Link>
-                  </li>
+                // The reveal wrapper is the list item; a `<div>` between the
+                // `<ul>` and its `<li>`s is invalid and reads as a broken list.
+                <Reveal as="li" key={article.slug} delay={index * 0.06}>
+                  <Link
+                    href={localizedPath(locale, `/articles/${article.slug}`)}
+                    className="group block md:max-w-[62ch]"
+                  >
+                    <span className="font-serif text-[clamp(20px,2.2vw,28px)] leading-[1.2] font-light tracking-[-0.02em] transition-colors group-hover:text-white">
+                      {article.title[locale]}
+                    </span>
+                    <span className="mt-2 block text-[15px] leading-[1.55] text-[var(--color-text-muted)]">
+                      {article.excerpt[locale]}
+                    </span>
+                  </Link>
                 </Reveal>
               ))}
             </ul>

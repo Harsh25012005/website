@@ -8,12 +8,20 @@ type ArticleCardProps = {
   article: Article
   locale: Locale
   sizes?: string
+  /**
+   * Heading level for the title. Defaults to `h3` because the card normally
+   * sits under a section `h2` ("Articles on design and code"). The listing page
+   * has no such heading — the cards follow its `h1` directly — so it passes
+   * `h2` rather than leaving a level skipped in the outline.
+   */
+  headingLevel?: 'h2' | 'h3'
 }
 
 export function ArticleCard({
   article,
   locale,
   sizes = '(max-width: 768px) 100vw, 33vw',
+  headingLevel: Heading = 'h3',
 }: ArticleCardProps) {
   return (
     <Link
@@ -36,9 +44,9 @@ export function ArticleCard({
           </ParallaxFrame>
         </div>
 
-        <h3 className="mt-6 text-[19px] leading-[1.3]">
+        <Heading className="mt-6 text-[19px] leading-[1.3]">
           {article.title[locale]}
-        </h3>
+        </Heading>
         <p className="mt-1 max-w-[42ch] text-[15px] leading-[1.55] text-[var(--color-text-muted)]">
           {article.excerpt[locale]}
         </p>

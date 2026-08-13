@@ -109,40 +109,45 @@ export default async function ResumePage({ params }: PageProps) {
       <Section title="Experience">
         <ol className="space-y-12">
           {resumeExperience.map((entry) => (
-            <Reveal key={`${entry.role[locale]}-${entry.organisation[locale]}`}>
-              <li className="grid gap-y-4 md:grid-cols-12 md:gap-x-12">
-                {/* Omitted entirely when null rather than rendered as a dash —
-                    see the note on `ResumeEntry.period`. */}
-                {entry.period ? (
-                  <p className="text-[14px] text-[var(--color-text-muted)] md:col-span-3">
-                    {entry.period}
-                  </p>
-                ) : null}
+            // `as="li"`: an `<ol>` may only contain `<li>` children, and the
+            // reveal's default `<div>` sat between the two — which also cost
+            // each entry its number as a screen reader counts the list.
+            <Reveal
+              as="li"
+              key={`${entry.role[locale]}-${entry.organisation[locale]}`}
+              className="grid gap-y-4 md:grid-cols-12 md:gap-x-12"
+            >
+              {/* Omitted entirely when null rather than rendered as a dash —
+                  see the note on `ResumeEntry.period`. */}
+              {entry.period ? (
+                <p className="text-[14px] text-[var(--color-text-muted)] md:col-span-3">
+                  {entry.period}
+                </p>
+              ) : null}
 
-                <div className="md:col-span-8 md:col-start-5">
-                  <h3 className="font-serif text-[clamp(22px,2.4vw,28px)] leading-[1.15] font-light tracking-[-0.02em]">
-                    {entry.role[locale]}
-                  </h3>
-                  <p className="mt-2 text-[15px] text-[var(--color-text-muted)]">
-                    {entry.organisation[locale]} · {entry.location[locale]}
-                  </p>
+              <div className="md:col-span-8 md:col-start-5">
+                <h3 className="font-serif text-[clamp(22px,2.4vw,28px)] leading-[1.15] font-light tracking-[-0.02em]">
+                  {entry.role[locale]}
+                </h3>
+                <p className="mt-2 text-[15px] text-[var(--color-text-muted)]">
+                  {entry.organisation[locale]} · {entry.location[locale]}
+                </p>
 
-                  <ul className="mt-6 space-y-3">
-                    {entry.points[locale].map((point) => (
-                      <li
-                        key={point}
-                        className="flex gap-3 text-[15px] leading-[1.6] text-[var(--color-text-soft)] md:max-w-[58ch]"
-                      >
-                        <span
-                          aria-hidden
-                          className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-[var(--color-text-muted)]"
-                        />
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
+                <ul className="mt-6 space-y-3">
+                  {entry.points[locale].map((point) => (
+                    <li
+                      key={point}
+                      className="flex gap-3 text-[15px] leading-[1.6] text-[var(--color-text-soft)] md:max-w-[58ch]"
+                    >
+                      <span
+                        aria-hidden
+                        className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-[var(--color-text-muted)]"
+                      />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </Reveal>
           ))}
         </ol>
@@ -154,17 +159,19 @@ export default async function ResumePage({ params }: PageProps) {
       <Section title="Education">
         <ol className="space-y-10">
           {site.education.map((entry) => (
-            <Reveal key={entry.name}>
-              <li className="grid gap-y-2 md:grid-cols-12 md:gap-x-12">
-                <div className="md:col-span-8 md:col-start-5">
-                  <h3 className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.15] font-light tracking-[-0.02em]">
-                    {entry.credential}
-                  </h3>
-                  <p className="mt-2 text-[15px] text-[var(--color-text-muted)]">
-                    {entry.name}
-                  </p>
-                </div>
-              </li>
+            <Reveal
+              as="li"
+              key={entry.name}
+              className="grid gap-y-2 md:grid-cols-12 md:gap-x-12"
+            >
+              <div className="md:col-span-8 md:col-start-5">
+                <h3 className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.15] font-light tracking-[-0.02em]">
+                  {entry.credential}
+                </h3>
+                <p className="mt-2 text-[15px] text-[var(--color-text-muted)]">
+                  {entry.name}
+                </p>
+              </div>
             </Reveal>
           ))}
         </ol>

@@ -210,21 +210,32 @@ export function CustomSelect({
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-labelledby={labelId}
+        // The half of the pattern documented above that was missing: without
+        // this, arrowing through the options moved only the highlight, and a
+        // screen reader announced nothing because DOM focus never leaves the
+        // trigger. Undefined while closed so nothing points at a hidden node.
+        aria-activedescendant={
+          open && activeIndex >= 0 ? `${id}-option-${activeIndex}` : undefined
+        }
         onKeyDown={onKeyDown}
         onClick={() =>
           open ? setOpen(false) : openAt(selectedIndex >= 0 ? selectedIndex : 0)
         }
         className={cn(
           'mt-3 flex w-full cursor-pointer items-center justify-between gap-4 border-b pb-3 text-left text-[1.0625rem] transition-colors',
+          // The closed rule is this control's only boundary, so it uses the
+          // 3:1 interactive token rather than the decorative hairline.
           open
             ? 'border-[var(--color-text)]'
-            : 'border-[var(--color-border)] hover:border-[var(--color-text-soft)]',
+            : 'border-[var(--color-border-interactive)] hover:border-[var(--color-text-soft)]',
         )}
       >
         <span
           className={cn(
             'truncate',
-            selected ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]',
+            selected
+              ? 'text-[var(--color-text)]'
+              : 'text-[var(--color-text-muted)]',
           )}
         >
           {selected ? selected.label : placeholder}
@@ -246,7 +257,9 @@ export function CustomSelect({
             stroke="currentColor"
             strokeWidth="1.5"
             className={
-              open ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'
+              open
+                ? 'text-[var(--color-text)]'
+                : 'text-[var(--color-text-muted)]'
             }
           />
         </svg>
@@ -260,22 +273,40 @@ export function CustomSelect({
         tabIndex={-1}
         data-lenis-prevent
         onWheel={(e) => e.stopPropagation()}
+        // `visibility`, not just `opacity`: a transparent panel is still in the
+        // accessibility tree, so every service name and budget band was being
+        // read out while the control announced itself as collapsed. Visibility
+        // is transitionable and holds at `visible` for the whole run when it is
+        // animating to hidden, so the fade-out is untouched.
         className={cn(
-          'absolute inset-x-0 top-full z-30 mt-2 max-h-[min(20rem,55vh)] origin-top overflow-y-auto rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] py-2 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.75)] transition-[opacity,transform] duration-200 ease-out custom-scrollbar',
+          'custom-scrollbar absolute inset-x-0 top-full z-30 mt-2 max-h-[min(20rem,55vh)] origin-top overflow-y-auto rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] py-2 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.75)] transition-[opacity,transform,visibility] duration-200 ease-out',
           open
-            ? 'pointer-events-auto scale-y-100 opacity-100'
-            : 'pointer-events-none scale-y-95 opacity-0',
+            ? 'pointer-events-auto visible scale-y-100 opacity-100'
+            : 'pointer-events-none invisible scale-y-95 opacity-0',
         )}
       >
-        {groups.map(([group, entries]) => (
+        {groups.map(([group, entries], groupIndex) => (
           <li key={group || 'ungrouped'} role="presentation">
             {group ? (
-              <p className="px-4 pt-3 pb-2 text-[0.625rem] tracking-[0.14em] text-[var(--color-text-muted)] uppercase">
+              // Indexed id, not the label: group names carry spaces and a
+              // slash ("UI/UX design"), neither of which belongs in an id.
+              <p
+                id={`${id}-group-${groupIndex}`}
+                className="px-4 pt-3 pb-2 text-[0.625rem] tracking-[0.14em] text-[var(--color-text-muted)] uppercase"
+              >
                 {group}
               </p>
             ) : null}
 
-            <ul role="presentation">
+            {/* `group`, not `presentation`, when there is a heading to name it:
+                a listbox may own groups, and that is the only way "UI/UX
+                design" reaches a screen reader — as rendered it is a plain
+                paragraph no option is associated with. Ungrouped options stay
+                presentational so the listbox owns them directly. */}
+            <ul
+              role={group ? 'group' : 'presentation'}
+              aria-labelledby={group ? `${id}-group-${groupIndex}` : undefined}
+            >
               {entries.map(({ option, index }) => {
                 const isSelected = option.value === value
                 const isActive = index === activeIndex

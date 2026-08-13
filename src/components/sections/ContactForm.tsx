@@ -30,8 +30,18 @@ type Errors = Partial<Record<'name' | 'email' | 'message', string>>
 /** Idle → sending → the terminal states the status line reports. */
 type Status = 'idle' | 'sending' | 'sent' | 'failed'
 
+/*
+ * `--color-border-interactive` rather than `--color-border`: this rule is the
+ * field's only boundary, so it is a UI component border under WCAG 1.4.11 and
+ * has to clear 3:1 — the decorative hairline does not.
+ *
+ * The `box-shadow` is the keyboard focus indicator. A rectangular outline would
+ * box a field that is drawn as a single underline, so instead the underline
+ * itself doubles to 2px and turns accent — no outline, and no layout change,
+ * because a shadow takes no space. Pointer focus keeps the quieter white rule.
+ */
 const inputClasses =
-  'w-full border-b border-[var(--color-border)] bg-transparent pb-3 text-[1.0625rem] text-[var(--color-text)] outline-none focus:outline-none focus-visible:outline-none transition-colors placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-text)]'
+  'w-full border-b border-[var(--color-border-interactive)] bg-transparent pb-3 text-[1.0625rem] text-[var(--color-text)] outline-none focus:outline-none focus-visible:outline-none transition-colors placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-text)] focus-visible:border-[var(--color-accent)] focus-visible:shadow-[0_1px_0_0_var(--color-accent)]'
 
 /**
  * Contact form, posting to `/api/contact`.

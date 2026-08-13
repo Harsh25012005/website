@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap, registerGsap, prefersReducedMotion } from '@/lib/gsap'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 
@@ -28,15 +28,29 @@ const SIZES: Record<Mode, { size: number; bg: string }> = {
  * the "giant circle floating over content" glitch. Re-deriving the mode every
  * frame means there is no stale state to get stuck in; it always reflects
  * whatever is actually under the cursor right now.
- * Disabled on touch/coarse pointers and under reduced motion.
+ *
+ * On a coarse pointer there is no cursor to replace, so nothing renders at all.
+ * The markup used to ship on every device and merely hide itself with
+ * `md:hidden` — which still costs a phone the hydration of the tree and a client
+ * component boundary for an element it can never see. The gate is a state flag
+ * rather than a check inside render because the server cannot know the pointer
+ * type; starting at `false` keeps the first client render identical to the
+ * server's, and the overlay is `fixed` and decorative so appearing a frame later
+ * shifts nothing.
  */
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLSpanElement>(null)
+  const [enabled, setEnabled] = useState(false)
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     if (prefersReducedMotion()) return
     if (!window.matchMedia('(pointer: fine)').matches) return
+    setEnabled(true)
+  }, [])
+
+  useIsomorphicLayoutEffect(() => {
+    if (!enabled) return
 
     const dot = dotRef.current
     const label = labelRef.current
@@ -71,13 +85,22 @@ export function CustomCursor() {
       })
     }
 
-    const onMove = (event: PointerEvent) => {
-      setX(event.clientX)
-      setY(event.clientY)
+    // `elementFromPoint` forces a synchronous style and layout flush, and a
+    // pointer can emit well over 100 events a second — often while ScrollTrigger
+    // is mid-scrub. Re-deriving the mode once per frame instead keeps the
+    // property that made this approach worth having (no stale enter/exit state,
+    // ever) while capping the flushes at the frame rate. The dot itself still
+    // tracks every single event, so it stays glued to the pointer.
+    let pending = 0
+    let lastX = 0
+    let lastY = 0
+
+    const deriveMode = () => {
+      pending = 0
 
       // The cursor's own overlay is pointer-events-none, so this always
       // reports the real page element under the pointer, never itself.
-      const hit = document.elementFromPoint(event.clientX, event.clientY)
+      const hit = document.elementFromPoint(lastX, lastY)
       if (!hit) {
         applyMode('rest', '')
         return
@@ -97,6 +120,15 @@ export function CustomCursor() {
       applyMode('rest', '')
     }
 
+    const onMove = (event: PointerEvent) => {
+      setX(event.clientX)
+      setY(event.clientY)
+
+      lastX = event.clientX
+      lastY = event.clientY
+      if (!pending) pending = requestAnimationFrame(deriveMode)
+    }
+
     const onDown = () => gsap.to(dot, { scale: 0.8, duration: 0.2 })
     const onUp = () => gsap.to(dot, { scale: 1, duration: 0.2 })
     const onLeaveWindow = () => gsap.to(dot, { autoAlpha: 0, duration: 0.2 })
@@ -110,13 +142,16 @@ export function CustomCursor() {
 
     return () => {
       document.documentElement.classList.remove('has-custom-cursor')
+      if (pending) cancelAnimationFrame(pending)
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerdown', onDown)
       window.removeEventListener('pointerup', onUp)
       document.removeEventListener('mouseleave', onLeaveWindow)
       document.removeEventListener('mouseenter', onEnterWindow)
     }
-  }, [])
+  }, [enabled])
+
+  if (!enabled) return null
 
   return (
     <div

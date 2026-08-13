@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { UnderlineLink } from '@/components/ui/UnderlineLink'
 import { Logo } from '@/components/ui/Logo'
 import { MobileMenu } from './MobileMenu'
-import { navigation } from '@/content/site'
+import { site, navigation } from '@/content/site'
 import { localizedPath, stripLocale, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
 import { cn } from '@/lib/cn'
@@ -33,11 +33,18 @@ export function Header({ locale, dictionary }: HeaderProps) {
       >
         <div className="shell relative flex items-center justify-between">
           <div className="flex items-center gap-3 whitespace-nowrap">
+            {/* The mark is the only child, and an `<svg>` contributes nothing
+                to an accessible name — without the label this link, which is on
+                every page of the site, is announced as bare "link". The name
+                lives on the anchor rather than inside the SVG so it stays with
+                the thing being activated, and the mark is hidden so a `<title>`
+                added later cannot double it up. */}
             <Link
               href={localizedPath(locale, '/')}
+              aria-label={`${site.name} - ${dictionary.footer.home}`}
               className="flex items-center gap-3 text-[var(--color-text)] transition-opacity hover:opacity-80"
             >
-              <Logo className="h-7 w-auto text-current md:h-9" />
+              <Logo aria-hidden className="h-7 w-auto text-current md:h-9" />
             </Link>
           </div>
 

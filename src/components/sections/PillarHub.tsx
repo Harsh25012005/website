@@ -99,28 +99,30 @@ export function PillarHub({ locale, pillar }: PillarHubProps) {
         <div className="shell">
           <ul className="grid gap-x-12 gap-y-10 md:grid-cols-2 md:gap-y-14">
             {items.map((service) => (
-              <Reveal key={service.slug}>
-                <li>
-                  <Link
-                    href={localizedPath(locale, `/services/${service.slug}`)}
-                    className="group block border-t border-[var(--color-border)] pt-6"
-                  >
-                    <span className="text-[11px] text-[var(--color-text-muted)]">
-                      {service.number}
-                    </span>
-                    <h2 className="mt-4 font-serif text-[clamp(24px,2.8vw,32px)] leading-[1.15] font-light tracking-[-0.02em]">
-                      <HoverSwapText
-                        swap={dictionary.common.viewService}
-                        className="pb-[0.1em]"
-                      >
-                        {service.title[locale]}
-                      </HoverSwapText>
-                    </h2>
-                    <p className="mt-4 max-w-[46ch] text-[15px] leading-[1.55] text-[var(--color-text-muted)]">
-                      {service.description[locale]}
-                    </p>
-                  </Link>
-                </li>
+              // The reveal wrapper *is* the list item — a `<div>` between the
+              // `<ul>` and its `<li>`s is invalid and reads as a broken list to
+              // assistive tech. `Reveal` is layout-neutral, so the grid is
+              // unaffected.
+              <Reveal as="li" key={service.slug}>
+                <Link
+                  href={localizedPath(locale, `/services/${service.slug}`)}
+                  className="group block border-t border-[var(--color-border)] pt-6"
+                >
+                  <span className="text-[11px] text-[var(--color-text-muted)]">
+                    {service.number}
+                  </span>
+                  <h2 className="mt-4 font-serif text-[clamp(24px,2.8vw,32px)] leading-[1.15] font-light tracking-[-0.02em]">
+                    <HoverSwapText
+                      swap={dictionary.common.viewService}
+                      className="pb-[0.1em]"
+                    >
+                      {service.title[locale]}
+                    </HoverSwapText>
+                  </h2>
+                  <p className="mt-4 max-w-[46ch] text-[15px] leading-[1.55] text-[var(--color-text-muted)]">
+                    {service.description[locale]}
+                  </p>
+                </Link>
               </Reveal>
             ))}
           </ul>

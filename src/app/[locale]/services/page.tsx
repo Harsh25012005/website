@@ -133,10 +133,7 @@ export default async function ServicesPage({ params }: PageProps) {
                       href={localizedPath(locale, pillarPath(key))}
                       className="group"
                     >
-                      <HoverSwapText
-                        swap="View all"
-                        className="pb-[0.1em]"
-                      >
+                      <HoverSwapText swap="View all" className="pb-[0.1em]">
                         {pillar.title[locale]}
                       </HoverSwapText>
                     </Link>
@@ -149,60 +146,66 @@ export default async function ServicesPage({ params }: PageProps) {
 
               <ul className="mt-10 md:mt-14">
                 {items.map((service) => (
-                  <Reveal key={service.slug}>
-                    <li className="border-t border-[var(--color-border)] py-8 md:py-10">
-                      <div className="grid gap-y-4 md:grid-cols-12 md:gap-x-12">
-                        <div className="md:col-span-4">
-                          <span className="text-[11px] text-[var(--color-text-muted)]">
-                            {service.number}
-                          </span>
-                          {/* The heading is the link. Anchor text that reads
+                  // `as="li"` with the rule and padding hoisted off the inner
+                  // `<li>`: the `<ul>` now has only list-item children, which
+                  // is what the markup always meant. Border then padding on one
+                  // box renders identically to the two nested ones.
+                  <Reveal
+                    as="li"
+                    key={service.slug}
+                    className="border-t border-[var(--color-border)] py-8 md:py-10"
+                  >
+                    <div className="grid gap-y-4 md:grid-cols-12 md:gap-x-12">
+                      <div className="md:col-span-4">
+                        <span className="text-[11px] text-[var(--color-text-muted)]">
+                          {service.number}
+                        </span>
+                        {/* The heading is the link. Anchor text that reads
                               "Webflow development" tells a crawler what the
                               destination is about; "Learn more" repeated
                               fifteen times tells it nothing. */}
-                          <h3 className="mt-3 max-w-[16ch] font-serif text-[clamp(22px,2.4vw,30px)] leading-[1.15] font-light tracking-[-0.02em]">
-                            <Link
-                              href={localizedPath(
-                                locale,
-                                `/services/${service.slug}`,
-                              )}
-                              className="group block"
-                            >
-                              {/* `leading-[1.15]` sits tight enough that the
+                        <h3 className="mt-3 max-w-[16ch] font-serif text-[clamp(22px,2.4vw,30px)] leading-[1.15] font-light tracking-[-0.02em]">
+                          <Link
+                            href={localizedPath(
+                              locale,
+                              `/services/${service.slug}`,
+                            )}
+                            className="group block"
+                          >
+                            {/* `leading-[1.15]` sits tight enough that the
                                   clip box would shave the descenders off the
                                   serif face; the padding buys them back. */}
-                              <HoverSwapText
-                                swap={dictionary.common.viewService}
-                                className="pb-[0.1em]"
-                              >
-                                {service.title[locale]}
-                              </HoverSwapText>
-                            </Link>
-                          </h3>
-                        </div>
-
-                        <div className="md:col-span-7 md:col-start-6">
-                          <p className="max-w-[56ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)]">
-                            {service.description[locale]}
-                          </p>
-
-                          <ul className="mt-6 space-y-2">
-                            {service.deliverables[locale].map((item) => (
-                              <li
-                                key={item}
-                                className="flex gap-3 text-[14px] leading-[1.55] text-[var(--color-text-muted)]"
-                              >
-                                <span
-                                  aria-hidden
-                                  className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-[var(--color-text-muted)]"
-                                />
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                            <HoverSwapText
+                              swap={dictionary.common.viewService}
+                              className="pb-[0.1em]"
+                            >
+                              {service.title[locale]}
+                            </HoverSwapText>
+                          </Link>
+                        </h3>
                       </div>
-                    </li>
+
+                      <div className="md:col-span-7 md:col-start-6">
+                        <p className="max-w-[56ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)]">
+                          {service.description[locale]}
+                        </p>
+
+                        <ul className="mt-6 space-y-2">
+                          {service.deliverables[locale].map((item) => (
+                            <li
+                              key={item}
+                              className="flex gap-3 text-[14px] leading-[1.55] text-[var(--color-text-muted)]"
+                            >
+                              <span
+                                aria-hidden
+                                className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-[var(--color-text-muted)]"
+                              />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </Reveal>
                 ))}
               </ul>

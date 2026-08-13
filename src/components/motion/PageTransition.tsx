@@ -19,6 +19,9 @@ const COLUMNS = 4
 export function PageTransition() {
   const rootRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  // Seeded with the pathname this component first rendered at, so "the route
+  // has not changed yet" and "the route just changed back" are the same check.
+  const playedFor = useRef(pathname)
 
   useIsomorphicLayoutEffect(() => {
     const root = rootRef.current
@@ -29,6 +32,16 @@ export function PageTransition() {
       gsap.set(root, { autoAlpha: 0 })
       return
     }
+
+    // A cold load already has an entry curtain — the preloader — and this used
+    // to stack a second full-screen white wipe on top of it, four more opaque
+    // columns over a page that had not painted anything yet. This is the
+    // *route-change* curtain; on the first pathname it has nothing to cover.
+    if (playedFor.current === pathname) {
+      gsap.set(root, { autoAlpha: 0 })
+      return
+    }
+    playedFor.current = pathname
 
     const ctx = gsap.context(() => {
       const columns = gsap.utils.toArray<HTMLElement>(

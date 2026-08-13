@@ -74,7 +74,14 @@ export default async function ArticlesPage({ params }: PageProps) {
         <div className="mt-12 grid items-start gap-8 md:mt-16 md:grid-cols-3">
           {articles.map((article, index) => (
             <Reveal key={article.slug} delay={index * 0.06}>
-              <ArticleCard article={article} locale={locale} />
+              {/* `h2`, not the card's default `h3`: this page's `h1` is the
+                  only heading above the grid, so the default would skip a
+                  level. Everywhere else the cards sit under a section `h2`. */}
+              <ArticleCard
+                article={article}
+                locale={locale}
+                headingLevel="h2"
+              />
             </Reveal>
           ))}
         </div>

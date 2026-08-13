@@ -69,8 +69,15 @@ export function WorkFilter({ projects, locale, dictionary }: WorkFilterProps) {
   return (
     <>
       <Reveal className="mt-12 md:mt-16">
+        {/* `group` + `aria-pressed`, not `tablist` + `tab`. The tab roles
+            promised a contract this control does not keep: there is no
+            `tabpanel`, no `aria-controls`, and no roving tabindex, so a screen
+            reader user was told to expect ←/→ navigation into a panel that does
+            not exist. These are toggle buttons that filter a grid in place, and
+            saying so needs no keyboard work — Tab and Enter already do the
+            right thing. */}
         <div
-          role="tablist"
+          role="group"
           aria-label={dictionary.common.selectedWork}
           className="flex flex-wrap gap-2"
         >
@@ -78,8 +85,7 @@ export function WorkFilter({ projects, locale, dictionary }: WorkFilterProps) {
             <button
               key={filter}
               type="button"
-              role="tab"
-              aria-selected={active === filter}
+              aria-pressed={active === filter}
               onClick={() => setActive(filter)}
               className={cn(
                 'rounded-full border px-4 py-2 text-[13px] transition-all duration-200 active:scale-[0.96]',

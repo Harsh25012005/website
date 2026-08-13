@@ -11,6 +11,14 @@
   --color-text-soft: #fdfdfdd9;
   --color-text-muted: #fdfdfda6;
   --color-border: #fdfdfd24;
+  /*
+   * The hairline above is decoration — rules between sections, card edges —
+   * and at 1.5:1 on the background it is exempt from contrast requirements.
+   * On a form field the same line is the control's only boundary, which WCAG
+   * 1.4.11 holds to 3:1. This token is that line and nothing else: 3.27:1,
+   * still a hairline, still reads as the same drawing.
+   */
+  --color-border-interactive: #fdfdfd5c;
   --color-accent: #7db8fe;
   --color-accent-warm: #ebe1b0;
   --color-accent-purple: #0057d8;
@@ -79,6 +87,12 @@ body {
   color: #000;
 }
 
+/*
+ * Inputs are excluded on purpose: a rectangular ring around a field whose only
+ * chrome is a bottom rule boxes it and breaks the drawing. They get their own
+ * indicator instead — see `inputClasses` in `ContactForm`, which doubles the
+ * underline in the accent colour on `:focus-visible`.
+ */
 :focus-visible:not(input, textarea) {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;

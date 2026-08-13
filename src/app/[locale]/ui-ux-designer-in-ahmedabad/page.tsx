@@ -140,20 +140,21 @@ export default async function AhmedabadPage({ params }: PageProps) {
 
           <ul className="mt-12 grid gap-x-8 gap-y-8 border-t border-[var(--color-border)] pt-10 md:grid-cols-3">
             {services.map((service) => (
-              <Reveal key={service.slug}>
-                <li>
-                  <Link
-                    href={localizedPath(locale, `/services/${service.slug}`)}
-                    className="group block"
-                  >
-                    <h3 className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.15] font-light transition-colors group-hover:text-white">
-                      {service.title[locale]}
-                    </h3>
-                    <p className="mt-3 max-w-[34ch] text-[15px] leading-[1.55] text-[var(--color-text-muted)]">
-                      {service.description[locale]}
-                    </p>
-                  </Link>
-                </li>
+              // The reveal wrapper is the list item; a `<div>` between the
+              // `<ul>` and its `<li>`s is invalid and also makes the reveal —
+              // not the item — the grid child.
+              <Reveal as="li" key={service.slug}>
+                <Link
+                  href={localizedPath(locale, `/services/${service.slug}`)}
+                  className="group block"
+                >
+                  <h3 className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.15] font-light transition-colors group-hover:text-white">
+                    {service.title[locale]}
+                  </h3>
+                  <p className="mt-3 max-w-[34ch] text-[15px] leading-[1.55] text-[var(--color-text-muted)]">
+                    {service.description[locale]}
+                  </p>
+                </Link>
               </Reveal>
             ))}
           </ul>

@@ -32,40 +32,44 @@ export function Services({ locale, dictionary }: ServicesProps) {
 
         <ul className="grid border-t border-[var(--color-border)] md:grid-cols-3">
           {featuredServices.map((service) => (
+            // `as="li"` rather than a `<li>` nested inside the reveal: a `<ul>`
+            // may only contain `<li>` children, and the default `<div>` wrapper
+            // put an invalid node between the two. Same element, same classes,
+            // same DOM position — so `nth-child` below still counts cells, not
+            // wrappers, and the ruled columns are unchanged.
             <Reveal
+              as="li"
               // Not `service.number` — numbering restarts inside each pillar,
               // so a design and a development service both carry '01'.
               key={service.slug}
               className="border-b border-[var(--color-border)] md:[&:not(:nth-child(3n))]:border-r md:[&:not(:nth-child(3n))]:border-[var(--color-border)]"
             >
-              <li>
-                {/* The whole cell is the link, and the anchor text is the
-                    service name — six descriptive internal links from the
-                    highest-equity page on the site straight into the six pages
-                    that carry the commercial terms.
+              {/* The whole cell is the link, and the anchor text is the
+                  service name — six descriptive internal links from the
+                  highest-equity page on the site straight into the six pages
+                  that carry the commercial terms.
 
-                    No `data-cursor-label` here, unlike the project cards. The
-                    custom cursor swells into a filled disc to hold the label,
-                    which on these cells lands directly over the copy it is
-                    sitting on top of and hides it. It works on `ProjectCard`
-                    because the cursor is over an image with nothing to read. */}
-                <Link
-                  href={localizedPath(locale, `/services/${service.slug}`)}
-                  className="group block py-6 md:p-8"
-                >
-                  <span className="text-[11px] text-[var(--color-text-muted)]">
-                    {service.number}
-                  </span>
-                  <h3 className="mt-5 font-serif text-[26px] leading-tight font-light md:mt-8 md:text-[30px]">
-                    <HoverSwapText swap={dictionary.common.viewService}>
-                      {service.title[locale]}
-                    </HoverSwapText>
-                  </h3>
-                  <p className="mt-3 text-[15px] leading-[1.55] text-[var(--color-text-muted)] md:mt-6 md:max-w-[34ch]">
-                    {service.description[locale]}
-                  </p>
-                </Link>
-              </li>
+                  No `data-cursor-label` here, unlike the project cards. The
+                  custom cursor swells into a filled disc to hold the label,
+                  which on these cells lands directly over the copy it is
+                  sitting on top of and hides it. It works on `ProjectCard`
+                  because the cursor is over an image with nothing to read. */}
+              <Link
+                href={localizedPath(locale, `/services/${service.slug}`)}
+                className="group block py-6 md:p-8"
+              >
+                <span className="text-[11px] text-[var(--color-text-muted)]">
+                  {service.number}
+                </span>
+                <h3 className="mt-5 font-serif text-[26px] leading-tight font-light md:mt-8 md:text-[30px]">
+                  <HoverSwapText swap={dictionary.common.viewService}>
+                    {service.title[locale]}
+                  </HoverSwapText>
+                </h3>
+                <p className="mt-3 text-[15px] leading-[1.55] text-[var(--color-text-muted)] md:mt-6 md:max-w-[34ch]">
+                  {service.description[locale]}
+                </p>
+              </Link>
             </Reveal>
           ))}
         </ul>

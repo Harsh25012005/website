@@ -143,10 +143,12 @@ export function MobileMenu({
   }, [open])
 
   return (
+    // No `aria-label` on this root: it has no role, and a name on a roleless
+    // `<div>` is dropped by assistive tech, so the label was inert. It belongs
+    // on the `<nav>` below, which is the element that has something to name.
     <div
       ref={rootRef}
       id="mobile-menu"
-      aria-label={dictionary.nav.siteMenu}
       aria-hidden={!open}
       className={cnMenu(open)}
     >
@@ -165,7 +167,10 @@ export function MobileMenu({
         data-menu-content
         className="relative flex h-full flex-col px-5 pt-28 pb-10 opacity-0"
       >
-        <nav className="flex flex-col gap-2">
+        <nav
+          aria-label={dictionary.nav.siteMenu}
+          className="flex flex-col gap-2"
+        >
           {navigation.map((item) => (
             <Link
               key={item.key}

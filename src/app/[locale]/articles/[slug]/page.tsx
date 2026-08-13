@@ -242,23 +242,21 @@ export default async function ArticlePage({ params }: PageProps) {
                   </Reveal>
                   <ul className="mt-8 space-y-6">
                     {relatedWork.map((project, index) => (
-                      <Reveal key={project.slug} delay={index * 0.06}>
-                        <li>
-                          <Link
-                            href={localizedPath(
-                              locale,
-                              `/work/${project.slug}`,
-                            )}
-                            className="group block"
-                          >
-                            <span className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.2] font-light transition-colors group-hover:text-white">
-                              {project.title[locale]}
-                            </span>
-                            <span className="mt-1 block text-[14px] text-[var(--color-text-muted)]">
-                              {project.discipline[locale]}
-                            </span>
-                          </Link>
-                        </li>
+                      // The reveal wrapper is the list item; a `<div>` between
+                      // `<ul>` and `<li>` is invalid markup and breaks the list
+                      // for assistive tech.
+                      <Reveal as="li" key={project.slug} delay={index * 0.06}>
+                        <Link
+                          href={localizedPath(locale, `/work/${project.slug}`)}
+                          className="group block"
+                        >
+                          <span className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.2] font-light transition-colors group-hover:text-white">
+                            {project.title[locale]}
+                          </span>
+                          <span className="mt-1 block text-[14px] text-[var(--color-text-muted)]">
+                            {project.discipline[locale]}
+                          </span>
+                        </Link>
                       </Reveal>
                     ))}
                   </ul>
@@ -274,23 +272,21 @@ export default async function ArticlePage({ params }: PageProps) {
                   </Reveal>
                   <ul className="mt-8 space-y-6">
                     {relatedServices.map((service, index) => (
-                      <Reveal key={service.slug} delay={index * 0.06}>
-                        <li>
-                          <Link
-                            href={localizedPath(
-                              locale,
-                              `/services/${service.slug}`,
-                            )}
-                            className="group block"
-                          >
-                            <span className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.2] font-light transition-colors group-hover:text-white">
-                              {service.title[locale]}
-                            </span>
-                            <span className="mt-1 block max-w-[40ch] text-[14px] leading-[1.5] text-[var(--color-text-muted)]">
-                              {service.description[locale]}
-                            </span>
-                          </Link>
-                        </li>
+                      <Reveal as="li" key={service.slug} delay={index * 0.06}>
+                        <Link
+                          href={localizedPath(
+                            locale,
+                            `/services/${service.slug}`,
+                          )}
+                          className="group block"
+                        >
+                          <span className="font-serif text-[clamp(20px,2.2vw,26px)] leading-[1.2] font-light transition-colors group-hover:text-white">
+                            {service.title[locale]}
+                          </span>
+                          <span className="mt-1 block max-w-[40ch] text-[14px] leading-[1.5] text-[var(--color-text-muted)]">
+                            {service.description[locale]}
+                          </span>
+                        </Link>
                       </Reveal>
                     ))}
                   </ul>

@@ -42,8 +42,28 @@ export default async function LocaleLayout({
       <SmoothScroll>
         {/* Sits above the fixed WebGL canvas. */}
         <div className="relative z-10">
+          {/* `#main` has existed on this layout all along with nothing pointing
+              at it. The header runs to seven links before any page content, so
+              without this a keyboard or switch user tabs the whole nav again on
+              every navigation. Off-screen until focused, so nothing changes for
+              anyone else. */}
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-5 focus:py-2.5 focus:text-[14px] focus:leading-none focus:text-black"
+          >
+            Skip to content
+          </a>
           <Header locale={locale} dictionary={dictionary} />
-          <main id="main">{children}</main>
+          {/* `tabIndex={-1}` is what makes the skip link above actually skip:
+              following a fragment moves focus only if the target can hold it,
+              and without this the next Tab would land back in the header. */}
+          {/* `outline-none` only because the global focus ring would draw
+              itself around the entire scroll height of the page; the accepted
+              exception for a container that only ever receives focus as a skip
+              target. Every focusable thing inside it keeps its ring. */}
+          <main id="main" tabIndex={-1} className="focus:outline-none">
+            {children}
+          </main>
           <Footer locale={locale} dictionary={dictionary} />
         </div>
       </SmoothScroll>

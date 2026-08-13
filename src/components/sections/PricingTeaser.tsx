@@ -40,39 +40,42 @@ export function PricingTeaser({ locale, dictionary }: PricingTeaserProps) {
             boxed table. */}
         <ul className="grid border-t border-[var(--color-border)] md:grid-cols-2">
           {pricingPackages.map((pkg) => (
+            // The cell's borders and its padding used to sit on two nested
+            // elements; folding both onto one `<li>` is what makes the `<ul>`
+            // contain only list items. Border outside, padding inside, same
+            // grid child — the rendered box is byte-for-byte the old one.
             <Reveal
+              as="li"
               key={pkg.slug}
-              className="border-b border-[var(--color-border)] md:[&:not(:nth-child(2n))]:border-r md:[&:not(:nth-child(2n))]:border-[var(--color-border)]"
+              className="border-b border-[var(--color-border)] py-6 md:p-8 md:[&:not(:nth-child(2n))]:border-r md:[&:not(:nth-child(2n))]:border-[var(--color-border)]"
             >
-              <li className="py-6 md:p-8">
-                <h3 className="font-serif text-[26px] leading-tight font-light text-white md:text-[30px]">
-                  {pkg.name[locale]}
-                </h3>
+              <h3 className="font-serif text-[26px] leading-tight font-light text-white md:text-[30px]">
+                {pkg.name[locale]}
+              </h3>
 
-                <p className="mt-4 flex flex-wrap items-baseline gap-x-2 md:mt-6">
-                  {pkg.from ? (
-                    <>
-                      <span className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
-                        {dictionary.common.priceFrom}
-                      </span>
-                      <span className="font-serif text-[clamp(28px,3vw,36px)] leading-none font-light text-white">
-                        {pkg.from}
-                      </span>
-                      <span className="text-[14px] text-[var(--color-text-muted)]">
-                        {pkg.unit[locale]}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="font-serif text-[clamp(20px,2.2vw,26px)] leading-none font-light text-[var(--color-text-soft)]">
-                      {dictionary.common.priceOnRequest}
+              <p className="mt-4 flex flex-wrap items-baseline gap-x-2 md:mt-6">
+                {pkg.from ? (
+                  <>
+                    <span className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
+                      {dictionary.common.priceFrom}
                     </span>
-                  )}
-                </p>
+                    <span className="font-serif text-[clamp(28px,3vw,36px)] leading-none font-light text-white">
+                      {pkg.from}
+                    </span>
+                    <span className="text-[14px] text-[var(--color-text-muted)]">
+                      {pkg.unit[locale]}
+                    </span>
+                  </>
+                ) : (
+                  <span className="font-serif text-[clamp(20px,2.2vw,26px)] leading-none font-light text-[var(--color-text-soft)]">
+                    {dictionary.common.priceOnRequest}
+                  </span>
+                )}
+              </p>
 
-                <p className="mt-4 text-[15px] leading-[1.55] text-[var(--color-text-muted)] md:mt-6 md:max-w-[38ch]">
-                  {pkg.bestFor[locale]}
-                </p>
-              </li>
+              <p className="mt-4 text-[15px] leading-[1.55] text-[var(--color-text-muted)] md:mt-6 md:max-w-[38ch]">
+                {pkg.bestFor[locale]}
+              </p>
             </Reveal>
           ))}
         </ul>

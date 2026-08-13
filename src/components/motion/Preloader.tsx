@@ -19,15 +19,57 @@ type PreloaderProps = {
 const COLUMNS = 4
 
 /**
- * Entry curtain: four full-height columns over centered name text and a
- * 0→100 counter, then the columns wipe upward in sequence.
+ * Once per browsing session. The inline script in `app/layout.tsx` reads the
+ * same key before first paint and hides the markup from CSS, which is what stops
+ * a repeat visit from flashing the curtain during the seconds before hydration.
+ */
+const SESSION_KEY = 'preloader-shown'
+
+function hasPlayedThisSession(): boolean {
+  try {
+    return sessionStorage.getItem(SESSION_KEY) !== null
+  } catch {
+    // Privacy modes throw on access. Showing the curtain is the safe failure.
+    return false
+  }
+}
+
+function markPlayed() {
+  try {
+    sessionStorage.setItem(SESSION_KEY, '1')
+  } catch {
+    /* Non-fatal: the curtain simply plays again next load. */
+  }
+  // Deliberately does not set the `data-preloader-shown` attribute the inline
+  // script sets. That attribute drives a `display: none` rule, and setting it
+  // here would hide the curtain in the very frame it started playing. It is a
+  // pre-paint flag for the *next* document, and only that script may write it.
+}
+
+/**
+ * Entry curtain: four full-height columns over the mark and a 0→100 counter,
+ * then the columns wipe upward in sequence.
  *
  * Scroll is locked for the duration — otherwise a wheel event during the count
  * leaves the page mid-section when the curtain lifts.
+ *
+ * Two things keep it off the critical path. It plays only on the first load of a
+ * session, so arriving from search costs it once and every page after that is
+ * clean. And the whole timeline is ~1.4s rather than ~3.4s: Speed Index scores
+ * the area above the visual-completeness curve, and a full-viewport opaque frame
+ * holds that curve at zero for exactly as long as it is up. The choreography is
+ * unchanged — count, fade, staggered wipe — only its duration is.
  */
 export function Preloader({ images: _images }: PreloaderProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const counterRef = useRef<HTMLSpanElement>(null)
+
+  // Deliberately not derived from sessionStorage: the server cannot read it, so
+  // seeding state from it would hand React a different first render on the
+  // client and trip a hydration mismatch. Server and client both start at
+  // `false` and render the same markup; the effect below decides. Nothing
+  // flashes in between because the CSS rule keyed off the inline script's
+  // attribute has already hidden it.
   const [done, setDone] = useState(false)
 
   useIsomorphicLayoutEffect(() => {
@@ -35,12 +77,26 @@ export function Preloader({ images: _images }: PreloaderProps) {
     if (!root) return
     registerGsap()
 
-    if (prefersReducedMotion()) {
+    const lenis = getLenis()
+
+    // Every exit from this effect goes through here. The curtain is the only
+    // thing on the site that locks scrolling, so a path that forgets to unlock
+    // leaves the page frozen with no way back.
+    const releaseScroll = () => {
+      document.body.style.overflow = ''
+      lenis?.start()
+    }
+
+    if (prefersReducedMotion() || hasPlayedThisSession()) {
+      releaseScroll()
       setDone(true)
       return
     }
 
-    const lenis = getLenis()
+    // Written before the timeline, not after it: a reload part-way through the
+    // count is still a session that has seen the curtain.
+    markPlayed()
+
     lenis?.stop()
     document.body.style.overflow = 'hidden'
 
@@ -50,18 +106,21 @@ export function Preloader({ images: _images }: PreloaderProps) {
 
       const tl = gsap.timeline({
         onComplete: () => {
-          document.body.style.overflow = ''
-          lenis?.start()
+          releaseScroll()
           setDone(true)
+          // Triggers were measured while the page was scroll-locked and the
+          // hero was still animating; one pass re-syncs their start positions.
           ScrollTrigger.refresh()
         },
       })
 
-      // Counter runs together for a fixed 2.1s beat
+      // The counter is a beat, not a progress bar — it never reported real
+      // loading. 0.65s is long enough to read as a count and short enough that
+      // the first meaningful frame is not held hostage to it.
       tl.to(counter, {
         value: 100,
-        duration: 2.1,
-        ease: 'power2.inOut',
+        duration: 0.65,
+        ease: 'power2.out',
         onUpdate: () => {
           if (counterRef.current) {
             counterRef.current.textContent = String(Math.round(counter.value))
@@ -69,25 +128,30 @@ export function Preloader({ images: _images }: PreloaderProps) {
         },
       })
 
-      // Fade out the overlay content (name text & counter) before lifting columns
-      tl.to('[data-preloader-content]', {
-        opacity: 0,
-        duration: 0.25,
-        ease: 'power2.out',
-      })
+      // Fade out the overlay content (mark & counter) before lifting columns,
+      // overlapping the tail of the count so the two read as one gesture.
+      tl.to(
+        '[data-preloader-content]',
+        {
+          opacity: 0,
+          duration: 0.18,
+          ease: 'power2.out',
+        },
+        '-=0.06',
+      )
 
       // Columns leave left-to-right so the reveal reads as a wipe, not a fade.
+      // `expo.inOut` clears the viewport well before the tween formally ends.
       tl.to(columns, {
         yPercent: -100,
-        duration: 1.05,
-        stagger: 0.07,
+        duration: 0.5,
+        stagger: 0.045,
         ease: 'expo.inOut',
       }).to(root, { autoAlpha: 0, duration: 0.01 }, '>-0.01')
     }, root)
 
     return () => {
-      document.body.style.overflow = ''
-      lenis?.start()
+      releaseScroll()
       ctx.revert()
     }
   }, [])
@@ -97,6 +161,7 @@ export function Preloader({ images: _images }: PreloaderProps) {
   return (
     <div
       ref={rootRef}
+      data-preloader
       aria-hidden
       className="pointer-events-none fixed inset-0 z-[9000]"
     >

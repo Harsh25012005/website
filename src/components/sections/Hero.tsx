@@ -20,11 +20,18 @@ export function Hero({ locale, dictionary }: HeroProps) {
   return (
     <section className="relative flex min-h-svh flex-col justify-center px-5 pt-44 pb-24 md:px-10 md:pt-52 md:pb-24">
       <div className="shell relative flex flex-col">
+        {/* This h1 is the LCP element on every viewport, and the reveal is the
+            last thing standing between the page loading and it being measured:
+            LCP lands when the final line clears its mask. The cascade is kept —
+            it is what the heading is for — but the lead-in and the per-line
+            offset are trimmed to the smallest values that still read as a
+            cascade rather than a block, which is ~250ms off the metric for a
+            difference the eye has to be looking for. */}
         <SplitHeading
           as="h1"
           immediate
-          delay={0.15}
-          stagger={0.09}
+          delay={0.05}
+          stagger={0.06}
           className="max-w-[18ch] font-serif text-[clamp(34px,5.4vw,5rem)] leading-[1.3] font-light tracking-[-0.04em] md:max-w-[64.0625rem]"
         >
           {/* Explicit breaks rather than natural wrapping: the line rhythm is

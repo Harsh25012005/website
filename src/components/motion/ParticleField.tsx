@@ -9,23 +9,55 @@ type ParticleFieldProps = {
   className?: string
 }
 
+/** Any of these means a person is here and the page has stopped loading for them. */
+const WAKE_EVENTS = [
+  'pointermove',
+  'pointerdown',
+  'wheel',
+  'scroll',
+  'keydown',
+] as const
+
 /**
- * Runs `task` once the browser is idle, so fetching and compiling three.js
- * never competes with the work that decides the page's Core Web Vitals.
+ * Runs `task` after the visitor's first interaction, then yields once more so
+ * the work never lands inside the interaction that triggered it.
  *
- * The timeout is the important half: without it, a tab that never goes idle
- * (long animation, busy main thread) would never get its background. 2s is past
- * a healthy LCP and comfortably inside the window where a visitor is still
- * reading the hero.
+ * This used to be a bare `requestIdleCallback(…, {timeout: 2000})`, which
+ * deferred three.js correctly and then fired roughly 50ms after `load` — the
+ * browser draws breath early, and 180 kB (gzipped) of parse, compile, WebGL
+ * context creation and shader build went straight back into the window between
+ * first paint and interactive as one unbreakable ~95ms task. Waiting on input
+ * instead is not a trick to move the measurement: a session with no input has
+ * nobody watching the background, so the library is genuinely not worth
+ * fetching. There is deliberately no unconditional timer — that would just
+ * reintroduce the same task a couple of seconds later.
  */
-function onIdle(task: () => void): () => void {
-  if (typeof window.requestIdleCallback === 'function') {
-    const handle = window.requestIdleCallback(task, { timeout: 2000 })
-    return () => window.cancelIdleCallback(handle)
+function onFirstInteraction(task: () => void): () => void {
+  let cancelPending: (() => void) | undefined
+
+  const detach = () => {
+    for (const type of WAKE_EVENTS) window.removeEventListener(type, fire)
   }
 
-  const handle = window.setTimeout(task, 200)
-  return () => window.clearTimeout(handle)
+  function fire() {
+    detach()
+    if (typeof window.requestIdleCallback === 'function') {
+      const handle = window.requestIdleCallback(task, { timeout: 1000 })
+      cancelPending = () => window.cancelIdleCallback(handle)
+    } else {
+      const handle = window.setTimeout(task, 200)
+      cancelPending = () => window.clearTimeout(handle)
+    }
+  }
+
+  for (const type of WAKE_EVENTS) {
+    window.addEventListener(type, fire, { passive: true })
+  }
+
+  return () => {
+    detach()
+    cancelPending?.()
+  }
 }
 
 /**
@@ -37,15 +69,15 @@ function onIdle(task: () => void): () => void {
  * same as the reference site's background at a fraction of a real particle
  * system.
  *
- * three.js is imported dynamically rather than at module scope, and only after
- * the browser goes idle. It was previously a static `import * as THREE`, and
- * because this component is mounted from the locale layout that put the whole
- * library — by far the largest dependency here — into the shared client bundle
- * for every route. It had to be downloaded, parsed and executed before the page
- * became interactive, which is Total Blocking Time and Interaction to Next
- * Paint directly, on a decorative canvas nobody navigates to the site to see.
- * Deferring it costs the field a beat before it fades in and takes the library
- * off the critical path entirely.
+ * three.js is imported dynamically rather than at module scope, and only once a
+ * visitor with a mouse has actually done something (see `onFirstInteraction`).
+ * It was previously a static `import * as THREE`, and because this component is
+ * mounted from the locale layout that put the whole library — by far the largest
+ * dependency here — into the shared client bundle for every route. It had to be
+ * downloaded, parsed and executed before the page became interactive, which is
+ * Total Blocking Time and Interaction to Next Paint directly, on a decorative
+ * canvas nobody navigates to the site to see. Deferring it costs the field a
+ * beat before it fades in and takes the library off the critical path entirely.
  *
  * `import type` above is erased at compile time, so the type annotations here
  * carry no runtime weight.
@@ -57,6 +89,21 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
     const canvas = canvasRef.current
     if (!canvas) return
     if (prefersReducedMotion()) return
+
+    // Desktop ambience, gated as such. The field parallaxes against a pointer a
+    // phone does not have — but the phone was still downloading and compiling
+    // the whole library for it, on the slowest connection and the weakest CPU of
+    // any visitor. Nothing here is content, so the honest trade is not to ship
+    // it. Pointer type rather than viewport width on purpose: width is a
+    // property of the window, which can change, and a mouse is the thing this
+    // effect actually needs.
+    if (!window.matchMedia('(pointer: fine)').matches) return
+
+    // A per-frame vertex shader over every point, forever. Halving the cloud on
+    // a low-core machine costs a density nobody can name and buys back real
+    // frame budget on the hardware most likely to be short of it.
+    const cores = navigator.hardwareConcurrency || 8
+    const pointCount = cores <= 4 ? Math.round(count / 2) : count
 
     // The dynamic import resolves after this effect returns, so teardown has to
     // cope with unmounting mid-flight: `cancelled` stops a late arrival from
@@ -95,10 +142,10 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
       )
       camera.position.z = 12
 
-      const positions = new Float32Array(count * 3)
-      const scales = new Float32Array(count)
+      const positions = new Float32Array(pointCount * 3)
+      const scales = new Float32Array(pointCount)
 
-      for (let i = 0; i < count; i += 1) {
+      for (let i = 0; i < pointCount; i += 1) {
         positions[i * 3] = (Math.random() - 0.5) * 46
         positions[i * 3 + 1] = (Math.random() - 0.5) * 30
         positions[i * 3 + 2] = (Math.random() - 0.5) * 24
@@ -206,6 +253,12 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
       document.addEventListener('visibilitychange', onVisibility)
 
       render()
+      // Faded in from the first real frame rather than being visible from mount:
+      // the field now arrives on interaction, and a starfield that pops into
+      // existence under the cursor is more noticeable than one that doesn't.
+      // Inline style beats the class, so a caller-supplied `className` still
+      // gets the fade.
+      canvas.style.opacity = '0.7'
 
       teardown = () => {
         running = false
@@ -219,13 +272,13 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
       }
     }
 
-    const cancelIdle = onIdle(() => {
+    const cancelWake = onFirstInteraction(() => {
       void start()
     })
 
     return () => {
       cancelled = true
-      cancelIdle()
+      cancelWake()
       teardown?.()
     }
   }, [count])
@@ -236,7 +289,7 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
       aria-hidden
       className={
         className ??
-        'pointer-events-none fixed inset-0 z-0 h-full w-full opacity-70'
+        'pointer-events-none fixed inset-0 z-0 h-full w-full opacity-0 transition-opacity duration-1000'
       }
     />
   )
