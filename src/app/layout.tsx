@@ -99,7 +99,7 @@ const preloaderFlagScript = `try{if(sessionStorage.getItem('preloader-shown'))do
  */
 const criticalCss = `
 html[data-preloader-shown] [data-preloader]{display:none}
-[data-split-heading]{opacity:.01;animation:split-heading-in .5s cubic-bezier(.16,1,.3,1) .4s forwards}
+[data-split-heading]{opacity:.01;animation:split-heading-in .4s cubic-bezier(.16,1,.3,1) .05s forwards}
 @keyframes split-heading-in{from{opacity:.01;transform:translate3d(0,.35em,0)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){[data-split-heading]{opacity:1;animation:none}}
 `

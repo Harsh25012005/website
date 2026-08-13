@@ -1,9 +1,8 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import { gsap, registerGsap, prefersReducedMotion } from '@/lib/gsap'
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 
 const COLUMNS = 4
 
@@ -23,7 +22,7 @@ export function PageTransition() {
   // has not changed yet" and "the route just changed back" are the same check.
   const playedFor = useRef(pathname)
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     const root = rootRef.current
     if (!root) return
     registerGsap()

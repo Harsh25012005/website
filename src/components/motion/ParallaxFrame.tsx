@@ -1,8 +1,7 @@
 'use client'
 
-import { useRef, type ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import { gsap, registerGsap, prefersReducedMotion } from '@/lib/gsap'
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { cn } from '@/lib/cn'
 
 type ParallaxFrameProps = {
@@ -31,7 +30,7 @@ export function ParallaxFrame({
   const frameRef = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     const frame = frameRef.current
     const inner = innerRef.current
     if (!frame || !inner) return

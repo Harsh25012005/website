@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, type ElementType, type ReactNode } from 'react'
+import { useEffect, useRef, type ElementType, type ReactNode } from 'react'
 import {
   gsap,
   loadSplitText,
@@ -27,9 +27,9 @@ type SplitHeadingProps = {
 /**
  * How long an above-the-fold heading may wait for `document.fonts.ready` before
  * splitting against whatever metrics it has. Sized to sit inside the CSS
- * fallback's window, so the two never race each other.
+ * fallback's window (which fires after ~50ms), so the two never race each other.
  */
-const FONTS_TIMEOUT_MS = 500
+const FONTS_TIMEOUT_MS = 300
 
 /**
  * Backstop for the whole setup — dynamic chunk, fonts, a busy main thread. Tight
@@ -100,7 +100,13 @@ export function SplitHeading({
 }: SplitHeadingProps) {
   const ref = useRef<HTMLElement>(null)
 
-  useIsomorphicLayoutEffect(() => {
+  // Immediate headings are the LCP element and must run before first paint to
+  // cancel the CSS fallback before it and the JS reveal race. Deferred headings
+  // are below the fold — they cannot be seen until the user scrolls, so their
+  // setup can safely yield to the browser after hydration.
+  const useEffect_ = immediate ? useIsomorphicLayoutEffect : useEffect
+
+  useEffect_(() => {
     const el = ref.current
     if (!el) return
     registerGsap()

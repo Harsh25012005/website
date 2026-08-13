@@ -1,13 +1,12 @@
 'use client'
 
-import { useRef, type ElementType, type ReactNode } from 'react'
+import { useEffect, useRef, type ElementType, type ReactNode } from 'react'
 import {
   gsap,
   ScrollTrigger,
   registerGsap,
   prefersReducedMotion,
 } from '@/lib/gsap'
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { cn } from '@/lib/cn'
 
 type RevealProps = {
@@ -43,7 +42,7 @@ export function Reveal({
 }: RevealProps) {
   const ref = useRef<HTMLElement>(null)
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     const el = ref.current
     if (!el) return
     registerGsap()

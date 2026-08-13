@@ -1,8 +1,7 @@
 'use client'
 
-import { Children, useRef, type ReactNode } from 'react'
+import { Children, useEffect, useRef, type ReactNode } from 'react'
 import { gsap, registerGsap, prefersReducedMotion } from '@/lib/gsap'
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { cn } from '@/lib/cn'
 
 type ConvergeLinesProps = {
@@ -38,7 +37,7 @@ export function ConvergeLines({
 }: ConvergeLinesProps) {
   const rootRef = useRef<HTMLSpanElement>(null)
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     const root = rootRef.current
     if (!root) return
     registerGsap()

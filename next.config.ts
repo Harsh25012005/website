@@ -25,6 +25,12 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  experimental: {
+    // Inlines above-the-fold CSS and defers the rest, eliminating the
+    // render-blocking stylesheet that Lighthouse flags as costing ~150 ms on
+    // mobile. Uses critters under the hood; no additional dependency needed.
+    optimizeCss: true,
+  },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }]
   },

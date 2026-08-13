@@ -6,6 +6,7 @@ import { CustomEase } from 'gsap/CustomEase'
 import type { SplitText as SplitTextClass } from 'gsap/SplitText'
 
 let registered = false
+const registrationCallbacks: (() => void)[] = []
 
 /**
  * Plugin registration is idempotent but must not run during SSR — ScrollTrigger
@@ -25,6 +26,37 @@ export function registerGsap() {
   CustomEase.create('siteEase', '0.16, 1, 0.3, 1')
   gsap.defaults({ ease: 'siteEase', duration: 1 })
   registered = true
+  // Flush any components that queued their setup waiting for registration.
+  const pending = registrationCallbacks.splice(0)
+  for (const cb of pending) cb()
+}
+
+/**
+ * Deferred GSAP initialization for components that do not need to run before
+ * the first paint (scroll reveals, parallax frames, the custom cursor).
+ *
+ * Calling `registerGsap()` synchronously in every `useLayoutEffect` coalesces
+ * into a single long task at hydration time — all the plugin registration, ease
+ * creation and initial ScrollTrigger measurements happen together, producing
+ * 100–150ms of blocking time on desktop. Components that only animate on scroll
+ * cannot benefit the user before they have scrolled anyway, so their setup can
+ * safely yield to the browser first.
+ *
+ * `cb` is called immediately if GSAP is already registered (e.g. the hero
+ * heading got there first), or queued to run right after registration completes,
+ * whichever happens first.
+ */
+export function afterGsapReady(cb: () => void): () => void {
+  if (registered) {
+    cb()
+    return () => { /* nothing to cancel */ }
+  }
+  // Not yet registered — queue the callback and return a canceller.
+  registrationCallbacks.push(cb)
+  return () => {
+    const index = registrationCallbacks.indexOf(cb)
+    if (index !== -1) registrationCallbacks.splice(index, 1)
+  }
 }
 
 let splitTextPromise: Promise<typeof SplitTextClass> | null = null

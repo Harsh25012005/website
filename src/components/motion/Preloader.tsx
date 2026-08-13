@@ -104,6 +104,20 @@ export function Preloader({ images: _images }: PreloaderProps) {
       return
     }
 
+    // The preloader is a desktop-first flourish. Every sibling effect (particle
+    // field, custom cursor, parallax) is already gated to `pointer: fine` — a
+    // touch device pays the Speed Index cost of a full-viewport overlay without
+    // getting any of the visual context it was designed alongside. Skip it on
+    // coarse-pointer (touch) devices exactly as ParticleField does.
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia('(pointer: coarse)').matches
+    ) {
+      releaseScroll()
+      setDone(true)
+      return
+    }
+
     // Written before the timeline, not after it: a reload part-way through the
     // count is still a session that has seen the curtain.
     markPlayed()
