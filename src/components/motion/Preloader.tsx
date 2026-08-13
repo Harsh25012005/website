@@ -55,10 +55,21 @@ function markPlayed() {
  *
  * Two things keep it off the critical path. It plays only on the first load of a
  * session, so arriving from search costs it once and every page after that is
- * clean. And the whole timeline is ~1.4s rather than ~3.4s: Speed Index scores
+ * clean. And the whole timeline is ~1.2s rather than ~3.4s: Speed Index scores
  * the area above the visual-completeness curve, and a full-viewport opaque frame
  * holds that curve at zero for exactly as long as it is up. The choreography is
  * unchanged — count, fade, staggered wipe — only its duration is.
+ *
+ * It does *not* hold LCP back, which is why the duration is the only lever taken
+ * here: Chrome does no occlusion testing for paint timing, and the hero h1 is
+ * measured as the largest paint while this opaque overlay is still up in front
+ * of it. Speed Index is the only metric the curtain is spending.
+ *
+ * The floor on that spend is not this timeline, though — it is hydration. The
+ * curtain is server-rendered and then sits still until React reaches this
+ * effect, which on throttled 4G is seconds. Cutting further means giving it a
+ * CSS-driven exit the way the hero heading has one, and that trades the count
+ * away on exactly the connections that are slow enough to need it.
  */
 export function Preloader({ images: _images }: PreloaderProps) {
   const rootRef = useRef<HTMLDivElement>(null)
@@ -115,11 +126,13 @@ export function Preloader({ images: _images }: PreloaderProps) {
       })
 
       // The counter is a beat, not a progress bar — it never reported real
-      // loading. 0.65s is long enough to read as a count and short enough that
-      // the first meaningful frame is not held hostage to it.
+      // loading. 0.5s is long enough to read as a count (the `power2.out` ease
+      // puts most of the digits in the first third, so the eye registers a run
+      // to 100 rather than a jump) and short enough that the first meaningful
+      // frame is not held hostage to it.
       tl.to(counter, {
         value: 100,
-        duration: 0.65,
+        duration: 0.5,
         ease: 'power2.out',
         onUpdate: () => {
           if (counterRef.current) {
@@ -142,10 +155,13 @@ export function Preloader({ images: _images }: PreloaderProps) {
 
       // Columns leave left-to-right so the reveal reads as a wipe, not a fade.
       // `expo.inOut` clears the viewport well before the tween formally ends.
+      // The stagger is the wipe — it is the last thing that would be cut — but
+      // it is measured against the column duration, so both come down together
+      // to keep the same diagonal.
       tl.to(columns, {
         yPercent: -100,
-        duration: 0.5,
-        stagger: 0.045,
+        duration: 0.45,
+        stagger: 0.04,
         ease: 'expo.inOut',
       }).to(root, { autoAlpha: 0, duration: 0.01 }, '>-0.01')
     }, root)

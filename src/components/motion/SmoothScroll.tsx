@@ -7,6 +7,7 @@ import {
   gsap,
   ScrollTrigger,
   registerGsap,
+  refreshScrollTriggers,
   prefersReducedMotion,
 } from '@/lib/gsap'
 
@@ -34,7 +35,12 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     if (prefersReducedMotion()) {
       // Native scrolling only; ScrollTrigger still runs so content reveals,
       // it just does so without the inertia layer.
-      ScrollTrigger.refresh()
+      //
+      // Coalesced rather than called outright: this runs inside hydration, and
+      // a synchronous full re-measure there is a forced layout in the one task
+      // that can least afford one. A frame later is soon enough — nothing has
+      // scrolled yet.
+      refreshScrollTriggers()
       return
     }
 
@@ -73,8 +79,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   // scroll reset still runs. Those triggers were built moments ago, and a full
   // refresh is a synchronous re-measure of every trigger on the page: forced
   // layout inside the load window, where the main thread is the scarcest
-  // resource. `Reveal`'s `load` handler and the preloader both refresh once the
-  // page has actually settled, which is when the measurements are worth taking.
+  // resource. ScrollTrigger refreshes itself on `DOMContentLoaded` and again on
+  // `load`, which is when the measurements are actually worth taking.
   useEffect(() => {
     lenisInstance?.scrollTo(0, { immediate: true })
     window.scrollTo(0, 0)
@@ -82,7 +88,10 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     if (lastPathname.current === pathname) return
     lastPathname.current = pathname
 
-    const id = window.setTimeout(() => ScrollTrigger.refresh(), 120)
+    // The delay is for the new tree to lay out, not for the refresh itself —
+    // hence the timeout *and* the coalescer, which folds this into any refresh
+    // the incoming page queues for itself.
+    const id = window.setTimeout(refreshScrollTriggers, 120)
     return () => window.clearTimeout(id)
   }, [pathname])
 

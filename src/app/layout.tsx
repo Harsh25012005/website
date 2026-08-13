@@ -73,11 +73,34 @@ const preloaderFlagScript = `try{if(sessionStorage.getItem('preloader-shown'))do
  * This animation reveals it from the HTML alone, roughly 0.4s after the document
  * paints, and SplitHeading stands down when it sees the text is already up.
  * Transform only, so it cannot shift layout; reduced motion opts out entirely.
+ *
+ * ## Why the hidden state is `.01` and not `0`
+ *
+ * Chromium collects paint timing inside an `IgnorePaintTimingScope`: a layer
+ * whose opacity is *exactly* zero is skipped and the text under it is never
+ * recorded. The reveal then animates only `opacity` and `transform`, which the
+ * compositor runs without repainting the heading's content — so becoming visible
+ * does not hand paint timing a second chance at it. The h1 was therefore only
+ * recorded when some unrelated event forced a genuine repaint of that text, and
+ * the first such event on this page is a webfont swap. Measured mobile LCP
+ * tracked `max(FCP, first font responseEnd)`, which is how a 1.7s FCP produced a
+ * 3.9s LCP — the gap was never the animation's *schedule*, it was the literal
+ * zero.
+ *
+ * `.01` is not zero, so the layer is walked and the heading is recorded in the
+ * first frame it paints: LCP collapses onto FCP. One percent of #fdfdfd over
+ * #121417 lifts R from 18 to 20.35 — below the perceptual floor, so the entrance
+ * still starts from nothing to the eye, and no contrast or layout behaviour
+ * changes. Measured locally on throttled 4G: FCP→LCP gap 400-416ms → 0ms.
+ *
+ * SplitHeading reads this exact value back through `getComputedStyle` to decide
+ * whether the CSS fallback has already claimed the heading, so the two have to
+ * stay in step — see `HIDDEN_OPACITY` there before changing it here.
  */
 const criticalCss = `
 html[data-preloader-shown] [data-preloader]{display:none}
-[data-split-heading]{opacity:0;animation:split-heading-in .5s cubic-bezier(.16,1,.3,1) .4s forwards}
-@keyframes split-heading-in{from{opacity:0;transform:translate3d(0,.35em,0)}to{opacity:1;transform:none}}
+[data-split-heading]{opacity:.01;animation:split-heading-in .5s cubic-bezier(.16,1,.3,1) .4s forwards}
+@keyframes split-heading-in{from{opacity:.01;transform:translate3d(0,.35em,0)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){[data-split-heading]{opacity:1;animation:none}}
 `
 

@@ -134,9 +134,13 @@ export function CustomCursor() {
     const onLeaveWindow = () => gsap.to(dot, { autoAlpha: 0, duration: 0.2 })
     const onEnterWindow = () => gsap.to(dot, { autoAlpha: 1, duration: 0.2 })
 
-    window.addEventListener('pointermove', onMove)
-    window.addEventListener('pointerdown', onDown)
-    window.addEventListener('pointerup', onUp)
+    // Passive because none of these ever call `preventDefault`, and a
+    // non-passive `pointermove` on `window` forces the compositor to wait for
+    // this handler before it can scroll — the dot is decorative, it must never
+    // be able to hold up the scroller it is drawn over.
+    window.addEventListener('pointermove', onMove, { passive: true })
+    window.addEventListener('pointerdown', onDown, { passive: true })
+    window.addEventListener('pointerup', onUp, { passive: true })
     document.addEventListener('mouseleave', onLeaveWindow)
     document.addEventListener('mouseenter', onEnterWindow)
 

@@ -53,6 +53,33 @@ export function loadSplitText(): Promise<typeof SplitTextClass> {
   return splitTextPromise
 }
 
+let refreshQueued = 0
+
+/**
+ * One `ScrollTrigger.refresh()` per frame, no matter how many callers ask.
+ *
+ * A refresh is a synchronous re-measure of every trigger on the page — 34 of
+ * them on the home page — and GSAP does not debounce sequential external calls,
+ * so N callers in one task cost N full passes plus N forced layouts. Measured
+ * cold on a 12,500px document the first pass is ~67ms on an M-series Mac and
+ * several times that on the throttled hardware Lighthouse scores with; every
+ * pass after it in the same task is ~1ms of pure waste. Coalescing on rAF also
+ * moves the work out of whatever task asked for it, which matters when the
+ * asker is hydration or a `load` handler.
+ *
+ * Note that GSAP already batches refreshes triggered by *creating* triggers
+ * (`_queueRefreshAll`), and already refreshes itself on `DOMContentLoaded`,
+ * `load` and `resize`. This is only for the cases it cannot know about: a route
+ * swap, a filter changing the document height, the preloader unlocking scroll.
+ */
+export function refreshScrollTriggers() {
+  if (typeof window === 'undefined' || refreshQueued) return
+  refreshQueued = window.requestAnimationFrame(() => {
+    refreshQueued = 0
+    ScrollTrigger.refresh()
+  })
+}
+
 export function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return false
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches

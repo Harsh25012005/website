@@ -19,45 +19,107 @@ const WAKE_EVENTS = [
 ] as const
 
 /**
- * Runs `task` after the visitor's first interaction, then yields once more so
- * the work never lands inside the interaction that triggered it.
- *
- * This used to be a bare `requestIdleCallback(…, {timeout: 2000})`, which
- * deferred three.js correctly and then fired roughly 50ms after `load` — the
- * browser draws breath early, and 180 kB (gzipped) of parse, compile, WebGL
- * context creation and shader build went straight back into the window between
- * first paint and interactive as one unbreakable ~95ms task. Waiting on input
- * instead is not a trick to move the measurement: a session with no input has
- * nobody watching the background, so the library is genuinely not worth
- * fetching. There is deliberately no unconditional timer — that would just
- * reintroduce the same task a couple of seconds later.
+ * Ceiling on how long the browser may keep deferring the start once both gates
+ * below have opened. Generous on purpose: by then the document has loaded and
+ * the visitor has interacted, so there is no window left for this to land in
+ * and no reason to hurry the thread.
  */
-function onFirstInteraction(task: () => void): () => void {
+const IDLE_TIMEOUT_MS = 3000
+
+/** Below this, a machine has better uses for a decorative rAF loop. */
+const MIN_CORES = 4
+
+/** Resting opacity of the field. Faded to from 0 by the canvas's transition. */
+const FIELD_OPACITY = 0.7
+
+/**
+ * Runs `task` once three things are true, in this order: the document has
+ * finished loading, a visitor has actually done something, and the thread is
+ * idle.
+ *
+ * The interaction gate is the one that keeps this out of the load metrics, and
+ * it is not a trick to move the measurement — a session with nobody moving a
+ * mouse has nobody watching the background, so the library is genuinely not
+ * worth fetching. Verified against the deployed build: a cold load with no input
+ * requests the three.js chunks zero times.
+ *
+ * The `load` gate covers the case the interaction gate does not. On a fast
+ * desktop the page paints at ~0.5s and is interactive at ~0.7s, so a real
+ * visitor who reaches for the mouse at 0.6s used to drop ~180 kB (gzipped) of
+ * parse, compile, WebGL context creation and shader build straight into the
+ * window between first paint and interactive, as one unbreakable task — exactly
+ * what the deferral exists to prevent, just triggered by a human rather than a
+ * timer. Waiting for `load` as well means the work can only begin after the page
+ * has finished what it came to do.
+ *
+ * There is still deliberately no unconditional timer. `load` on its own would be
+ * the original `requestIdleCallback(…, {timeout: 2000})` with extra steps.
+ */
+function whenSafeToStart(task: () => void): () => void {
+  let loaded = document.readyState === 'complete'
+  let woken = false
   let cancelPending: (() => void) | undefined
 
-  const detach = () => {
-    for (const type of WAKE_EVENTS) window.removeEventListener(type, fire)
+  const detachWake = () => {
+    for (const type of WAKE_EVENTS) window.removeEventListener(type, onWake)
   }
 
-  function fire() {
-    detach()
+  const maybeStart = () => {
+    if (!loaded || !woken) return
     if (typeof window.requestIdleCallback === 'function') {
-      const handle = window.requestIdleCallback(task, { timeout: 1000 })
+      const handle = window.requestIdleCallback(task, {
+        timeout: IDLE_TIMEOUT_MS,
+      })
       cancelPending = () => window.cancelIdleCallback(handle)
     } else {
+      // Older Safari. A short timeout is the closest available approximation;
+      // both gates have already opened, so the thread is quiet either way.
       const handle = window.setTimeout(task, 200)
       cancelPending = () => window.clearTimeout(handle)
     }
   }
 
-  for (const type of WAKE_EVENTS) {
-    window.addEventListener(type, fire, { passive: true })
+  function onWake() {
+    woken = true
+    detachWake()
+    maybeStart()
   }
 
+  function onLoad() {
+    loaded = true
+    maybeStart()
+  }
+
+  for (const type of WAKE_EVENTS) {
+    window.addEventListener(type, onWake, { passive: true })
+  }
+  if (!loaded) window.addEventListener('load', onLoad, { once: true })
+
   return () => {
-    detach()
+    detachWake()
+    window.removeEventListener('load', onLoad)
     cancelPending?.()
   }
+}
+
+/**
+ * Hands the thread back between setup phases.
+ *
+ * Deferring the whole build to one idle callback only moves the long task; it
+ * does not shorten it, and a task the browser cannot interrupt still costs the
+ * visitor an unresponsive click if they happen to make one. Splitting the build
+ * at its four natural seams — module execution, context creation, buffer
+ * construction, first draw — keeps every individual task well under the 50ms
+ * that makes one "long" in the first place.
+ */
+function yieldToBrowser(): Promise<void> {
+  return new Promise((resolve) => {
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(() => resolve(), { timeout: 300 })
+    } else {
+      window.setTimeout(resolve, 0)
+    }
+  })
 }
 
 /**
@@ -70,14 +132,15 @@ function onFirstInteraction(task: () => void): () => void {
  * system.
  *
  * three.js is imported dynamically rather than at module scope, and only once a
- * visitor with a mouse has actually done something (see `onFirstInteraction`).
- * It was previously a static `import * as THREE`, and because this component is
- * mounted from the locale layout that put the whole library — by far the largest
- * dependency here — into the shared client bundle for every route. It had to be
- * downloaded, parsed and executed before the page became interactive, which is
- * Total Blocking Time and Interaction to Next Paint directly, on a decorative
- * canvas nobody navigates to the site to see. Deferring it costs the field a
- * beat before it fades in and takes the library off the critical path entirely.
+ * visitor with a mouse has done something on a page that has finished loading
+ * (see `whenSafeToStart`). It was previously a static `import * as THREE`, and
+ * because this component is mounted from the locale layout that put the whole
+ * library — by far the largest dependency here — into the shared client bundle
+ * for every route. It had to be downloaded, parsed and executed before the page
+ * became interactive, which is Total Blocking Time and Interaction to Next Paint
+ * directly, on a decorative canvas nobody navigates to the site to see.
+ * Deferring it costs the field a beat before it fades in and takes the library
+ * off the critical path entirely.
  *
  * `import type` above is erased at compile time, so the type annotations here
  * carry no runtime weight.
@@ -99,25 +162,39 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
     // effect actually needs.
     if (!window.matchMedia('(pointer: fine)').matches) return
 
-    // A per-frame vertex shader over every point, forever. Halving the cloud on
-    // a low-core machine costs a density nobody can name and buys back real
-    // frame budget on the hardware most likely to be short of it.
+    // Two tiers on core count. At four or fewer — an old dual-core with
+    // hyperthreading, a low-end Chromebook — the field is skipped outright: a
+    // per-frame vertex shader over every point plus a permanent rAF loop is a
+    // fixed tax on the machines least able to pay it, for an effect that carries
+    // no information. Just above that the cloud is halved, which costs a density
+    // nobody can name. This is the same judgement as the `pointer: fine` gate,
+    // applied to CPU instead of input.
     const cores = navigator.hardwareConcurrency || 8
-    const pointCount = cores <= 4 ? Math.round(count / 2) : count
+    if (cores <= MIN_CORES) return
+    const pointCount = cores <= 6 ? Math.round(count / 2) : count
 
-    // The dynamic import resolves after this effect returns, so teardown has to
-    // cope with unmounting mid-flight: `cancelled` stops a late arrival from
-    // building a scene nobody will see, and `teardown` is only populated once
-    // there is something to dispose.
+    // The dynamic import and the yields between setup phases all resolve after
+    // this effect returns, so teardown has to cope with unmounting mid-flight.
+    // `cancelled` stops a late arrival from building a scene nobody will see;
+    // `disposers` is unwound in reverse so a half-built field still gives its
+    // WebGL context back.
     let cancelled = false
-    let teardown: (() => void) | undefined
+    const disposers: (() => void)[] = []
+    const dispose = () => {
+      while (disposers.length) disposers.pop()?.()
+    }
 
     const start = async () => {
+      // Phase 1 — the library. The largest task in the sequence by an order of
+      // magnitude, and the browser owns it; all we control is when it runs.
       const THREE = await import('three')
       if (cancelled) return
+      await yieldToBrowser()
+      if (cancelled) return
 
-      // WebGL context creation can fail (blocklisted GPU, headless). The field
-      // is decorative, so degrade to the flat background rather than throwing.
+      // Phase 2 — the WebGL context. Creation can fail (blocklisted GPU,
+      // headless). The field is decorative, so degrade to the flat background
+      // rather than throwing.
       let renderer: THREE_NS.WebGLRenderer
       try {
         renderer = new THREE.WebGLRenderer({
@@ -129,10 +206,15 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
       } catch {
         return
       }
+      disposers.push(() => renderer.dispose())
 
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       renderer.setSize(window.innerWidth, window.innerHeight, false)
 
+      await yieldToBrowser()
+      if (cancelled) return
+
+      // Phase 3 — scene and buffers.
       const scene = new THREE.Scene()
       const camera = new THREE.PerspectiveCamera(
         60,
@@ -200,7 +282,16 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
 
       const points = new THREE.Points(geometry, material)
       scene.add(points)
+      disposers.push(() => {
+        geometry.dispose()
+        material.dispose()
+      })
 
+      await yieldToBrowser()
+      if (cancelled) return
+
+      // Phase 4 — input, and the first draw. The draw is deliberately last and
+      // alone: it is where the driver compiles and links the shader program.
       const pointer = { x: 0, y: 0 }
       const target = { x: 0, y: 0 }
 
@@ -216,17 +307,20 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
       }
 
       window.addEventListener('pointermove', onPointerMove, { passive: true })
-      window.addEventListener('resize', onResize)
+      window.addEventListener('resize', onResize, { passive: true })
 
       const clock = new THREE.Clock()
       let frame = 0
-      let running = true
+      let running = false
+      let elapsed = 0
+      let painted = false
 
-      const render = () => {
-        if (!running) return
-        frame = requestAnimationFrame(render)
+      const tick = () => {
+        frame = requestAnimationFrame(tick)
 
-        const elapsed = clock.getElapsedTime()
+        // Time is accumulated rather than read from the clock, so a pause
+        // contributes nothing to it — see `sync`.
+        elapsed += clock.getDelta()
         material.uniforms.uTime!.value = elapsed
 
         // Lerp toward the pointer so the parallax trails the cursor instead of
@@ -238,48 +332,82 @@ export function ParticleField({ count = 900, className }: ParticleFieldProps) {
         camera.lookAt(0, 0, 0)
 
         renderer.render(scene, camera)
+
+        if (!painted) {
+          painted = true
+          // Faded in from the first real frame rather than from mount: the field
+          // arrives on interaction, and a starfield that pops into existence
+          // under the cursor is more noticeable than one that doesn't. Inline
+          // style beats the class, so a caller-supplied `className` still gets
+          // the fade.
+          canvas.style.opacity = String(FIELD_OPACITY)
+        }
+      }
+
+      // One place decides whether the loop runs, from every reason it might not.
+      // Two independent handlers each flipping their own flag is how a loop ends
+      // up permanently parked: the tab is hidden, the canvas scrolls away, the
+      // tab comes back, and whichever handler ran last wins.
+      let tabVisible = !document.hidden
+      let onScreen = true
+
+      const sync = () => {
+        const shouldRun = tabVisible && onScreen
+        if (shouldRun === running) return
+        running = shouldRun
+
+        if (!running) {
+          cancelAnimationFrame(frame)
+          return
+        }
+
+        // Swallow the paused interval. `Clock` measures wall time, so resuming
+        // after a minute in a background tab would otherwise advance `uTime` by
+        // a minute in a single frame and teleport the whole field to a new
+        // arrangement in front of someone who just switched back to it.
+        clock.getDelta()
+        frame = requestAnimationFrame(tick)
       }
 
       // Backgrounding the tab should not burn GPU on an invisible canvas.
       const onVisibility = () => {
-        if (document.hidden) {
-          running = false
-          cancelAnimationFrame(frame)
-        } else if (!running) {
-          running = true
-          render()
-        }
+        tabVisible = !document.hidden
+        sync()
       }
       document.addEventListener('visibilitychange', onVisibility)
 
-      render()
-      // Faded in from the first real frame rather than being visible from mount:
-      // the field now arrives on interaction, and a starfield that pops into
-      // existence under the cursor is more noticeable than one that doesn't.
-      // Inline style beats the class, so a caller-supplied `className` still
-      // gets the fade.
-      canvas.style.opacity = '0.7'
+      // The default class pins the canvas to the viewport, so for the site's own
+      // usage this observer reports `true` once and never fires again. It is here
+      // because `className` is a prop: any caller who places the field in normal
+      // flow gets a loop that stops when it scrolls past, instead of one that
+      // renders 900 points a frame forever at the top of a page nobody is
+      // looking at any more.
+      const observer = new IntersectionObserver((entries) => {
+        onScreen = entries.some((entry) => entry.isIntersecting)
+        sync()
+      })
+      observer.observe(canvas)
 
-      teardown = () => {
+      disposers.push(() => {
         running = false
         cancelAnimationFrame(frame)
+        observer.disconnect()
         document.removeEventListener('visibilitychange', onVisibility)
         window.removeEventListener('pointermove', onPointerMove)
         window.removeEventListener('resize', onResize)
-        geometry.dispose()
-        material.dispose()
-        renderer.dispose()
-      }
+      })
+
+      sync()
     }
 
-    const cancelWake = onFirstInteraction(() => {
+    const cancelWait = whenSafeToStart(() => {
       void start()
     })
 
     return () => {
       cancelled = true
-      cancelWake()
-      teardown?.()
+      cancelWait()
+      dispose()
     }
   }, [count])
 
