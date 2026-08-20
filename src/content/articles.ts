@@ -1,11 +1,294 @@
 import type { Article } from './types'
 
-/**
- * Editorial entries. Image folders under /images/articles/ are still the
- * original placeholder assets — the paths below intentionally reuse them so
- * the content tests keep passing until real artwork replaces them.
- */
 export const articles: Article[] = [
+  {
+    slug: 'ui-ux-design-trends-2026',
+    title: {
+      en: 'UI/UX design trends for 2026 worth actually adopting',
+    },
+    excerpt: {
+      en: 'Which UI/UX design trends for 2026 hold up under real product constraints, from AI-assisted interfaces to accessible-by-default patterns, and which are just decoration.',
+    },
+    date: '2026-08-18',
+    readingTime: 8,
+    cover: {
+      src: '/images/articles/ui-ux-design-trends-2026/cover.png',
+      alt: {
+        en: 'Isometric illustration of UI/UX design system elements on a dark background: a dashboard, a mobile app screen, an accessibility icon, a colour and spacing scale, and editing tools',
+      },
+    },
+    intro: {
+      en: [
+        'Every January a list goes around with the same shape: fifteen trends, a screenshot from Dribbble for each, and no mention of what happens when the trend meets a real content management system, a support ticket queue, or a user on a three-year-old Android phone. Most of it does not survive contact with a shipping product.',
+        'I audit and redesign live products for a living, not concept shots, so this is the shorter list: the shifts in UI/UX design that are actually showing up in briefs and holding up in usability testing this year, and the ones I would still tell a client to skip.',
+      ],
+    },
+    sections: [
+      {
+        heading: {
+          en: 'Judge a trend by what it costs the user, not how it photographs',
+        },
+        paragraphs: {
+          en: [
+            'A trend earns a place in a real interface if it removes a step, clarifies a state, or speeds up a task. Everything else is decoration wearing the vocabulary of a design system, and decoration has a cost: every animated flourish is milliseconds of blocked main thread, every novel pattern is a moment a first-time user has to stop and learn your product instead of using it.',
+            'The filter I actually use on client work: would this still be worth building if nobody could see it was "on trend"? If the honest answer is that it exists to look current in a portfolio shot, it does not go in the file.',
+            'That filter is why the list below skips most of what circulates as this year’s UI trends and keeps only what changed how a product behaves, not just how it looks.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'AI inside the interface, not just behind it',
+        },
+        paragraphs: {
+          en: [
+            'The interesting shift this year is not that products added a chatbot. It is AI surfacing inside existing flows: inline suggestions in a form field, a generated first draft in an empty state, a summary offered instead of forcing someone to read forty rows of a table. Done well it removes a step; done badly it is a spinner with extra confidence.',
+            'The design problem is trust, not novelty. An AI-filled field needs to look editable and provisional, not final. I use a visibly different state for it, a distinct background tint plus a label, until the user has explicitly accepted it. Ship a generated value that looks identical to a user-entered one and the first wrong guess erodes trust in every field after it.',
+            'Latency also needs designing for, not apologised for after the fact. If a suggestion takes two seconds to arrive, the empty state before it has to hold its own, not sit there as a blank box implying something is broken.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Motion with restraint, not motion by default',
+        },
+        paragraphs: {
+          en: [
+            'Two years of every card animating in and every button carrying a spring on hover have produced the correction: motion that communicates a state change, and nothing else. A save button confirming with a checkmark morph is worth the frames it costs. A page of cards staggering in on every visit is not; it is a tax the user pays each time they arrive, for no information gained.',
+            '`prefers-reduced-motion` moved from a nice-to-have to a default check on client work this year, and rightly so. It is no longer just an accessibility line item — browsers ship it on by default for a meaningful share of users, and a product that ignores the query is choosing to fight the operating system.',
+            'The practical rule: animate to explain a change in state (loading, success, error, an item leaving a list), and leave everything else static. If you cannot say what a given animation is teaching the user, cut it.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Accessible-by-default is no longer a separate pass',
+        },
+        paragraphs: {
+          en: [
+            'Contrast ratios, visible focus states and keyboard paths used to be the thing checked at the end, if there was time. In 2026 briefs I am seeing them named up front, partly because WCAG 2.2 has become the baseline expectation in more procurement checklists, and partly because more of the audience genuinely is on an assistive setup, not a hypothetical one.',
+            'What changes in practice: component states are designed for focus-visible from the first pass, not retrofitted; text on colour is checked at a 4.5:1 ratio as a build constraint rather than a launch note; and forms get inline, text-based error messaging as a default rather than a colour change nobody without full colour vision can read.',
+            'This one is not a trend in the usual sense, it is table stakes catching up to where it should have been years ago, and it is the item on this list with the least room for skipping.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Modular, bento-style layouts, used where density earns them',
+        },
+        paragraphs: {
+          en: [
+            'The grid of unevenly sized cards has spread from portfolio sites into dashboards and settings pages, and it earns its place when a screen genuinely has content of different weights: one card that is a chart, one that is a single number, one that is a short list. Forcing everything into equal-width cards was hiding that hierarchy; the bento layout states it plainly.',
+            'It does not earn its place on a page where every item deserves the same weight. A pricing table forced into a bento grid loses the one thing a pricing table needs, which is easy left-to-right comparison. Use the pattern because the content has unequal weight, not because the grid looks considered in a screenshot.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'What I am telling clients to skip',
+        },
+        paragraphs: {
+          en: [
+            'Glassmorphism panels stacked three deep, where legibility drops with every layer of blur. Cursor-following blobs and gradient orbs that exist purely as set dressing and cost real paint time on lower-end devices. Decorative "AI thinking" animations that add three seconds to a task a static state would have completed instantly. None of these move a task forward, and all of them show up disproportionately in trend roundups because they screenshot well.',
+            'The pattern across all three: they are optimised for the first five seconds of looking at a static image, not for the fiftieth time a real user opens the product to get something done. Design for the fiftieth time, and most of what is trending this year quietly rules itself out.',
+          ],
+        },
+      },
+    ],
+    gallery: [],
+    relatedProjects: ['zenith', 'stayease'],
+    relatedServices: ['web-ui-design', 'saas-product-design'],
+  },
+  {
+    slug: 'ai-coding-tools-client-projects',
+    title: {
+      en: 'AI coding tools in 2026: what changes on a client build',
+    },
+    excerpt: {
+      en: 'Where AI coding assistants genuinely speed up client front-end work in 2026, where they quietly cost time instead, and how code review has to change either way.',
+    },
+    date: '2026-08-05',
+    readingTime: 8,
+    cover: {
+      src: '/images/articles/ai-coding-tools-client-projects/cover.png',
+      alt: {
+        en: 'Isometric illustration of an AI coding assistant on a dark background: a code editor with generated lines, an autocomplete panel, a context-aware assistant, a diff review, and a "time saved" chart',
+      },
+    },
+    intro: {
+      en: [
+        'I design most of what I build, and I have used AI coding assistants on client work since they were autocomplete with good manners. The honest update for 2026 is that they got fast enough to change how a project is scoped, not just how a function gets typed — and fast enough that the mistakes they make are also easier to ship without noticing.',
+        'This is not a tool comparison. It is where the speedup is real on a paid client project, where it is not, and what changed about how I review my own output because of it.',
+      ],
+    },
+    sections: [
+      {
+        heading: {
+          en: 'Scaffolding is fast now; judgement still is not',
+        },
+        paragraphs: {
+          en: [
+            'Ask a current model to build a settings page with a form, validation and a save state, and it will produce something that runs in under a minute. That used to be twenty minutes of typing. The part that has not moved is deciding what the settings page should actually contain, what happens when the save request fails, and whether this is even the right pattern for this particular client’s data.',
+            'That split is the whole story. Typing got cheap; deciding what to type stayed exactly as expensive as it always was, because it depends on context the model does not have — the client’s actual users, the edge cases from last quarter’s support tickets, the constraint nobody wrote down. Selling "AI writes your app" skips past the half of the job that was never the typing.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Where the speedup is real',
+        },
+        paragraphs: {
+          en: [
+            'Boilerplate and repetition are where this pays for itself every time: a component that needs five near-identical variants, converting a spreadsheet of copy into typed content objects, writing the fortieth test for the thirty-ninth pattern already established in the codebase. The model has plenty of local context and the task has one obviously correct shape.',
+            'Migrations are the other clear win. Bumping a UI library’s major version, renaming a prop across forty usages, converting class components to hooks: mechanical, high-volume, low-judgement changes that used to eat a full day now take an afternoon of generation plus review.',
+            'It is also a genuinely good pairing for token-to-code work: handing over a Figma file’s spacing and colour tokens and getting a first pass at a Tailwind theme config generated from them, then correcting the values by hand, is faster than typing the object from scratch.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Where it quietly costs time',
+        },
+        paragraphs: {
+          en: [
+            'Anything touching a codebase the model has not effectively seen — a large, idiosyncratic legacy client project, a non-standard state management setup, an internal library with its own conventions — produces code that looks right and is subtly wrong: a hook called in the wrong order, a type that compiles but does not match the actual shape of the API response. Confidently wrong is worse than obviously wrong, because it passes a skim.',
+            'Security-sensitive code is the other place I do not delegate the first draft: auth checks, anything touching payment, anything that decides what a user is allowed to see. The failure mode there is not a bug report, it is a client’s data exposed, and that is not a risk worth the minutes saved.',
+            'Net, on an unfamiliar or unusual codebase, review time can exceed the time saved in generation. The tool is fastest exactly where you already knew the codebase well enough to barely need it.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Review discipline changes, not disappears',
+        },
+        paragraphs: {
+          en: [
+            'I treat generated code the way I would treat a pull request from a fast, confident junior developer who has never met this specific client: read every line before it ships, do not assume the tests it wrote actually cover the case that matters, and check the diff against what the ticket asked for rather than against what looks plausible.',
+            'The specific habit that has saved me the most: asking the model to explain its own change back to me in plain language before I accept it. Where the explanation does not match what the diff actually does, that mismatch is usually where the bug is.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'What this means for pricing and scope',
+        },
+        paragraphs: {
+          en: [
+            'Faster generation does not mean the work is worth less; it means more of what a client is paying for is judgement, review and taste rather than keystrokes, and that was arguably always the real deliverable. I have not dropped rates because a tool made the typing faster — I have used the time it freed up to spend more of a project’s hours on the parts that still need a human: the states nobody specified, the edge cases the ticket did not mention, testing on an actual device.',
+            'Where it has changed a quote: small, well-scoped, mechanical jobs — a migration, a batch of similar components — are now genuinely faster to deliver, and I price them accordingly rather than padding the estimate to a pre-AI baseline out of habit.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'The stack that pairs well with it',
+        },
+        paragraphs: {
+          en: [
+            'Generated code is only as good as the constraints around it. A strongly typed codebase gives the model, and the reviewer, an immediate, mechanical check that a change is at least internally consistent. A codebase with clear conventions and a component library the model can see gives it a pattern to match instead of inventing a new one each time.',
+            'Next.js and Tailwind specifically pair well with this workflow: Tailwind’s utility classes are unambiguous in a way custom CSS class names are not, so generated markup rarely drifts from the design tokens, and a typed props interface catches a mismatch immediately rather than at runtime in front of the client.',
+          ],
+        },
+      },
+    ],
+    gallery: [],
+    relatedProjects: ['stayease', 'ai-agent-landing'],
+    relatedServices: ['custom-web-development', 'figma-to-react'],
+  },
+  {
+    slug: 'core-web-vitals-2026',
+    title: {
+      en: 'Core Web Vitals in 2026: why site speed still wins deals',
+    },
+    excerpt: {
+      en: 'A practical look at Core Web Vitals in 2026: the LCP, INP and CLS thresholds that matter, where they actually break on real client sites, and the fixes that move them fastest.',
+    },
+    date: '2026-07-22',
+    readingTime: 7,
+    cover: {
+      src: '/images/articles/core-web-vitals-2026/cover.png',
+      alt: {
+        en: 'Isometric illustration of Core Web Vitals on a dark background: LCP, INP and CLS score cards, a page speed gauge at 92, a performance-over-time chart, and a list of top fixes',
+      },
+    },
+    intro: {
+      en: [
+        'A client rarely opens a conversation by asking about Interaction to Next Paint. They open it by saying the site "feels slow", or that a competitor’s site "feels snappier", and then it is my job to turn that feeling into a number and the number into a fix. Core Web Vitals are still the best public vocabulary for that conversation, and the specifics worth knowing in 2026 have shifted since the metric set last changed.',
+        'This is the practical version: what the three metrics measure, where each one actually breaks on the client sites I audit, and how to prove the fix worked rather than just asserting it.',
+      ],
+    },
+    sections: [
+      {
+        heading: {
+          en: 'The three metrics that still matter',
+        },
+        paragraphs: {
+          en: [
+            'Largest Contentful Paint measures how long the biggest visible element takes to render: the hero image, a headline, a video poster. Under 2.5 seconds is good. Interaction to Next Paint measures the delay between a tap or click and the next visual update, under 200 milliseconds is good, and it replaced First Input Delay as the responsiveness metric because FID only measured the first interaction, not the ones that happen after a page has finished loading and gotten sluggish. Cumulative Layout Shift measures how much visible content jumps around unexpectedly, under 0.1 is good.',
+            'All three are pass or fail at the 75th percentile of real visits, not an average and not a lab score. A site that is fast for most visitors and terrible for one in five on a throttled connection still fails the metric, because the threshold is deliberately set to reflect a realistic slower visit, not a top-of-the-range laptop on fibre.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Where LCP actually breaks',
+        },
+        paragraphs: {
+          en: [
+            'On the sites I audit it is almost never the framework. It is an unoptimised hero image shipped at four times the rendered size, a web font blocking text render because it was not preloaded, or a third-party script — a chat widget, an analytics tag, a marketing pixel — loaded synchronously before the content it is supposed to be measuring.',
+            'The fix is rarely dramatic: serve the hero at the size it renders at, in a modern format, with high fetch priority and no lazy-loading on the one image guaranteed to be above the fold; preload the font file instead of letting the browser discover it after parsing the CSS; and load every third-party script asynchronously, full stop, unless it has a specific reason to block.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'INP is a JavaScript problem',
+        },
+        paragraphs: {
+          en: [
+            'Where LCP is mostly a loading problem, INP is almost entirely a main-thread problem: a long task blocking the browser from responding to a tap, usually caused by too much JavaScript running, hydrating or re-rendering at once. A single component that re-renders an entire long list on every keystroke will fail INP even on a fast connection, because the delay has nothing to do with the network.',
+            'The fix that has mattered most on React and Next.js projects this year is being deliberate about what actually needs to be a client component versus what can stay server-rendered, and splitting large client bundles so an interaction on one part of the page is not waiting on JavaScript for an unrelated part to finish executing. Debouncing expensive handlers and virtualising long lists both still earn their keep.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'CLS: the cheap fix nobody bothers to make',
+        },
+        paragraphs: {
+          en: [
+            'Layout shift is usually caused by the same three things: an image or video embed with no reserved width and height, a web font that renders at a noticeably different width than the fallback it replaces, and content — usually an ad slot, a cookie banner or a promotional bar — injected above existing content after the page has already laid out.',
+            'All three have a fix that costs almost nothing: set explicit dimensions on every image and embed, choose a fallback font metrically close to the web font (or accept a brief flash rather than a shift), and reserve space for anything that injects late instead of letting it push everything below it down the page.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Measuring it right',
+        },
+        paragraphs: {
+          en: [
+            'A Lighthouse score in dev tools is lab data: one run, on one machine, on a fast connection, useful for diagnosing the cause of a problem. It is not the number Google actually judges the page on, which comes from the Chrome User Experience Report: real visits, real devices, real networks, aggregated over 28 days. A page can score 100 in Lighthouse and still fail its Core Web Vitals in the field if enough real visitors are on a mid-range phone on patchy 4G.',
+            'Search Console’s Core Web Vitals report and PageSpeed Insights both surface the field data once a site has enough traffic to qualify. For a smaller client site that has not hit the CrUX traffic threshold, I track the same three metrics through a lightweight script in the browser itself, sent to analytics, so the client gets real numbers rather than a lab estimate standing in for them.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Why this still closes deals',
+        },
+        paragraphs: {
+          en: [
+            'Most prospective clients cannot read a Lighthouse report, and they do not need to: they can feel a site that responds instantly to a tap versus one with a beat of lag, and they notice a competitor’s page loading before theirs has finished its layout shift. Performance is one of the few pieces of craft that is directly perceptible without any design vocabulary, which makes it unusually persuasive in a pitch.',
+            'It also compounds with the rest of the site: a beautifully designed page that stutters on first load reads as unfinished, and a plain page that responds instantly reads as considered. Speed is not separate from the design work, it is part of what the design is judged on the moment a real visitor opens it.',
+          ],
+        },
+      },
+    ],
+    gallery: [],
+    relatedProjects: ['cleaning-services-app'],
+    relatedServices: ['custom-web-development', 'website-redesign'],
+  },
   {
     slug: 'design-system-in-figma',
     title: {
@@ -19,7 +302,7 @@ export const articles: Article[] = [
     cover: {
       src: '/images/articles/design-system-in-figma/cover.png',
       alt: {
-        en: 'Abstract violet, white and black graphic artwork',
+        en: 'Figma design system interface displaying color tokens, typography scales, spacing scale, and UI components on dark background',
       },
     },
     intro: {
@@ -40,12 +323,6 @@ export const articles: Article[] = [
             'Write the surviving values down as a flat list before you touch Figma variables. If you cannot justify a value out loud in one sentence, it does not go in.',
           ],
         },
-        image: {
-          src: '/images/articles/design-system-in-figma/gallery-01.png',
-          alt: {
-            en: '',
-          },
-        },
       },
       {
         heading: {
@@ -58,12 +335,6 @@ export const articles: Article[] = [
             'The reason for the middle tier is themes. When a client asks for dark mode, you add a second mode on the semantic collection and remap it to different primitives. Nothing in the component library changes, because no component ever references grey/800 directly; it references surface/raised. If your components point at primitives, dark mode is a rebuild rather than a remap.',
             'Name tokens in the order category/role/variant, all lowercase, with slashes for grouping. It reads well in the Figma sidebar and it converts cleanly to the nested objects a Tailwind theme or a CSS custom property file expects.',
           ],
-        },
-        image: {
-          src: '/images/articles/design-system-in-figma/gallery-02.png',
-          alt: {
-            en: '',
-          },
         },
       },
       {
@@ -117,26 +388,7 @@ export const articles: Article[] = [
         },
       },
     ],
-    gallery: [
-      {
-        src: '/images/articles/design-system-in-figma/gallery-03.png',
-        alt: {
-          en: '',
-        },
-      },
-      {
-        src: '/images/articles/design-system-in-figma/gallery-04.png',
-        alt: {
-          en: '',
-        },
-      },
-      {
-        src: '/images/articles/design-system-in-figma/gallery-05.png',
-        alt: {
-          en: '',
-        },
-      },
-    ],
+    gallery: [],
     relatedProjects: ['zenith'],
     relatedServices: ['design-systems', 'saas-product-design'],
   },
@@ -153,7 +405,7 @@ export const articles: Article[] = [
     cover: {
       src: '/images/articles/figma-to-react-handoff/cover.png',
       alt: {
-        en: 'Abstract orange, white and black graphic artwork',
+        en: 'Diagram showing Figma component properties and design tokens mapped directly to React component code and props',
       },
     },
     intro: {
@@ -174,12 +426,6 @@ export const articles: Article[] = [
             'So the deliverable is not a set of beautiful screens. It is a component inventory plus the screens that show those components composed together.',
           ],
         },
-        image: {
-          src: '/images/articles/figma-to-react-handoff/gallery-01.png',
-          alt: {
-            en: '',
-          },
-        },
       },
       {
         heading: {
@@ -192,12 +438,6 @@ export const articles: Article[] = [
             'The same discipline applies to layer names inside the component. Slot, label, icon and container are useful names. Frame 247 is not. A developer opening Dev Mode reads your layer tree as a rough DOM outline, so a tidy tree is genuinely part of the deliverable.',
             'Where a component nests another component (a card containing a button), use an instance swap or nested instance rather than redrawing it. Nesting in the file is what tells the developer the composition is intentional.',
           ],
-        },
-        image: {
-          src: '/images/articles/figma-to-react-handoff/gallery-02.png',
-          alt: {
-            en: '',
-          },
         },
       },
       {
@@ -249,26 +489,7 @@ export const articles: Article[] = [
         },
       },
     ],
-    gallery: [
-      {
-        src: '/images/articles/figma-to-react-handoff/gallery-03.png',
-        alt: {
-          en: '',
-        },
-      },
-      {
-        src: '/images/articles/figma-to-react-handoff/gallery-04.png',
-        alt: {
-          en: '',
-        },
-      },
-      {
-        src: '/images/articles/figma-to-react-handoff/gallery-05.png',
-        alt: {
-          en: '',
-        },
-      },
-    ],
+    gallery: [],
     relatedProjects: ['stayease', 'ai-agent-landing'],
     relatedServices: ['figma-to-react', 'web-ui-design'],
   },
@@ -285,7 +506,7 @@ export const articles: Article[] = [
     cover: {
       src: '/images/articles/ui-design-mistakes/cover.png',
       alt: {
-        en: 'Abstract red, white and black graphic artwork',
+        en: 'Overview of 8 common UI design mistakes and fixes covering contrast, typography, spacing, states, hierarchy, forms, choices, and feedback',
       },
     },
     intro: {
@@ -305,12 +526,6 @@ export const articles: Article[] = [
             'The fix is a fixed ramp with obvious jumps between steps, and using weight and colour to create the finer distinctions instead of size. A muted grey label at the same size as the body text separates itself perfectly well without a new size in the scale.',
             'The related mistake is heading levels chosen by appearance. Pick the heading level for document structure and style it to look right; screen readers and search engines both read the structure, not the pixel size.',
           ],
-        },
-        image: {
-          src: '/images/articles/ui-design-mistakes/gallery-01.png',
-          alt: {
-            en: '',
-          },
         },
       },
       {
@@ -335,12 +550,6 @@ export const articles: Article[] = [
             'Run a contrast checker over your muted text, your placeholder text, your disabled states and your borders. Placeholder text is the most common failure, and it is often carrying information that should have been a label anyway.',
             'The second half of this is not relying on colour alone. A red border on an invalid field means nothing to a colour-blind user without an icon and a message. Errors need text, always.',
           ],
-        },
-        image: {
-          src: '/images/articles/ui-design-mistakes/gallery-02.png',
-          alt: {
-            en: '',
-          },
         },
       },
       {
@@ -401,26 +610,7 @@ export const articles: Article[] = [
         },
       },
     ],
-    gallery: [
-      {
-        src: '/images/articles/ui-design-mistakes/gallery-03.png',
-        alt: {
-          en: '',
-        },
-      },
-      {
-        src: '/images/articles/ui-design-mistakes/gallery-04.png',
-        alt: {
-          en: '',
-        },
-      },
-      {
-        src: '/images/articles/ui-design-mistakes/gallery-05.png',
-        alt: {
-          en: '',
-        },
-      },
-    ],
+    gallery: [],
     relatedProjects: ['crave', 'cleaning-services-app'],
     relatedServices: ['ux-research-wireframing', 'web-ui-design'],
   },

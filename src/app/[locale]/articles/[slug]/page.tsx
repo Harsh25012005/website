@@ -60,7 +60,7 @@ export default async function ArticlePage({ params }: PageProps) {
   if (!article) notFound()
 
   const dictionary = getDictionary(locale)
-  const more = articles.filter((item) => item.slug !== slug)
+  const more = articles.filter((item) => item.slug !== slug).slice(0, 3)
 
   const relatedWork = (article.relatedProjects ?? [])
     .map((projectSlug) => getProject(projectSlug))
@@ -196,36 +196,38 @@ export default async function ArticlePage({ params }: PageProps) {
             </div>
           ))}
 
-          <div className="mt-16 grid gap-4 md:mt-24 md:grid-cols-2 md:gap-8">
-            {article.gallery.map((image, index) => (
-              <Reveal
-                key={image.src}
-                delay={(index % 2) * 0.06}
-                className={index === 0 ? 'md:col-span-2' : undefined}
-              >
-                <figure>
-                  <ParallaxFrame
-                    distance={28}
-                    className={
-                      index === 0
-                        ? 'relative aspect-[16/9] w-full'
-                        : 'relative aspect-[3/2] w-full'
-                    }
-                  >
-                    <Image
-                      src={image.src}
-                      alt={image.alt[locale]}
-                      fill
-                      sizes={
-                        index === 0 ? '90vw' : '(max-width: 768px) 100vw, 45vw'
+          {article.gallery && article.gallery.length > 0 ? (
+            <div className="mt-16 grid gap-4 md:mt-24 md:grid-cols-2 md:gap-8">
+              {article.gallery.map((image, index) => (
+                <Reveal
+                  key={image.src}
+                  delay={(index % 2) * 0.06}
+                  className={index === 0 ? 'md:col-span-2' : undefined}
+                >
+                  <figure>
+                    <ParallaxFrame
+                      distance={28}
+                      className={
+                        index === 0
+                          ? 'relative aspect-[16/9] w-full'
+                          : 'relative aspect-[3/2] w-full'
                       }
-                      className="object-cover"
-                    />
-                  </ParallaxFrame>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
+                    >
+                      <Image
+                        src={image.src}
+                        alt={image.alt[locale]}
+                        fill
+                        sizes={
+                          index === 0 ? '90vw' : '(max-width: 768px) 100vw, 45vw'
+                        }
+                        className="object-cover"
+                      />
+                    </ParallaxFrame>
+                  </figure>
+                </Reveal>
+              ))}
+            </div>
+          ) : null}
         </div>
       </article>
 
@@ -304,14 +306,10 @@ export default async function ArticlePage({ params }: PageProps) {
               {dictionary.common.worthSharing}
             </SplitHeading>
 
-            <div className="mt-12 grid items-start gap-8 md:grid-cols-2">
+            <div className="mt-12 grid items-start gap-8 md:grid-cols-3">
               {more.map((item, index) => (
                 <Reveal key={item.slug} delay={index * 0.06}>
-                  <ArticleCard
-                    article={item}
-                    locale={locale}
-                    sizes="(max-width: 768px) 100vw, 45vw"
-                  />
+                  <ArticleCard article={item} locale={locale} />
                 </Reveal>
               ))}
             </div>

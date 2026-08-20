@@ -28,7 +28,7 @@ type PageProps = { params: Promise<{ locale: string }> }
  */
 const TITLE = 'Design and Development Services'
 const DESCRIPTION =
-  'Two halves of one practice: UI/UX design in Figma for web, mobile and SaaS, and custom front-end development in React, Next.js, Webflow, Framer and WordPress.'
+  'Two halves of one practice: UI/UX design in Figma for web, mobile and SaaS, and custom front-end development in React, Next.js, Webflow and Framer.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: PageProps) {
       'custom development services',
       'design and development services',
       'React and Next.js development',
-      'Webflow and WordPress development',
+      'Webflow and Framer development',
       'Figma to code',
     ],
   })

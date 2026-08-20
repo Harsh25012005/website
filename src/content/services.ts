@@ -24,11 +24,11 @@ import type { Service, ServicePillar } from './types'
  * replace the scope-dependent wording with it; the specific answer always
  * outperforms the careful one.
  *
- * ⚠️  Three limits are stated in the FAQs below and repeated in `pricing.ts`:
+ * ⚠️  Two limits are stated in the FAQs below and repeated in `pricing.ts`:
  * no back-end APIs, databases or infrastructure; no native iOS or Android
- * builds; no WordPress plugin or server-side application development. They are
- * load-bearing. If any of them stops being true, change it everywhere at once —
- * a site that contradicts itself on scope is worse than one that says no.
+ * builds. They are load-bearing. If any of them stops being true, change it
+ * everywhere at once — a site that contradicts itself on scope is worse than
+ * one that says no.
  */
 export const services: Service[] = [
   {
@@ -539,7 +539,7 @@ export const services: Service[] = [
       {
         question: { en: 'Do you audit the code and page speed as well?' },
         answer: {
-          en: 'Not in this one. This audit covers the interface and the flows: structure, hierarchy, states, copy and usability. Core Web Vitals, load performance and WCAG accessibility testing are a separate technical audit, and the two are often booked together because they answer different halves of the same complaint.',
+          en: 'Not in this one. This audit focuses specifically on the interface and user flows: structure, visual hierarchy, states, copy clarity and usability. It delivers a prioritised fix list your team can act on without having to guess what to tackle first.',
         },
       },
       {
@@ -887,10 +887,10 @@ export const services: Service[] = [
       },
       {
         question: {
-          en: 'Our site is on WordPress or Webflow. Does that change anything?',
+          en: 'Our site is on Webflow or a custom stack. Does that change anything?',
         },
         answer: {
-          en: 'It changes what the rebuild looks like, not whether it is possible. A WordPress site is usually rebuilt as theme templates, a Webflow site inside Webflow, and either can move to a Next.js front end if there is a reason to. Where the current stack has custom back-end functionality, that part stays with your developers.',
+          en: 'It changes what the rebuild looks like, not whether it is possible. A Webflow site is usually rebuilt inside Webflow, and can move to a modern Next.js / React front end if there is a reason to. Where the current stack has custom back-end functionality, that part stays with your developers.',
         },
       },
     ],
@@ -1061,263 +1061,6 @@ export const services: Service[] = [
       },
     ],
     relatedProjects: ['ai-agent-landing', 'stayease'],
-  },
-  {
-    slug: 'wordpress-development',
-    pillar: 'development',
-    number: '07',
-    title: { en: 'WordPress development' },
-    description: {
-      en: 'Front-end WordPress work: custom theme templates built to match the design, on sites that already run on WordPress or need a CMS every client already knows.',
-    },
-    deliverables: {
-      en: [
-        'Custom theme templates built to match the approved design',
-        'Editable pages and blocks your content team can actually use',
-        'Responsive and cross-browser QA before launch',
-      ],
-    },
-    metaTitle: 'WordPress Development and Custom Theme Builds',
-    metaDescription:
-      'Front-end WordPress development: custom theme templates built to match the design, editable pages your content team can use, responsive and cross-browser tested before launch.',
-    keywords: [
-      'WordPress developer',
-      'custom WordPress theme',
-      'WordPress development services',
-      'Figma to WordPress',
-      'WordPress front-end developer',
-      'PHP theme development',
-    ],
-    heading: {
-      en: 'WordPress front-end work, without the template look',
-    },
-    intro: {
-      en: 'Custom theme templates in PHP, HTML and CSS for sites that live on WordPress — built to the design rather than bent out of a purchased theme, and editable without a developer.',
-    },
-    sections: [
-      {
-        heading: { en: 'Where WordPress still wins' },
-        paragraphs: {
-          en: [
-            'It runs a large share of the web for a reason: your team probably already knows it, every content person has used it, and the editing model is familiar enough that nobody needs training to publish a post.',
-            'Where it goes wrong is the purchased theme with forty options nobody uses, a page builder stacked on top, and a site that loads two megabytes to show a paragraph. A custom template removes all three.',
-          ],
-        },
-      },
-      {
-        heading: { en: 'The front end is the part I do' },
-        paragraphs: {
-          en: [
-            'Theme templates, the markup, the styles and the front-end behaviour: that is the work. It usually means a design becoming a set of templates on a site that is already running, rather than a greenfield platform build.',
-            'Custom plugins, server-side application logic, membership systems and payment flows are outside what I take on. On projects that need them I build the front end and work with your WordPress developer, and I will say which side of that line a request falls on at the brief stage.',
-          ],
-        },
-      },
-      {
-        heading: { en: 'Editable without being breakable' },
-        paragraphs: {
-          en: [
-            'The templates are built so that editing content cannot destroy the layout: fields and blocks for the parts that change, fixed structure for the parts that should not.',
-            'It is the boring constraint that keeps a site looking designed a year later, when four different people have added pages and nobody remembers what the original rules were.',
-          ],
-        },
-      },
-    ],
-    faqs: [
-      {
-        question: {
-          en: 'Do you build custom plugins or back-end functionality?',
-        },
-        answer: {
-          en: 'No. Theme templates and front-end work only. Anything requiring a custom plugin, server-side application logic, a membership system or payment processing is outside what I take on, and I will tell you that at the brief stage rather than after an estimate.',
-        },
-      },
-      {
-        question: { en: 'Do you work with Elementor or WPBakery sites?' },
-        answer: {
-          en: 'I build with theme templates and blocks rather than page builders, because that is what keeps a site fast and predictable. Taking over an existing builder-based site is possible and starts with an honest look at it — sometimes working inside it costs more than rebuilding the templates, and you get that answer before committing.',
-        },
-      },
-      {
-        question: { en: 'Can you move our existing design onto WordPress?' },
-        answer: {
-          en: 'Yes, and it is a common request: a design that exists in Figma, or a site currently built somewhere else, turned into templates on WordPress. Where the design has gaps the CMS will expose — missing states, content that varies in length — I will flag them before the build rather than improvise.',
-        },
-      },
-    ],
-    relatedProjects: ['stayease', 'zenith'],
-  },
-  {
-    slug: 'website-maintenance',
-    pillar: 'development',
-    number: '08',
-    title: { en: 'Website maintenance' },
-    description: {
-      en: 'Ongoing front-end care for a site that is already live: content and layout changes, dependency upgrades, and the small improvements that never reach a project plan.',
-    },
-    deliverables: {
-      en: [
-        'Content, layout and component changes as they come up',
-        'Framework and dependency upgrades, tested before they ship',
-        'A written log of what changed, when, and why',
-      ],
-    },
-    metaTitle: 'Website Maintenance and Front-End Support',
-    metaDescription:
-      'Ongoing website maintenance: content and layout changes, framework upgrades tested before release, and a written record of every change made to your front end.',
-    keywords: [
-      'website maintenance services',
-      'website support retainer',
-      'front-end maintenance',
-      'Next.js maintenance',
-      'Webflow maintenance',
-      'website update service',
-    ],
-    heading: {
-      en: 'The small changes that otherwise wait six months',
-    },
-    intro: {
-      en: 'A monthly arrangement for a site that is already live, covering the queue of ten-minute changes nobody ever schedules and the upgrades that turn into migrations if they are skipped.',
-    },
-    sections: [
-      {
-        heading: { en: 'What a retainer is actually for' },
-        paragraphs: {
-          en: [
-            'Every live site accumulates a list: a date to change, a section that should move up, a form field nobody needs, a new logo on the client wall. Individually none of them justify opening a project, so collectively they sit there for a year.',
-            'A standing monthly arrangement is what clears that list. The work is small by definition, which is exactly why it needs somewhere to go rather than a quote each time.',
-          ],
-        },
-      },
-      {
-        heading: { en: 'Upgrades before they become migrations' },
-        paragraphs: {
-          en: [
-            'A framework version skipped for two years is not an upgrade any more, it is a rebuild. Kept current on a regular cycle, the same work is an afternoon with tests run against it.',
-            'Upgrades go out after they have been checked rather than on the day they are released, because the point of maintenance is that nothing visibly changes.',
-          ],
-        },
-      },
-      {
-        heading: { en: 'A record of what changed' },
-        paragraphs: {
-          en: [
-            'Every change is logged with what it was and why it was made. Six months in, that log is the difference between a site your next developer can pick up and one they want to replace.',
-            'It also keeps the arrangement honest. You can see what the month bought without asking for a report.',
-          ],
-        },
-      },
-    ],
-    faqs: [
-      {
-        question: { en: 'What is not covered?' },
-        answer: {
-          en: 'Back-end systems, servers, databases and security incident response, since I do not take those on. Hosting stays in your own account and is billed to you directly. Anything that is really a new project rather than a change — a new section, a new template, a redesign — is quoted separately, and I will say when a request has crossed that line.',
-        },
-      },
-      {
-        question: { en: 'Does the site have to have been built by you?' },
-        answer: {
-          en: 'No, but it starts with a look at the code. Some sites are cheap to maintain and some are expensive because of how they were built, and I would rather tell you which one yours is before either of us commits to a monthly arrangement.',
-        },
-      },
-      {
-        question: { en: 'How does the arrangement work?' },
-        answer: {
-          en: 'As a fixed monthly scope agreed in writing before the first month, rather than an open-ended hourly account. What is included, how requests are sent, and the notice either side needs to end it are all written down at the start, so neither of us is interpreting it later.',
-        },
-      },
-    ],
-    relatedProjects: ['stayease', 'ai-agent-landing'],
-    pricingNote: {
-      en: 'Maintenance is a fixed monthly arrangement rather than a project price, agreed in writing before the first month, with the notice either side needs to end it agreed at the same time.',
-    },
-  },
-  {
-    slug: 'performance-accessibility-audit',
-    pillar: 'development',
-    number: '09',
-    title: { en: 'Performance & accessibility audit' },
-    description: {
-      en: 'A technical front-end audit: what is actually slowing the site down, where it fails WCAG, and the specific change that fixes each one — not a screenshot of a score.',
-    },
-    deliverables: {
-      en: [
-        'Core Web Vitals and the load waterfall reviewed on your real pages',
-        'Keyboard, screen reader and contrast testing against WCAG 2.2 AA',
-        'Fix list ordered by impact, with the change described per issue',
-      ],
-    },
-    metaTitle: 'Website Performance and Accessibility Audit',
-    metaDescription:
-      'Front-end audit of Core Web Vitals and WCAG 2.2 AA accessibility: what is slowing your site down, where it fails, and the specific fix for each issue, ordered by impact.',
-    keywords: [
-      'website performance audit',
-      'Core Web Vitals audit',
-      'accessibility audit service',
-      'WCAG 2.2 audit',
-      'website speed optimisation',
-      'accessibility review',
-    ],
-    heading: {
-      en: 'A score is not a fix list',
-    },
-    intro: {
-      en: 'Render-blocking assets, oversized images, keyboard traps and contrast failures — found on your real pages, in the browsers your visitors use, and written up as changes someone can actually make.',
-    },
-    sections: [
-      {
-        heading: { en: 'Lab scores and real users disagree' },
-        paragraphs: {
-          en: [
-            'A tool run on a fast connection from one location tells you what the page could do. Field data tells you what it does for the people loading it on a mid-range phone on mobile data, which is usually a different and less flattering story.',
-            'Both get looked at, and where they disagree the field numbers win. Chasing a lab score to ninety while real visitors wait four seconds is optimising the measurement.',
-          ],
-        },
-      },
-      {
-        heading: { en: 'Accessibility is tested, not scanned' },
-        paragraphs: {
-          en: [
-            'Automated checkers find contrast ratios, missing alt attributes and broken landmarks, and they are worth running first. They cannot tell you that the focus order jumps across the page, that a modal traps a keyboard user, or that a label describes the wrong field.',
-            'So the pass is manual as well: through the site with a keyboard only, then with a screen reader, on the flows that matter most — sign-up, checkout, contact, whatever yours are.',
-          ],
-        },
-      },
-      {
-        heading: { en: 'Each issue with the change that fixes it' },
-        paragraphs: {
-          en: [
-            'Every finding names the page, the problem, who it affects and the specific change — this image is 2.4 MB and should be served at 600px wide in AVIF; this control is a div and should be a button.',
-            'That is the difference between a report that gets forwarded to a developer and one that gets acted on. A list of failures with no remedies attached is work moved, not work done.',
-          ],
-        },
-      },
-    ],
-    faqs: [
-      {
-        question: { en: 'Do you fix the issues or only report them?' },
-        answer: {
-          en: 'Either. The audit is written to be actionable by your own developers and is deliberately useful on its own. If you would rather I implement the fixes, that is scoped separately once the list exists and we both know how big the job is.',
-        },
-      },
-      {
-        question: { en: 'Is this a legal accessibility certification?' },
-        answer: {
-          en: 'No. It is a technical review against WCAG 2.2 AA carried out by a front-end practitioner — not a legal conformance statement, not a VPAT, and not legal advice. If you need a formal certification for procurement or compliance, you need a specialist accessibility auditor, and I will say so rather than take the work.',
-        },
-      },
-      {
-        question: { en: 'Which platforms can you audit?' },
-        answer: {
-          en: 'Any site I can load in a browser — WordPress, Webflow, Shopify, a custom build, anything. What changes is how the fixes get applied afterwards: on some platforms I can make them, on others the list goes to whoever maintains the site.',
-        },
-      },
-    ],
-    relatedProjects: ['stayease', 'ai-agent-landing'],
-    pricingNote: {
-      en: 'Quoted against how much site there is to test — the number of templates and the flows that matter — rather than from a package. Fixing what the audit finds is scoped separately, once the list exists and we both know its size.',
-    },
   },
 ]
 

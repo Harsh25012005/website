@@ -77,7 +77,7 @@ export const processPhases: ProcessPhase[] = [
     heading: { en: 'Build' },
     paragraphs: {
       en: [
-        'On projects that continue into code, the approved design is built as a responsive front end — React and Next.js, or Webflow, Framer and WordPress templates, whichever the scope settled on. The Figma component becomes the coded component and the design token becomes the code token, so one decision stays one decision.',
+        'On projects that continue into code, the approved design is built as a responsive front end — React and Next.js, Webflow or Framer, whichever the scope settled on. The Figma component becomes the coded component and the design token becomes the code token, so one decision stays one decision.',
         'Performance and accessibility are part of building rather than a pass at the end: static rendering where the content allows it, images sized and served properly, semantic markup, keyboard navigation, visible focus and contrast that holds. Retrofitting these is a rewrite of the markup.',
       ],
     },
@@ -91,7 +91,7 @@ export const processPhases: ProcessPhase[] = [
     paragraphs: {
       en: [
         'Cross-browser and cross-device QA against the design, a redirect map applied where URLs have changed, and a handover of the files, the code and the accounts — all in your ownership, with nothing depending on me staying involved.',
-        'After that the site starts ageing: dependencies fall behind, content gets added by people who were not at the kickoff, and images get uploaded straight off a camera. A maintenance arrangement covers that if you want one, and if you do not, the handover is written so your own team can.',
+        'The handover is documented so your team can maintain and grow the site with confidence, with clean components and clear structure.',
       ],
     },
     output: {

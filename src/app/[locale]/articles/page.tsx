@@ -13,10 +13,10 @@ type PageProps = { params: Promise<{ locale: string }> }
 
 const TITLE = 'Articles on UI/UX Design and Front-End Code'
 // The old description ("Notes on projects, process and things worth sharing")
-// described a mood. This one names what the three published pieces are actually
+// described a mood. This one names what the published pieces are actually
 // about, which is what a searcher and a snippet both need.
 const DESCRIPTION =
-  'Practical writing on UI/UX design and front-end development: building design systems in Figma, Figma-to-React handoff that survives contact with code, and the UI mistakes that show up in every audit.'
+  'Practical writing on UI/UX design and front-end development: 2026 design and AI-coding trends, Core Web Vitals, design systems in Figma, Figma-to-React handoff, and the UI mistakes that show up in every audit.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params
@@ -30,8 +30,11 @@ export async function generateMetadata({ params }: PageProps) {
     imageAlt: 'Articles on UI/UX design and front-end development',
     keywords: [
       'UI design articles',
+      'UI UX design trends 2026',
       'design system guide',
       'Figma to React',
+      'AI coding tools',
+      'Core Web Vitals',
       'UX writing and process',
     ],
   })

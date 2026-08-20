@@ -171,7 +171,11 @@ export const projects: Project[] = [
         ],
       },
     },
-    relatedArticles: ['design-system-in-figma', 'ui-design-mistakes'],
+    relatedArticles: [
+      'design-system-in-figma',
+      'ui-design-mistakes',
+      'ui-ux-design-trends-2026',
+    ],
   },
   {
     slug: 'crave',
@@ -374,7 +378,11 @@ export const projects: Project[] = [
         ],
       },
     },
-    relatedArticles: ['figma-to-react-handoff', 'ui-design-mistakes'],
+    relatedArticles: [
+      'figma-to-react-handoff',
+      'ui-design-mistakes',
+      'ai-coding-tools-client-projects',
+    ],
   },
   {
     slug: 'cleaning-services-app',
@@ -493,7 +501,7 @@ export const projects: Project[] = [
         ],
       },
     },
-    relatedArticles: ['ui-design-mistakes'],
+    relatedArticles: ['ui-design-mistakes', 'core-web-vitals-2026'],
   },
   {
     slug: 'ai-agent-landing',
@@ -569,7 +577,7 @@ export const projects: Project[] = [
         ],
       },
     },
-    relatedArticles: ['figma-to-react-handoff'],
+    relatedArticles: ['figma-to-react-handoff', 'ai-coding-tools-client-projects'],
   },
 ]
 

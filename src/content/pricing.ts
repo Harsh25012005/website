@@ -21,13 +21,6 @@ import type { Faq, PricingPackage } from './types'
  * three real client case studies and some quotes are on the site — that is the
  * thing holding them down, not the work.
  *
- * ⚠️  One package is still missing and is deliberately absent rather than
- * forgotten: website maintenance is a monthly retainer, not a fixed project
- * price, so it does not fit this shape. Adding it here would mean a `unit` of
- * "per month" sitting in a grid of per-project figures, which reads as a
- * cheaper project rather than a different kind of arrangement. Give it its own
- * block on the page when there is a real monthly figure to publish.
- *
  * A starting price is a filter, not a quote. Pitch it at the smallest job you
  * would genuinely take on: too low and it attracts enquiries you do not want,
  * too high and it loses the ones you do.
@@ -37,7 +30,7 @@ export const pricingPackages: PricingPackage[] = [
   {
     slug: 'landing-page',
     name: { en: 'Landing page' },
-    from: '$149',
+    from: '$99',
     unit: { en: 'per page' },
     summary: {
       en: 'A single high-intent page for a product launch, campaign or waiting list, designed to convert and handed over ready to build.',
@@ -58,7 +51,7 @@ export const pricingPackages: PricingPackage[] = [
   {
     slug: 'product-design',
     name: { en: 'Product design' },
-    from: '$1,099',
+    from: '$399',
     unit: { en: 'per project' },
     summary: {
       en: 'Multi-screen design for a web app, SaaS dashboard or mobile app: the flows, the core screens, the states everyone forgets, and a prototype to test it with.',
@@ -84,10 +77,10 @@ export const pricingPackages: PricingPackage[] = [
   {
     slug: 'development',
     name: { en: 'Development only' },
-    from: '$599',
+    from: '$199',
     unit: { en: 'per project' },
     summary: {
-      en: 'You already have the design. It gets built as a responsive front end on the platform that suits whoever maintains it afterwards — React and Next.js, Webflow, Framer, or WordPress templates.',
+      en: 'You already have the design. It gets built as a responsive front end on the platform that suits whoever maintains it afterwards — React and Next.js, Webflow, or Framer.',
     },
     bestFor: {
       en: 'Teams with a designer, or an approved Figma file, and no front-end developer free to build it.',
@@ -95,7 +88,7 @@ export const pricingPackages: PricingPackage[] = [
     includes: {
       en: [
         'Front-end build from your Figma file, whoever drew it',
-        'React and Next.js, Webflow, Framer or WordPress templates',
+        'React and Next.js, Webflow, or Framer',
         'Every breakpoint checked against the design, not approximated',
         'Keyboard navigation, focus states and colour contrast covered',
         'Cross-browser QA on desktop and mobile before launch',
@@ -107,13 +100,12 @@ export const pricingPackages: PricingPackage[] = [
       'figma-to-react',
       'webflow-development',
       'framer-development',
-      'wordpress-development',
     ],
   },
   {
     slug: 'design-and-build',
     name: { en: 'Design and build' },
-    from: '$1,999 ',
+    from: '$599 ',
     unit: { en: 'per project' },
     summary: {
       en: 'The design work above, continued into a working responsive front end in React, Next.js and Tailwind CSS, so nothing is lost between the file and the live site.',
@@ -167,16 +159,14 @@ export const budgetBands = [
  * arrays above, so a service page can show what it costs without either file
  * hand-maintaining a second mapping that drifts from the first.
  *
- * Returns an empty array for three services on purpose:
+ * Returns an empty array for `ui-ux-audit` on purpose:
  *
- *   - `ui-ux-audit` and `performance-accessibility-audit` are scoped against
- *     the size of the thing being audited, not against a package;
- *   - `website-maintenance` is a monthly retainer and does not fit a
- *     per-project figure at all.
+ *   - `ui-ux-audit` is scoped against the size of the thing being audited,
+ *     not against a package.
  *
- * Those pages render an honest "quoted per project" line instead of being
- * forced into a package that would misdescribe them. If a package is ever added
- * for them, they pick it up here with no further edit.
+ * That page renders an honest "quoted per project" line instead of being
+ * forced into a package that would misdescribe it. If a package is ever added
+ * for it, it picks it up here with no further edit.
  */
 export function getPackagesForService(slug: string): PricingPackage[] {
   return pricingPackages.filter((pkg) => pkg.services.includes(slug))
@@ -224,14 +214,8 @@ export const pricingFaqs: Faq[] = [
   },
   {
     question: { en: 'What is not included?' },
-    // "Ongoing maintenance after handoff" used to be on this list. It came off
-    // when `/services/website-maintenance` was published — an FAQ answer is
-    // emitted as `FAQPage` schema, so a page saying a service is not offered
-    // while another page sells it is the site contradicting itself in markup a
-    // crawler reads. The other exclusions are unchanged and still true; they
-    // are stated in the same words on the service pages that mention them.
     answer: {
-      en: 'Back-end development, databases and infrastructure, native iOS and Android builds, WordPress plugin development, copywriting, photography and illustration. Ongoing maintenance after handoff is available, but as a separate monthly arrangement rather than part of a project price. Where a project needs anything on this list I will say so at the brief stage rather than after the estimate.',
+      en: 'Back-end development, databases and infrastructure, native iOS and Android builds, copywriting, photography and illustration. Where a project needs anything on this list I will say so at the brief stage rather than after the estimate.',
     },
   },
   {

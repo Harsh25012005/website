@@ -25,7 +25,7 @@ type PageProps = { params: Promise<{ locale: string }> }
 // tail keeps this inside the ~60 characters a SERP shows.
 const TITLE = `${site.name} - ${site.jobTitle}`
 const DESCRIPTION =
-  'Freelance UI/UX designer and front-end developer in Ahmedabad, India, working with founders and teams worldwide. Design systems, web, app and SaaS product design in Figma, built in React, Next.js, Webflow and WordPress.'
+  'Freelance UI/UX designer and front-end developer in Ahmedabad, India, working with founders and teams worldwide. Design systems, web, app and SaaS product design in Figma, built in React, Next.js, Webflow and Framer.'
 
 export async function generateMetadata({ params }: PageProps) {
   const { locale } = await params

@@ -21,8 +21,7 @@ import type { ServicePillar, ServicePillarPage } from './types'
  *
  * ⚠️  The development pillar draws the same line as `services.ts` and
  * `pricing.ts`: front end only. No back-end APIs, databases or infrastructure,
- * no native app builds, no WordPress plugin development. Do not widen it here
- * without widening it there.
+ * no native app builds. Do not widen it here without widening it there.
  */
 export const pillars: Record<ServicePillar, ServicePillarPage> = {
   design: {
@@ -85,7 +84,7 @@ export const pillars: Record<ServicePillar, ServicePillarPage> = {
       {
         question: { en: 'Can you build what you design?' },
         answer: {
-          en: 'Yes, for the web. The approved design can continue into a coded front end in React, Next.js, Webflow, Framer or WordPress templates — that is the development side of the practice. Design-only engagements are equally normal if you already have developers, and nothing here is priced to push you toward the build.',
+          en: 'Yes, for the web. The approved design can continue into a coded front end in React, Next.js, Webflow or Framer — that is the development side of the practice. Design-only engagements are equally normal if you already have developers, and nothing here is priced to push you toward the build.',
         },
       },
       {
@@ -104,14 +103,14 @@ export const pillars: Record<ServicePillar, ServicePillarPage> = {
     pillar: 'development',
     slug: 'custom-development',
     title: { en: 'Custom development' },
-    metaTitle: 'Custom Development: React, Next.js, Webflow & WordPress',
+    metaTitle: 'Custom Development: React, Next.js, Webflow & Framer',
     metaDescription:
-      'Custom front-end development services: React and Next.js builds, Figma to code, Webflow, Framer and WordPress templates, redesigns, maintenance and performance audits.',
+      'Custom front-end development services: React and Next.js builds, Figma to code, Webflow and Framer sites, and website redesigns.',
     keywords: [
       'custom development services',
       'front-end development services',
       'React and Next.js development',
-      'Webflow and WordPress development',
+      'Webflow and Framer development',
       'freelance web developer',
       'design to code development',
     ],
@@ -119,14 +118,14 @@ export const pillars: Record<ServicePillar, ServicePillarPage> = {
       en: 'Custom development, front end first',
     },
     intro: {
-      en: 'Nine ways to get a design onto the internet and keep it there: coded builds in React and Next.js, CMS builds in Webflow, Framer and WordPress, and the redesign, maintenance and audit work that follows launch.',
+      en: 'Six ways to get a design onto the internet: coded builds in React and Next.js, CMS builds in Webflow and Framer, and the redesign work that follows launch.',
     },
     sections: [
       {
         heading: { en: 'One line, stated up front' },
         paragraphs: {
           en: [
-            'I build front ends. HTML, CSS, Tailwind CSS, JavaScript, React and Next.js, plus PHP where a site sits on an existing stack. Back-end APIs, databases, authentication systems and infrastructure are outside what I take on, and so are native iOS and Android builds.',
+            'I build front ends. HTML, CSS, Tailwind CSS, JavaScript, React and Next.js. Back-end APIs, databases, authentication systems and infrastructure are outside what I take on, and so are native iOS and Android builds.',
             'On projects that need those, I build the interface and work alongside the developers who own that half. Saying this before an estimate is the whole point of putting it in the first paragraph — it is the most common way a one-person build goes wrong, and it is entirely avoidable.',
           ],
         },
@@ -135,17 +134,17 @@ export const pillars: Record<ServicePillar, ServicePillarPage> = {
         heading: { en: 'The platform is a question about your team' },
         paragraphs: {
           en: [
-            'A coded Next.js build, a Webflow site, a Framer page and a WordPress theme are four answers to "who edits this after launch, and how often". That question decides the platform far more often than any technical characteristic does.',
-            'Because all four are on offer here, the recommendation is not a sales decision. If your marketing team will publish weekly, you will be pointed at Webflow. If nobody will ever touch it again, a coded build is cheaper to run.',
+            'A coded Next.js build, a Webflow site and a Framer page are three answers to "who edits this after launch, and how often". That question decides the platform far more often than any technical characteristic does.',
+            'Because all three are on offer here, the recommendation is not a sales decision. If your marketing team will publish weekly, you will be pointed at Webflow or Framer. If nobody will ever touch it again, a coded build is cheaper to run.',
           ],
         },
       },
       {
-        heading: { en: 'Launch is the middle of the project' },
+        heading: { en: 'Built to last beyond launch' },
         paragraphs: {
           en: [
-            'A site that shipped fast and accessible in March is neither by the following March, because dependencies age, content gets added by people who were not in the kickoff, and images get uploaded straight off a camera.',
-            'That is what the maintenance and audit services are for. They are listed as ordinary services rather than an upsell, because a build with nobody looking after it is a depreciating asset with a launch party.',
+            'A site that shipped fast and clean in March is tested against real content and users as it grows.',
+            'That is what redesign work is for: taking an existing build and bringing it up to standard rather than letting it quietly decay.',
           ],
         },
       },
@@ -154,7 +153,7 @@ export const pillars: Record<ServicePillar, ServicePillarPage> = {
       {
         question: { en: 'Do you do back-end or full-stack development?' },
         answer: {
-          en: 'No. Front end only — React, Next.js, Tailwind CSS, and PHP for theme work. Back-end APIs, databases, authentication and infrastructure are outside what I take on, and native iOS and Android builds are too. On full-stack projects I build the interface and work alongside your back-end developers.',
+          en: 'No. Front end only — React, Next.js, Tailwind CSS, HTML and CSS. Back-end APIs, databases, authentication and infrastructure are outside what I take on, and native iOS and Android builds are too. On full-stack projects I build the interface and work alongside your back-end developers.',
         },
       },
       {

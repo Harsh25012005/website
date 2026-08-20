@@ -63,7 +63,7 @@ export function personSchema(): JsonLdNode {
     url: siteUrl,
     image: absolute(site.portrait),
     jobTitle: site.jobTitle,
-    description: `${site.jobTitle} in ${site.location.en}, working on design systems, web UI, mobile app and SaaS product design, and building the front end in React, Next.js, Webflow and WordPress.`,
+    description: `${site.jobTitle} in ${site.location.en}, working on design systems, web UI, mobile app and SaaS product design, and building the front end in React, Next.js, Webflow and Framer.`,
     email: `mailto:${site.email}`,
     address: postalAddress,
     homeLocation: {
@@ -149,9 +149,9 @@ export function professionalServiceSchema(): JsonLdNode {
     image: absolute(site.portrait),
     email: `mailto:${site.email}`,
     // Names both pillars because the catalogue below now lists both. A
-    // description that says "design studio" over fifteen offers, nine of which
+    // description that says "design studio" over twelve offers, six of which
     // are development, is the site describing a smaller version of itself.
-    description: `Freelance design and front-end development practice of ${site.name}, covering UI/UX design for web, mobile and SaaS, and custom development in React, Next.js, Webflow, Framer and WordPress. Front end only — no back-end or native app builds.`,
+    description: `Freelance design and front-end development practice of ${site.name}, covering UI/UX design for web, mobile and SaaS, and custom development in React, Next.js, Webflow and Framer. Front end only — no back-end or native app builds.`,
     founder: personRef,
     employee: personRef,
     address: postalAddress,

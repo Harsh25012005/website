@@ -48,6 +48,23 @@ export function Footer({ locale, dictionary }: FooterProps) {
     return null
   }
 
+  const menuLinks = [
+    {
+      key: 'home',
+      href: localizedPath(locale, '/'),
+      label: dictionary.footer.home,
+    },
+    ...footerNavigation.map((item) => ({
+      key: item.key,
+      href: localizedPath(locale, item.href),
+      label: dictionary.nav[item.key],
+    })),
+  ]
+
+  const midPoint = Math.ceil(menuLinks.length / 2)
+  const menuCol1 = menuLinks.slice(0, midPoint)
+  const menuCol2 = menuLinks.slice(midPoint)
+
   return (
     <footer className="relative flex flex-col overflow-hidden px-5 pt-16 pb-8 md:px-10 md:pt-24 md:pb-10">
       <div
@@ -81,44 +98,27 @@ export function Footer({ locale, dictionary }: FooterProps) {
               {dictionary.footer.menu}
             </p>
             <ul className="flex flex-col items-start gap-3">
-              <li>
-                <InternalLink href={localizedPath(locale, '/')}>
-                  {dictionary.footer.home}
-                </InternalLink>
-              </li>
-              {footerNavigation.map((item) => (
+              {menuCol1.map((item) => (
                 <li key={item.key}>
-                  <InternalLink href={localizedPath(locale, item.href)}>
-                    {dictionary.nav[item.key]}
-                  </InternalLink>
+                  <InternalLink href={item.href}>{item.label}</InternalLink>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <p className="mb-5 text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
-              {dictionary.footer.connect}
+            <p
+              aria-hidden
+              className="invisible mb-5 select-none text-[11px] tracking-[0.18em] uppercase"
+            >
+              {dictionary.footer.menu}
             </p>
             <ul className="flex flex-col items-start gap-3">
-              {site.socials.map((social) => (
-                <li key={social.label}>
-                  {/* `rel="me"` is the machine-readable half of the identity
-                      claim the JSON-LD `sameAs` makes: it links this site to
-                      the profile and, where the profile links back, closes the
-                      loop that lets a search engine treat both as the same
-                      person. It is inert while these remain placeholder
-                      domain roots — see the warning in `content/site.ts`. */}
-                  <OutboundLink href={social.href} newTab profile>
-                    {social.label}
-                  </OutboundLink>
+              {menuCol2.map((item) => (
+                <li key={item.key}>
+                  <InternalLink href={item.href}>{item.label}</InternalLink>
                 </li>
               ))}
-              <li>
-                <OutboundLink href={`mailto:${site.email}`}>
-                  {dictionary.footer.emailLabel}
-                </OutboundLink>
-              </li>
             </ul>
           </div>
 
@@ -207,44 +207,5 @@ function InternalLink({
         className="pointer-events-none absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100"
       />
     </Link>
-  )
-}
-
-function OutboundLink({
-  href,
-  children,
-  newTab = false,
-  profile = false,
-}: {
-  href: string
-  children: ReactNode
-  newTab?: boolean
-  /** Adds `rel="me"` — this URL is another profile of the site's owner. */
-  profile?: boolean
-}) {
-  const rel =
-    [newTab && 'noopener noreferrer', profile && 'me']
-      .filter(Boolean)
-      .join(' ') || undefined
-
-  return (
-    <a
-      href={href}
-      target={newTab ? '_blank' : undefined}
-      rel={rel}
-      className="group relative inline-flex items-center gap-1 py-0.5 transition-colors hover:text-white"
-    >
-      {children}
-      <span
-        aria-hidden
-        className="text-[0.8em] transition-transform duration-300 ease-out group-hover:translate-x-px group-hover:-translate-y-px"
-      >
-        ↗
-      </span>
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 -bottom-px h-px origin-left scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100"
-      />
-    </a>
   )
 }

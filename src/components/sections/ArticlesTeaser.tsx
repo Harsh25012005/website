@@ -11,7 +11,14 @@ type ArticlesTeaserProps = {
   dictionary: Dictionary
 }
 
+// `articles` is ordered newest first; the home page is a teaser into
+// `/articles`, not the full index, so it shows only the latest row of three
+// rather than growing a second grid every time a post is added.
+const FEATURED_COUNT = 3
+
 export function ArticlesTeaser({ locale, dictionary }: ArticlesTeaserProps) {
+  const featured = articles.slice(0, FEATURED_COUNT)
+
   return (
     <section className="px-5 py-16 md:px-10 md:py-32">
       <div className="shell">
@@ -22,7 +29,7 @@ export function ArticlesTeaser({ locale, dictionary }: ArticlesTeaserProps) {
         </div>
 
         <div className="grid items-start gap-8 md:grid-cols-3">
-          {articles.map((article, index) => (
+          {featured.map((article, index) => (
             <Reveal key={article.slug} delay={index * 0.06}>
               <ArticleCard article={article} locale={locale} />
             </Reveal>

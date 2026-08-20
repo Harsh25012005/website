@@ -58,11 +58,9 @@ export default async function ServicePage({ params }: PageProps) {
     .map((projectSlug) => getProject(projectSlug))
     .filter((project) => project !== undefined)
 
-  // Same pillar only. Before the split this was every other service, which at
-  // fifteen entries is a link dump at the foot of the page rather than
-  // navigation — and it sent a design reader to `wordpress-development` as
-  // readily as to `design-systems`. The cross-pillar link below is the
-  // deliberate, single route to the other half.
+  // Same pillar only. Sibling services are scoped to their own pillar rather
+  // than listing every service at the foot of the page. The cross-pillar link
+  // below is the deliberate, single route to the other half.
   const pillar = pillars[service.pillar]
   const siblings = servicesByPillar(service.pillar).filter(
     (item) => item.slug !== slug,
