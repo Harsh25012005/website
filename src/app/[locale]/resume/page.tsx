@@ -106,7 +106,7 @@ export default async function ResumePage({ params }: PageProps) {
         </div>
       </section>
 
-      <Section title="Experience">
+      <Section title={dictionary.pages.resume.experience}>
         <ol className="space-y-12">
           {resumeExperience.map((entry) => (
             // `as="li"`: an `<ol>` may only contain `<li>` children, and the
@@ -156,7 +156,7 @@ export default async function ResumePage({ params }: PageProps) {
       {/* Read from `site.education`, which is also what feeds `alumniOf` and
           `hasCredential` in the Person schema — so the page and the markup
           cannot disagree about where the degrees came from. */}
-      <Section title="Education">
+      <Section title={dictionary.pages.resume.education}>
         <ol className="space-y-10">
           {site.education.map((entry) => (
             <Reveal
@@ -177,7 +177,7 @@ export default async function ResumePage({ params }: PageProps) {
         </ol>
       </Section>
 
-      <Section title="What I do">
+      <Section title={dictionary.pages.resume.whatIDo}>
         <Reveal>
           <ul className="grid gap-x-8 gap-y-6 md:grid-cols-2">
             {services.map((service) => (
@@ -199,24 +199,24 @@ export default async function ResumePage({ params }: PageProps) {
         </Reveal>
       </Section>
 
-      <Section title="Skills">
+      <Section title={dictionary.pages.resume.skills}>
         <Reveal>
           <TagList items={skills} />
         </Reveal>
       </Section>
 
-      <Section title="Tools">
+      <Section title={dictionary.pages.resume.tools}>
         <Reveal>
           <TagList items={tools} />
         </Reveal>
         <Reveal>
           <p className="mt-8 text-[15px] leading-[1.6] text-[var(--color-text-muted)] md:max-w-[52ch]">
-            More on how these are actually used, day to day, on the{' '}
+            {dictionary.pages.resume.toolsNoteBefore}{' '}
             <Link
               href={localizedPath(locale, '/tools')}
               className="text-white underline underline-offset-4 transition-colors hover:text-[var(--color-text-soft)]"
             >
-              tools page
+              {dictionary.pages.resume.toolsNoteLink}
             </Link>
             .
           </p>
@@ -229,7 +229,7 @@ export default async function ResumePage({ params }: PageProps) {
             <div className="flex flex-col items-start gap-6 border-t border-[var(--color-border)] pt-12 md:flex-row md:items-center md:justify-between md:gap-10 md:pt-16">
               <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[30ch]">
                 <span className="text-white">
-                  Hiring, or have a project? The inbox is open.
+                  {dictionary.pages.resume.cta}
                 </span>
               </p>
               <Link

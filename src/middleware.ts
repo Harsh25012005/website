@@ -20,35 +20,45 @@ function hasSegmentPrefix(pathname: string, segment: string): boolean {
 }
 
 /**
- * The app tree is `src/app/[locale]/…`, but every public URL is unprefixed.
+ * The app tree is `src/app/[locale]/…`, but public URLs follow this scheme:
+ * - English (default): unprefixed — `/work`, `/about`, `/contact`
+ * - Spanish:           `/es/work`, `/es/about`, `/es/contact`
+ * - French:            `/fr/work`, `/fr/about`, `/fr/contact`
  *
- * Two jobs:
- * 1. Redirect any locale-prefixed request (`/en/work`, `/cs/work`) to the
- *    canonical root path. Previously these were passed through untouched, so
- *    `/en/work` and `/work` both returned 200 and every page in the site had a
- *    duplicate URL.
- * 2. Rewrite everything else into the `en` segment so the `[locale]` tree still
- *    resolves, while the address bar and the canonical tag keep the root path.
+ * Three jobs:
+ * 1. Redirect the default locale prefix (`/en/work`) to the canonical root
+ *    path. Previously these were passed through untouched, so `/en/work` and
+ *    `/work` both returned 200 and every page had a duplicate URL.
+ * 2. Redirect retired locale prefixes (`/cs/work`) the same way.
+ * 3. Rewrite everything else into the correct `[locale]` segment so the app
+ *    tree resolves, while the address bar keeps the public URL.
  *
- * The rewrite target is itself locale-prefixed, which would match rule 1 and
- * bounce forever if middleware ran again — it doesn't. Next.js invokes
- * middleware once per incoming request; `NextResponse.rewrite` resolves
- * internally against the app router without re-entering the middleware chain
- * (unlike `NextResponse.redirect`, which produces a new client request that
- * does re-run it). The redirect above therefore only ever sees URLs a client
- * actually asked for.
+ * Non-default locales (`/es/…`, `/fr/…`) are rewritten into their own segment
+ * rather than redirected — they ARE the canonical URL for that locale.
  */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  for (const prefix of [...locales, ...retiredLocales]) {
+  // ── Redirect default-locale prefix and retired locales ──────────────────
+  for (const prefix of [defaultLocale, ...retiredLocales]) {
     if (!hasSegmentPrefix(pathname, prefix)) continue
     const url = request.nextUrl.clone()
-    // `clone()` carries the query string over, so campaign params survive.
     url.pathname = pathname.slice(`/${prefix}`.length) || '/'
     return NextResponse.redirect(url, PERMANENT_REDIRECT)
   }
 
+  // ── Non-default locales: rewrite into the [locale] segment ─────────────
+  for (const locale of locales) {
+    if (locale === defaultLocale) continue
+    if (hasSegmentPrefix(pathname, locale)) {
+      // Already has the locale prefix — rewrite as-is into [locale]
+      const url = request.nextUrl.clone()
+      url.pathname = `/${locale}${pathname.slice(`/${locale}`.length) || ''}`
+      return NextResponse.rewrite(url)
+    }
+  }
+
+  // ── Unprefixed path: rewrite into the default locale ───────────────────
   const url = request.nextUrl.clone()
   url.pathname = `/${defaultLocale}${pathname === '/' ? '' : pathname}`
   return NextResponse.rewrite(url)

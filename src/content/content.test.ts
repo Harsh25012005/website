@@ -7,7 +7,6 @@ import { services, getService, servicesByPillar } from './services'
 import { pillars, pillarOrder, pillarSlugs } from './pillars'
 import { processPhases, processFaqs } from './process'
 import { legalDocuments } from './legal'
-import { pricingPackages, getPackagesForService } from './pricing'
 import { getDictionary } from './dictionary'
 import { locales } from '@/lib/i18n'
 
@@ -351,51 +350,6 @@ describe('legal documents', () => {
         expect(doc.heading[locale]).toBeTruthy()
         expect(doc.intro[locale].length).toBeGreaterThan(0)
         expect(doc.sections.length).toBeGreaterThan(0)
-      }
-    }
-  })
-})
-
-describe('pricing', () => {
-  it('has unique slugs and references services that exist', () => {
-    const slugs = pricingPackages.map((pkg) => pkg.slug)
-    expect(new Set(slugs).size).toBe(slugs.length)
-
-    for (const pkg of pricingPackages) {
-      expect(pkg.services.length).toBeGreaterThan(0)
-      for (const slug of pkg.services) {
-        expect(getService(slug)).toBeDefined()
-      }
-    }
-  })
-
-  /**
-   * Every service page renders a "What it costs" block. A service in no
-   * package and with no `pricingNote` renders "Quoted per project" and nothing
-   * else — technically true, and a dead end for the reader who came to that
-   * page precisely to find out. This is the check that a new service cannot be
-   * added without deciding how it is priced.
-   */
-  it('gives every service either a package or a pricing note', () => {
-    for (const service of services) {
-      const covered =
-        getPackagesForService(service.slug).length > 0 ||
-        Boolean(service.pricingNote)
-
-      expect(
-        covered,
-        `service "${service.slug}" appears in no pricing package and has no pricingNote — its "What it costs" block would say nothing`,
-      ).toBe(true)
-    }
-  })
-
-  it('carries copy for every locale', () => {
-    for (const pkg of pricingPackages) {
-      for (const locale of locales) {
-        expect(pkg.name[locale]).toBeTruthy()
-        expect(pkg.summary[locale]).toBeTruthy()
-        expect(pkg.bestFor[locale]).toBeTruthy()
-        expect(pkg.includes[locale].length).toBeGreaterThan(0)
       }
     }
   })

@@ -22,7 +22,6 @@ type ContactFormProps = {
    * out of the client bundle.
    */
   serviceOptions: ServiceOption[]
-  budgetBands: readonly string[]
 }
 
 type Errors = Partial<Record<'name' | 'email' | 'message', string>>
@@ -54,7 +53,6 @@ export function ContactForm({
   locale,
   dictionary,
   serviceOptions,
-  budgetBands,
 }: ContactFormProps) {
   const router = useRouter()
   const [errors, setErrors] = useState<Errors>({})
@@ -71,14 +69,11 @@ export function ContactForm({
         value: option.label,
         label: option.label,
         group:
-          option.pillar === 'design' ? 'UI/UX design' : 'Custom development',
+          option.pillar === 'design'
+            ? dictionary.contact.serviceGroupDesign
+            : dictionary.contact.serviceGroupDevelopment,
       })),
-    [serviceOptions],
-  )
-
-  const budgetChoices = useMemo<SelectOption[]>(
-    () => budgetBands.map((band) => ({ value: band, label: band })),
-    [budgetBands],
+    [serviceOptions, dictionary],
   )
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -211,12 +206,6 @@ export function ContactForm({
           label={dictionary.contact.service}
           placeholder={dictionary.contact.servicePlaceholder}
           options={serviceChoices}
-        />
-        <CustomSelect
-          name="budget"
-          label={dictionary.contact.budget}
-          placeholder={dictionary.contact.budgetPlaceholder}
-          options={budgetChoices}
         />
       </div>
 

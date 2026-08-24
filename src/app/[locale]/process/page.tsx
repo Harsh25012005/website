@@ -80,7 +80,7 @@ export default async function ProcessPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[16ch] font-serif text-[clamp(40px,5.6vw,88px)] leading-[1.02] font-light tracking-[-0.04em]"
           >
-            What actually happens, in what order
+            {dictionary.pages.process.heading}
           </SplitHeading>
 
           <Reveal delay={0.35}>
@@ -120,7 +120,7 @@ export default async function ProcessPage({ params }: PageProps) {
                       here. */}
                   <div className="mt-8 border-t border-[var(--color-border)] pt-6">
                     <p className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
-                      You end up with
+                      {dictionary.pages.process.youEndUpWith}
                     </p>
                     <p className="mt-3 max-w-[48ch] text-[15px] leading-[1.55] text-white">
                       {phase.output[locale]}
@@ -143,7 +143,7 @@ export default async function ProcessPage({ params }: PageProps) {
               id="process-faq-heading"
               className="max-w-[16ch] font-serif text-[clamp(32px,4.5vw,56px)] leading-[1.05] font-light tracking-[-0.03em]"
             >
-              Working together
+              {dictionary.pages.process.workingTogether}
             </h2>
           </Reveal>
 
@@ -178,7 +178,7 @@ export default async function ProcessPage({ params }: PageProps) {
             <div className="flex flex-col items-start gap-6 border-t border-[var(--color-border)] pt-12 md:flex-row md:items-center md:justify-between md:gap-10 md:pt-16">
               <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[30ch]">
                 <span className="text-white">
-                  This starts with a brief. Send yours.
+                  {dictionary.pages.process.cta}
                 </span>
               </p>
               <Link

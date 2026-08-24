@@ -8,19 +8,23 @@ import {
 } from './i18n'
 
 describe('locales', () => {
-  it('ships English only', () => {
-    expect([...locales]).toEqual(['en'])
+  it('ships English, Spanish, and French', () => {
+    expect([...locales]).toEqual(['en', 'es', 'fr'])
     expect(defaultLocale).toBe('en')
   })
 })
 
 describe('localizedPath', () => {
-  it('leaves paths unprefixed', () => {
+  it('leaves English paths unprefixed and prefixes other locales', () => {
     expect(localizedPath('en', '/work')).toBe('/work')
     expect(localizedPath('en', '/')).toBe('/')
+    expect(localizedPath('es', '/work')).toBe('/es/work')
+    expect(localizedPath('fr', '/work')).toBe('/fr/work')
+    expect(localizedPath('es', '/')).toBe('/es')
+    expect(localizedPath('fr', '/')).toBe('/fr')
   })
 
-  it('never emits a locale prefix', () => {
+  it('never emits an English locale prefix', () => {
     for (const path of ['/', '/work', '/work/atlas', '/services']) {
       expect(localizedPath('en', path).startsWith('/en/')).toBe(false)
       expect(localizedPath('en', path)).not.toBe('/cs')
@@ -31,13 +35,19 @@ describe('localizedPath', () => {
   it('strips trailing slashes so canonicals never double up', () => {
     expect(localizedPath('en', '/work/')).toBe('/work')
     expect(localizedPath('en', '/work/atlas/')).toBe('/work/atlas')
+    expect(localizedPath('es', '/work/')).toBe('/es/work')
+    expect(localizedPath('fr', '/work/atlas/')).toBe('/fr/work/atlas')
   })
 })
 
 describe('stripLocale', () => {
   it('removes a locale prefix', () => {
     expect(stripLocale('/en/work/atlas')).toBe('/work/atlas')
+    expect(stripLocale('/es/work/atlas')).toBe('/work/atlas')
+    expect(stripLocale('/fr/work/atlas')).toBe('/work/atlas')
     expect(stripLocale('/en')).toBe('/')
+    expect(stripLocale('/es')).toBe('/')
+    expect(stripLocale('/fr')).toBe('/')
   })
 
   it('is the identity for the public, unprefixed URLs', () => {
@@ -56,15 +66,20 @@ describe('stripLocale', () => {
   it('round-trips with localizedPath', () => {
     const path = '/work/atlas'
     expect(stripLocale(localizedPath('en', path))).toBe(path)
+    expect(stripLocale(localizedPath('es', path))).toBe(path)
+    expect(stripLocale(localizedPath('fr', path))).toBe(path)
     expect(stripLocale(localizedPath(defaultLocale, '/'))).toBe('/')
   })
 })
 
 describe('isLocale', () => {
-  it('accepts English and rejects everything else', () => {
+  it('accepts supported locales and rejects everything else', () => {
     expect(isLocale('en')).toBe(true)
+    expect(isLocale('es')).toBe(true)
+    expect(isLocale('fr')).toBe(true)
     expect(isLocale('cs')).toBe(false)
     expect(isLocale('de')).toBe(false)
     expect(isLocale(undefined)).toBe(false)
   })
 })
+

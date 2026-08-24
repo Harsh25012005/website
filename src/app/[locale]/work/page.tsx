@@ -71,13 +71,12 @@ export default async function WorkPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[18ch] font-serif text-[clamp(40px,5.6vw,88px)] leading-[1.02] font-light tracking-[-0.04em] md:max-w-[20ch]"
           >
-            A closer look at the work I’ve helped shape
+            {dictionary.pages.work.heading}
           </SplitHeading>
 
           <Reveal delay={0.35}>
             <p className="mt-8 max-w-[52ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-              Selected projects across product design, websites, systems and
-              brand-led experiences, independently and as part of teams.
+              {dictionary.pages.work.intro}
             </p>
           </Reveal>
 

@@ -30,7 +30,8 @@ export function LegalPage({ locale, doc }: LegalPageProps) {
   const dictionary = getDictionary(locale)
   const path = `/${doc.slug}`
 
-  const updated = new Intl.DateTimeFormat('en-GB', {
+  const dateLocale = locale === 'es' ? 'es-ES' : locale === 'fr' ? 'fr-FR' : 'en-GB'
+  const updated = new Intl.DateTimeFormat(dateLocale, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -65,7 +66,7 @@ export function LegalPage({ locale, doc }: LegalPageProps) {
 
           <Reveal delay={0.3}>
             <p className="mt-8 text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
-              Last updated{' '}
+              {dictionary.common.lastUpdated}{' '}
               <time dateTime={doc.updated}>{updated}</time>
             </p>
 
@@ -105,7 +106,7 @@ export function LegalPage({ locale, doc }: LegalPageProps) {
             <div className="flex flex-col items-start gap-6 border-t border-[var(--color-border)] pt-12 md:flex-row md:items-center md:justify-between md:gap-10 md:pt-16">
               <p className="font-serif text-[clamp(20px,2.2vw,28px)] leading-[1.2] font-light tracking-[-0.02em] md:max-w-[32ch]">
                 <span className="text-white">
-                  Anything here you want clarified before we work together?
+                  {dictionary.pages.legal.cta}
                 </span>
               </p>
               <Link

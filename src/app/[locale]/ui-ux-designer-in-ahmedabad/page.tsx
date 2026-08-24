@@ -96,7 +96,7 @@ export default async function AhmedabadPage({ params }: PageProps) {
             delay={0.12}
             className="mt-6 max-w-[18ch] font-serif text-[clamp(40px,5.6vw,88px)] leading-[1.02] font-light tracking-[-0.04em]"
           >
-            UI/UX designer in Ahmedabad
+            {dictionary.pages.local.heading}
           </SplitHeading>
 
           <Reveal delay={0.35}>
@@ -134,7 +134,7 @@ export default async function AhmedabadPage({ params }: PageProps) {
         <div className="shell">
           <Reveal>
             <h2 className="max-w-[20ch] font-serif text-[clamp(26px,3vw,40px)] leading-[1.05] font-light tracking-[-0.03em]">
-              What I design for clients here
+              {dictionary.pages.local.whatIDesign}
             </h2>
           </Reveal>
 
@@ -192,7 +192,7 @@ export default async function AhmedabadPage({ params }: PageProps) {
               id="local-faq-heading"
               className="max-w-[16ch] font-serif text-[clamp(32px,4.5vw,56px)] leading-[1.05] font-light tracking-[-0.03em]"
             >
-              Working together locally
+              {dictionary.pages.local.workingLocally}
             </h2>
           </Reveal>
 
@@ -227,7 +227,7 @@ export default async function AhmedabadPage({ params }: PageProps) {
             <div className="flex flex-col items-start gap-6 border-t border-[var(--color-border)] pt-12 md:flex-row md:items-center md:justify-between md:gap-10 md:pt-16">
               <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[30ch]">
                 <span className="text-white">
-                  Based in Ahmedabad and need a designer? Let’s meet.
+                  {dictionary.pages.local.cta}
                 </span>
               </p>
               <Link

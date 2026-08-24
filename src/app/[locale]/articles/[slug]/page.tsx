@@ -73,7 +73,8 @@ export default async function ArticlePage({ params }: PageProps) {
     .map((serviceSlug) => getService(serviceSlug))
     .filter((service) => service !== undefined)
 
-  const published = new Date(article.date).toLocaleDateString('en-GB', {
+  const dateLocale = locale === 'es' ? 'es-ES' : locale === 'fr' ? 'fr-FR' : 'en-GB'
+  const published = new Date(article.date).toLocaleDateString(dateLocale, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',

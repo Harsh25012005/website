@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { gsap, registerGsap, prefersReducedMotion } from '@/lib/gsap'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { getLenis } from '@/components/motion/SmoothScroll'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { site, navigation } from '@/content/site'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
@@ -217,6 +218,13 @@ export function MobileMenu({
           <span className="text-[14px] text-[var(--color-text-muted)]">
             {site.location[locale]}
           </span>
+          <LanguageSwitcher
+            locale={locale}
+            label={dictionary.nav.language}
+            align="start"
+            direction="up"
+            className="mt-3"
+          />
         </div>
       </div>
     </div>

@@ -99,15 +99,12 @@ export default async function ServicesPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[18ch] font-serif text-[clamp(40px,5.6vw,88px)] leading-[1.02] font-light tracking-[-0.04em] md:max-w-[20ch]"
           >
-            Design and development, from the first flow to the live site
+            {dictionary.pages.services.heading}
           </SplitHeading>
 
           <Reveal delay={0.35}>
             <p className="mt-8 max-w-[54ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-              I design interfaces in Figma, Framer, Webflow and Sketch, and
-              build the front end in HTML, CSS, Tailwind CSS, React, Next.js and
-              PHP. Take either half on its own, or both, in which case nothing
-              is lost in handoff because there is no handoff.
+              {dictionary.pages.services.intro}
             </p>
           </Reveal>
         </div>
@@ -133,13 +130,16 @@ export default async function ServicesPage({ params }: PageProps) {
                       href={localizedPath(locale, pillarPath(key))}
                       className="group"
                     >
-                      <HoverSwapText swap="View all" className="pb-[0.1em]">
+                      <HoverSwapText
+                        swap={dictionary.common.viewAll}
+                        className="pb-[0.1em]"
+                      >
                         {pillar.title[locale]}
                       </HoverSwapText>
                     </Link>
                   </h2>
                   <p className="text-[13px] text-[var(--color-text-muted)]">
-                    {items.length} services
+                    {items.length} {dictionary.pages.services.servicesCount}
                   </p>
                 </div>
               </Reveal>
@@ -241,7 +241,7 @@ export default async function ServicesPage({ params }: PageProps) {
         <div className="shell">
           <Reveal>
             <h2 className="max-w-[16ch] font-serif text-[clamp(32px,4.5vw,56px)] leading-[1.05] font-light tracking-[-0.03em]">
-              How I work
+              {dictionary.pages.services.howIWork}
             </h2>
           </Reveal>
 
@@ -265,7 +265,7 @@ export default async function ServicesPage({ params }: PageProps) {
               href={localizedPath(locale, '/process')}
               className="group relative mt-12 inline-flex items-center gap-2 pb-1 text-[15px] text-white md:mt-16"
             >
-              The full process, phase by phase
+              {dictionary.pages.services.fullProcess}
               <span
                 aria-hidden
                 className="transition-transform duration-300 group-hover:translate-x-1"
@@ -296,7 +296,7 @@ export default async function ServicesPage({ params }: PageProps) {
               id="faq-heading"
               className="max-w-[16ch] font-serif text-[clamp(32px,4.5vw,56px)] leading-[1.05] font-light tracking-[-0.03em]"
             >
-              Common questions
+              {dictionary.common.commonQuestions}
             </h2>
           </Reveal>
 
@@ -331,7 +331,7 @@ export default async function ServicesPage({ params }: PageProps) {
             <div className="flex flex-col items-start gap-6 border-t border-[var(--color-border)] pt-12 md:flex-row md:items-center md:justify-between md:gap-10 md:pt-16">
               <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[28ch]">
                 <span className="text-white">
-                  Have a project in mind? Let’s talk.
+                  {dictionary.common.letsTalk}
                 </span>
               </p>
               <Link

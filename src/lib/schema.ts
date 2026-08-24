@@ -279,7 +279,7 @@ export function webPageSchema({
     // Person by `@id` instead of restating it — a third full Person block would
     // be a third candidate entity to reconcile. See the note at the top.
     ...(type === 'ProfilePage' ? { mainEntity: personRef } : {}),
-    inLanguage: 'en',
+    inLanguage: locale,
     primaryImageOfPage: absolute(site.portrait),
   }
 }
@@ -345,7 +345,7 @@ export function projectSchema(project: Project, locale: Locale): JsonLdNode {
     creator: personRef,
     author: personRef,
     copyrightHolder: personRef,
-    inLanguage: 'en',
+    inLanguage: locale,
     temporalCoverage: project.year,
     keywords: project.discipline[locale]
       .split(',')
@@ -395,7 +395,7 @@ export function articleSchema(article: Article, locale: Locale): JsonLdNode {
     author: personRef,
     publisher: personRef,
     copyrightHolder: personRef,
-    inLanguage: 'en',
+    inLanguage: locale,
     wordCount: countWords(article, locale),
     timeRequired: `PT${article.readingTime}M`,
     articleSection: 'Design',

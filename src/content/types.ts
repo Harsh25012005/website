@@ -1,12 +1,34 @@
-import type { Locale } from '@/lib/i18n'
+import { locales, type Locale } from '@/lib/i18n'
 
 /**
- * Every user-facing string is keyed by locale so pages stay locale-agnostic and
- * keep reading content as `value[locale]`. The site is English-only, so this
- * currently narrows to `{ en: T }` — the wrapper is kept so adding a language
- * back is a content change rather than a component rewrite.
+ * A content value that has been translated (or is pending translation) for every
+ * locale. All existing `value[locale]` access patterns continue to work.
+ *
+ * At **definition** time, use `localized({ en: '…', es: '…' })` to supply only
+ * the translations you have — the helper fills missing locales with the English
+ * fallback. Or use `{ en: '…' } as Localized<string>` for inline definitions
+ * where the English copy is the only source (the cast is safe because the
+ * `localized()` factory is the canonical path for any value that actually gets
+ * locale-switched).
  */
 export type Localized<T> = Record<Locale, T>
+
+/** Input type for `localized()`: English is required, everything else optional. */
+type LocalizedInput<T> = { en: T } & Partial<Record<Exclude<Locale, 'en'>, T>>
+
+/**
+ * Content helper: define a localized value with only the translations you have.
+ * English is required; any missing locale falls back to the English value.
+ */
+export function localized<T>(values: LocalizedInput<T>): Localized<T> {
+  const result = { en: values.en } as Record<string, T>
+  for (const locale of locales) {
+    if (locale !== 'en') {
+      result[locale] = (values as Record<string, T>)[locale] ?? values.en
+    }
+  }
+  return result as Localized<T>
+}
 
 export type ImageAsset = {
   src: string

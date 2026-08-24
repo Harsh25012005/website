@@ -37,17 +37,17 @@ export default async function ThankYouPage({ params }: PageProps) {
     {
       href: '/work',
       label: dictionary.nav.work,
-      description: 'Case studies with the brief, the process and the outcome.',
+      description: dictionary.pages.thankYou.workDesc,
     },
     {
       href: '/services',
       label: dictionary.nav.services,
-      description: 'What I take on, and what you get at the end of it.',
+      description: dictionary.pages.thankYou.servicesDesc,
     },
     {
       href: '/articles',
       label: dictionary.nav.articles,
-      description: 'Notes on design systems, handoff and front-end work.',
+      description: dictionary.pages.thankYou.articlesDesc,
     },
   ]
 
@@ -68,7 +68,7 @@ export default async function ThankYouPage({ params }: PageProps) {
               delay={0.12}
               className="mt-6 max-w-[16ch] font-serif text-[clamp(40px,5.6vw,80px)] leading-[1.03] font-light tracking-[-0.04em]"
             >
-              Your message has been sent
+              {dictionary.pages.thankYou.heading}
             </SplitHeading>
 
             {/* Worded against what actually happened. The form only routes here
@@ -76,28 +76,27 @@ export default async function ThankYouPage({ params }: PageProps) {
                 true — a failed send keeps the visitor on the form instead. */}
             <Reveal delay={0.32}>
               <p className="mt-8 max-w-[54ch] text-[1.0625rem] leading-[1.6] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-                It has landed in my inbox. I read everything and usually reply
-                within a couple of working days.
+                {dictionary.pages.thankYou.body}
               </p>
             </Reveal>
 
             <Reveal delay={0.4}>
               <p className="mt-6 max-w-[54ch] text-[1.0625rem] leading-[1.6] text-[var(--color-text-muted)]">
-                Something to add? Write to{' '}
+                {dictionary.pages.thankYou.addBefore}{' '}
                 <a
                   href={`mailto:${site.email}`}
                   className="text-white underline underline-offset-4 transition-colors hover:text-[var(--color-text-soft)]"
                 >
                   {site.email}
                 </a>{' '}
-                directly. It reaches the same inbox.
+                {dictionary.pages.thankYou.addAfter}
               </p>
             </Reveal>
 
             <div className="mt-16 border-t border-[var(--color-border)] pt-10 md:mt-20">
               <Reveal>
                 <h2 className="text-[11px] tracking-[0.18em] text-[var(--color-text-muted)] uppercase">
-                  While you wait
+                  {dictionary.pages.thankYou.whileYouWait}
                 </h2>
               </Reveal>
 

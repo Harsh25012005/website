@@ -62,7 +62,7 @@ export default async function ToolsPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[16ch] font-serif text-[clamp(40px,5.6vw,88px)] leading-[1.02] font-light tracking-[-0.04em]"
           >
-            What I design and build with
+            {dictionary.pages.tools.heading}
           </SplitHeading>
 
           <Reveal delay={0.35}>
@@ -135,7 +135,7 @@ export default async function ToolsPage({ params }: PageProps) {
             <div className="flex flex-col items-start gap-6 border-t border-[var(--color-border)] pt-12 md:flex-row md:items-center md:justify-between md:gap-10 md:pt-16">
               <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[30ch]">
                 <span className="text-white">
-                  Curious how these get used on a real project?
+                  {dictionary.pages.tools.cta}
                 </span>
               </p>
               <Link

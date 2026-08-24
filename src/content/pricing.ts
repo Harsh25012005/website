@@ -29,17 +29,33 @@ import type { Faq, PricingPackage } from './types'
 export const pricingPackages: PricingPackage[] = [
   {
     slug: 'landing-page',
-    name: { en: 'Landing page' },
+    name: { en: 'Landing page', es: 'Landing page', fr: 'Landing page' },
     from: '$99',
-    unit: { en: 'per page' },
+    unit: { en: 'per page', es: 'per page', fr: 'per page' },
     summary: {
       en: 'A single high-intent page for a product launch, campaign or waiting list, designed to convert and handed over ready to build.',
+      es: 'A single high-intent page for a product launch, campaign or waiting list, designed to convert and handed over ready to build.',
+      fr: 'A single high-intent page for a product launch, campaign or waiting list, designed to convert and handed over ready to build.',
     },
     bestFor: {
       en: 'Founders validating an idea, or a launch that needs one page to do the whole job.',
+      es: 'Founders validating an idea, or a launch that needs one page to do the whole job.',
+      fr: 'Founders validating an idea, or a launch that needs one page to do the whole job.',
     },
     includes: {
       en: [
+        'One responsive page designed in Figma, desktop through mobile',
+        'Copy structure and section hierarchy, not just decoration',
+        'Reusable section components, so the page can grow later',
+        'Developer-ready file with spacing, type and colour documented',
+      ],
+      es: [
+        'One responsive page designed in Figma, desktop through mobile',
+        'Copy structure and section hierarchy, not just decoration',
+        'Reusable section components, so the page can grow later',
+        'Developer-ready file with spacing, type and colour documented',
+      ],
+      fr: [
         'One responsive page designed in Figma, desktop through mobile',
         'Copy structure and section hierarchy, not just decoration',
         'Reusable section components, so the page can grow later',
@@ -50,17 +66,35 @@ export const pricingPackages: PricingPackage[] = [
   },
   {
     slug: 'product-design',
-    name: { en: 'Product design' },
+    name: { en: 'Product design', es: 'Product design', fr: 'Product design' },
     from: '$399',
-    unit: { en: 'per project' },
+    unit: { en: 'per project', es: 'per project', fr: 'per project' },
     summary: {
       en: 'Multi-screen design for a web app, SaaS dashboard or mobile app: the flows, the core screens, the states everyone forgets, and a prototype to test it with.',
+      es: 'Multi-screen design for a web app, SaaS dashboard or mobile app: the flows, the core screens, the states everyone forgets, and a prototype to test it with.',
+      fr: 'Multi-screen design for a web app, SaaS dashboard or mobile app: the flows, the core screens, the states everyone forgets, and a prototype to test it with.',
     },
     bestFor: {
       en: 'A product going from an idea or a rough build to something people can actually use.',
+      es: 'A product going from an idea or a rough build to something people can actually use.',
+      fr: 'A product going from an idea or a rough build to something people can actually use.',
     },
     includes: {
       en: [
+        'User flows and wireframes before any visual design',
+        'High-fidelity screens for the flows agreed in the brief',
+        'Empty, loading, error and permission states designed, not assumed',
+        'Clickable Figma prototype for testing and developer handoff',
+        'Component library and tokens for the screens in scope',
+      ],
+      es: [
+        'User flows and wireframes before any visual design',
+        'High-fidelity screens for the flows agreed in the brief',
+        'Empty, loading, error and permission states designed, not assumed',
+        'Clickable Figma prototype for testing and developer handoff',
+        'Component library and tokens for the screens in scope',
+      ],
+      fr: [
         'User flows and wireframes before any visual design',
         'High-fidelity screens for the flows agreed in the brief',
         'Empty, loading, error and permission states designed, not assumed',
@@ -76,17 +110,37 @@ export const pricingPackages: PricingPackage[] = [
   },
   {
     slug: 'development',
-    name: { en: 'Development only' },
+    name: { en: 'Development only', es: 'Development only', fr: 'Development only' },
     from: '$199',
-    unit: { en: 'per project' },
+    unit: { en: 'per project', es: 'per project', fr: 'per project' },
     summary: {
       en: 'You already have the design. It gets built as a responsive front end on the platform that suits whoever maintains it afterwards — React and Next.js, Webflow, or Framer.',
+      es: 'You already have the design. It gets built as a responsive front end on the platform that suits whoever maintains it afterwards — React and Next.js, Webflow, or Framer.',
+      fr: 'You already have the design. It gets built as a responsive front end on the platform that suits whoever maintains it afterwards — React and Next.js, Webflow, or Framer.',
     },
     bestFor: {
       en: 'Teams with a designer, or an approved Figma file, and no front-end developer free to build it.',
+      es: 'Teams with a designer, or an approved Figma file, and no front-end developer free to build it.',
+      fr: 'Teams with a designer, or an approved Figma file, and no front-end developer free to build it.',
     },
     includes: {
       en: [
+        'Front-end build from your Figma file, whoever drew it',
+        'React and Next.js, Webflow, or Framer',
+        'Every breakpoint checked against the design, not approximated',
+        'Keyboard navigation, focus states and colour contrast covered',
+        'Cross-browser QA on desktop and mobile before launch',
+        'Source code in your repository, or the site in your own platform account',
+      ],
+      es: [
+        'Front-end build from your Figma file, whoever drew it',
+        'React and Next.js, Webflow, or Framer',
+        'Every breakpoint checked against the design, not approximated',
+        'Keyboard navigation, focus states and colour contrast covered',
+        'Cross-browser QA on desktop and mobile before launch',
+        'Source code in your repository, or the site in your own platform account',
+      ],
+      fr: [
         'Front-end build from your Figma file, whoever drew it',
         'React and Next.js, Webflow, or Framer',
         'Every breakpoint checked against the design, not approximated',
@@ -104,17 +158,37 @@ export const pricingPackages: PricingPackage[] = [
   },
   {
     slug: 'design-and-build',
-    name: { en: 'Design and build' },
+    name: { en: 'Design and build', es: 'Design and build', fr: 'Design and build' },
     from: '$599 ',
-    unit: { en: 'per project' },
+    unit: { en: 'per project', es: 'per project', fr: 'per project' },
     summary: {
       en: 'The design work above, continued into a working responsive front end in React, Next.js and Tailwind CSS, so nothing is lost between the file and the live site.',
+      es: 'The design work above, continued into a working responsive front end in React, Next.js and Tailwind CSS, so nothing is lost between the file and the live site.',
+      fr: 'The design work above, continued into a working responsive front end in React, Next.js and Tailwind CSS, so nothing is lost between the file and the live site.',
     },
     bestFor: {
       en: 'Teams without a front-end developer, or anyone who wants one person accountable for how it looks and how it ships.',
+      es: 'Teams without a front-end developer, or anyone who wants one person accountable for how it looks and how it ships.',
+      fr: 'Teams without a front-end developer, or anyone who wants one person accountable for how it looks and how it ships.',
     },
     includes: {
       en: [
+        'Everything in the design package for the scope agreed',
+        'Front-end build in React, Next.js and Tailwind CSS',
+        'Responsive implementation checked against the design at every breakpoint',
+        'Keyboard navigation, focus states and colour contrast covered',
+        'Cross-browser QA on desktop and mobile before launch',
+        'Source code delivered in your repository',
+      ],
+      es: [
+        'Everything in the design package for the scope agreed',
+        'Front-end build in React, Next.js and Tailwind CSS',
+        'Responsive implementation checked against the design at every breakpoint',
+        'Keyboard navigation, focus states and colour contrast covered',
+        'Cross-browser QA on desktop and mobile before launch',
+        'Source code delivered in your repository',
+      ],
+      fr: [
         'Everything in the design package for the scope agreed',
         'Front-end build in React, Next.js and Tailwind CSS',
         'Responsive implementation checked against the design at every breakpoint',
@@ -195,39 +269,51 @@ export const pricingIsPublishable = pricingPackages.every(
  */
 export const pricingFaqs: Faq[] = [
   {
-    question: { en: 'Why starting prices rather than a fixed rate card?' },
+    question: { en: 'Why starting prices rather than a fixed rate card?', es: 'Why starting prices rather than a fixed rate card?', fr: 'Why starting prices rather than a fixed rate card?' },
     answer: {
       en: 'Because the same package covers very different amounts of work. A five-screen dashboard and a fifty-screen one are both product design, and quoting one number for both would mean overcharging the first or underdelivering on the second. The starting figure tells you the smallest version of each engagement; the quote you get is fixed once the scope is agreed.',
+      es: 'Because the same package covers very different amounts of work. A five-screen dashboard and a fifty-screen one are both product design, and quoting one number for both would mean overcharging the first or underdelivering on the second. The starting figure tells you the smallest version of each engagement; the quote you get is fixed once the scope is agreed.',
+      fr: 'Because the same package covers very different amounts of work. A five-screen dashboard and a fifty-screen one are both product design, and quoting one number for both would mean overcharging the first or underdelivering on the second. The starting figure tells you the smallest version of each engagement; the quote you get is fixed once the scope is agreed.',
     },
   },
   {
-    question: { en: 'What makes a project cost more than the starting price?' },
+    question: { en: 'What makes a project cost more than the starting price?', es: 'What makes a project cost more than the starting price?', fr: 'What makes a project cost more than the starting price?' },
     answer: {
       en: 'Screen count first, then how settled the product decisions are. A project that arrives with clear requirements moves quickly; one that needs the flows worked out from scratch includes research and wireframing before design starts. Multiple platforms, a design system built alongside the screens, and a coded build all add scope.',
+      es: 'Screen count first, then how settled the product decisions are. A project that arrives with clear requirements moves quickly; one that needs the flows worked out from scratch includes research and wireframing before design starts. Multiple platforms, a design system built alongside the screens, and a coded build all add scope.',
+      fr: 'Screen count first, then how settled the product decisions are. A project that arrives with clear requirements moves quickly; one that needs the flows worked out from scratch includes research and wireframing before design starts. Multiple platforms, a design system built alongside the screens, and a coded build all add scope.',
     },
   },
   {
-    question: { en: 'Do you charge hourly?' },
+    question: { en: 'Do you charge hourly?', es: 'Do you charge hourly?', fr: 'Do you charge hourly?' },
     answer: {
       en: 'No. Projects are quoted as a fixed price against a defined scope, agreed before work starts. You know the cost up front, and I am not billing you for the time it takes me to get something right.',
+      es: 'No. Projects are quoted as a fixed price against a defined scope, agreed before work starts. You know the cost up front, and I am not billing you for the time it takes me to get something right.',
+      fr: 'No. Projects are quoted as a fixed price against a defined scope, agreed before work starts. You know the cost up front, and I am not billing you for the time it takes me to get something right.',
     },
   },
   {
-    question: { en: 'What is not included?' },
+    question: { en: 'What is not included?', es: 'What is not included?', fr: 'What is not included?' },
     answer: {
       en: 'Back-end development, databases and infrastructure, native iOS and Android builds, copywriting, photography and illustration. Where a project needs anything on this list I will say so at the brief stage rather than after the estimate.',
+      es: 'Back-end development, databases and infrastructure, native iOS and Android builds, copywriting, photography and illustration. Where a project needs anything on this list I will say so at the brief stage rather than after the estimate.',
+      fr: 'Back-end development, databases and infrastructure, native iOS and Android builds, copywriting, photography and illustration. Where a project needs anything on this list I will say so at the brief stage rather than after the estimate.',
     },
   },
   {
-    question: { en: 'How does payment work?' },
+    question: { en: 'How does payment work?', es: 'How does payment work?', fr: 'How does payment work?' },
     answer: {
       en: 'Payment is split across agreed milestones rather than collected in full up front or in full at the end, and the schedule is written into the scope document before any work starts, so there are no invoices you were not expecting.',
+      es: 'Payment is split across agreed milestones rather than collected in full up front or in full at the end, and the schedule is written into the scope document before any work starts, so there are no invoices you were not expecting.',
+      fr: 'Payment is split across agreed milestones rather than collected in full up front or in full at the end, and the schedule is written into the scope document before any work starts, so there are no invoices you were not expecting.',
     },
   },
   {
-    question: { en: 'What if the project needs to change halfway through?' },
+    question: { en: 'What if the project needs to change halfway through?', es: 'What if the project needs to change halfway through?', fr: 'What if the project needs to change halfway through?' },
     answer: {
       en: 'Scope changes are normal, and they are handled as a written change to the scope and the price rather than absorbed silently or argued about at the end. You always know what the current agreement is before the work continues.',
+      es: 'Scope changes are normal, and they are handled as a written change to the scope and the price rather than absorbed silently or argued about at the end. You always know what the current agreement is before the work continues.',
+      fr: 'Scope changes are normal, and they are handled as a written change to the scope and the price rather than absorbed silently or argued about at the end. You always know what the current agreement is before the work continues.',
     },
   },
 ]

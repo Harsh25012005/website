@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { UnderlineLink } from '@/components/ui/UnderlineLink'
 import { Logo } from '@/components/ui/Logo'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { MobileMenu } from './MobileMenu'
 import { site, navigation } from '@/content/site'
 import { localizedPath, stripLocale, type Locale } from '@/lib/i18n'
@@ -67,13 +68,19 @@ export function Header({ locale, dictionary }: HeaderProps) {
               </UnderlineLink>
             ))}
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Link
                 href={localizedPath(locale, '/contact')}
                 className="inline-flex h-9 items-center rounded-full border border-white bg-white px-4 leading-none text-black transition-[background-color,color,transform] duration-200 hover:bg-transparent hover:text-white active:scale-[0.97]"
               >
                 {dictionary.nav.contact}
               </Link>
+              <LanguageSwitcher
+                locale={locale}
+                label={dictionary.nav.language}
+                align="end"
+                direction="down"
+              />
             </div>
           </nav>
 

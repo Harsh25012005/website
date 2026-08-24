@@ -13,6 +13,8 @@ import type { Localized, ResumeEntry } from './types'
 
 export const resumeSummary: Localized<string> = {
   en: 'UI/UX and product designer based in Ahmedabad, currently Product Designer at Code Theorem and freelance across design systems, web UI, mobile app and SaaS product design. I build the front end too, in React, Next.js and Tailwind CSS, so the design that ships is the design that was approved.',
+  es: 'UI/UX and product designer based in Ahmedabad, currently Product Designer at Code Theorem and freelance across design systems, web UI, mobile app and SaaS product design. I build the front end too, in React, Next.js and Tailwind CSS, so the design that ships is the design that was approved.',
+  fr: 'UI/UX and product designer based in Ahmedabad, currently Product Designer at Code Theorem and freelance across design systems, web UI, mobile app and SaaS product design. I build the front end too, in React, Next.js and Tailwind CSS, so the design that ships is the design that was approved.',
 }
 
 /* ────────────────────────────────────────────────────────────────────────────
@@ -41,14 +43,24 @@ export const resumeSummary: Localized<string> = {
 export const resumeExperience: ResumeEntry[] = [
   {
     period: '2025 to present',
-    role: { en: 'Product Designer' },
+    role: { en: 'Product Designer', es: 'Product Designer', fr: 'Product Designer' },
     // Named exactly as the company writes it, and as `site.employer` does —
     // that string is what `Person.worksFor` publishes, so the page and the
     // schema have to agree on it letter for letter.
-    organisation: { en: 'Code Theorem' },
-    location: { en: 'Ahmedabad, Gujarat, India' },
+    organisation: { en: 'Code Theorem', es: 'Code Theorem', fr: 'Code Theorem' },
+    location: { en: 'Ahmedabad, Gujarat, India', es: 'Ahmedabad, Gujarat, India', fr: 'Ahmedabad, Gujarat, India' },
     points: {
       en: [
+        'Design product interfaces in Figma (user flows, wireframes and high-fidelity screens), taking client work from brief through internal review to developer handoff.',
+        'Work inside shared design systems, extending components and colour, type and spacing tokens so screens stay consistent across a project and between designers.',
+        'Collaborate with developers through build and QA, checking the implemented interface against the approved design across breakpoints.',
+      ],
+      es: [
+        'Design product interfaces in Figma (user flows, wireframes and high-fidelity screens), taking client work from brief through internal review to developer handoff.',
+        'Work inside shared design systems, extending components and colour, type and spacing tokens so screens stay consistent across a project and between designers.',
+        'Collaborate with developers through build and QA, checking the implemented interface against the approved design across breakpoints.',
+      ],
+      fr: [
         'Design product interfaces in Figma (user flows, wireframes and high-fidelity screens), taking client work from brief through internal review to developer handoff.',
         'Work inside shared design systems, extending components and colour, type and spacing tokens so screens stay consistent across a project and between designers.',
         'Collaborate with developers through build and QA, checking the implemented interface against the approved design across breakpoints.',
@@ -57,11 +69,23 @@ export const resumeExperience: ResumeEntry[] = [
   },
   {
     period: '2025 to present',
-    role: { en: 'Freelance UI/UX & Product Designer' },
-    organisation: { en: 'Independent' },
-    location: { en: 'Ahmedabad, India, working remotely worldwide' },
+    role: { en: 'Freelance UI/UX & Product Designer', es: 'Freelance UI/UX & Product Designer', fr: 'Freelance UI/UX & Product Designer' },
+    organisation: { en: 'Independent', es: 'Independent', fr: 'Independent' },
+    location: { en: 'Ahmedabad, India, working remotely worldwide', es: 'Ahmedabad, India, working remotely worldwide', fr: 'Ahmedabad, India, working remotely worldwide' },
     points: {
       en: [
+        'Design web UI, mobile app and SaaS product interfaces in Figma for founders and small teams, from user flows and wireframes through to high-fidelity screens and clickable prototypes.',
+        'Build design systems: component libraries, colour, type and spacing tokens, and the usage documentation that keeps a team on-system after handoff.',
+        'Take approved designs into production as responsive front-end code in HTML, CSS, Tailwind CSS, React and Next.js, QA-tested across browsers.',
+        'Work directly with clients on scope, review and handoff, quoting fixed prices against defined deliverables rather than hourly.',
+      ],
+      es: [
+        'Design web UI, mobile app and SaaS product interfaces in Figma for founders and small teams, from user flows and wireframes through to high-fidelity screens and clickable prototypes.',
+        'Build design systems: component libraries, colour, type and spacing tokens, and the usage documentation that keeps a team on-system after handoff.',
+        'Take approved designs into production as responsive front-end code in HTML, CSS, Tailwind CSS, React and Next.js, QA-tested across browsers.',
+        'Work directly with clients on scope, review and handoff, quoting fixed prices against defined deliverables rather than hourly.',
+      ],
+      fr: [
         'Design web UI, mobile app and SaaS product interfaces in Figma for founders and small teams, from user flows and wireframes through to high-fidelity screens and clickable prototypes.',
         'Build design systems: component libraries, colour, type and spacing tokens, and the usage documentation that keeps a team on-system after handoff.',
         'Take approved designs into production as responsive front-end code in HTML, CSS, Tailwind CSS, React and Next.js, QA-tested across browsers.',

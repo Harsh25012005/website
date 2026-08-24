@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
   reactStrictMode: true,
   poweredByHeader: false,
+  trailingSlash: false,
   images: {
     formats: ['image/avif', 'image/webp'],
   },

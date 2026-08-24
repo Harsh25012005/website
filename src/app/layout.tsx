@@ -136,6 +136,13 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
+/**
+ * Sets `lang` on `<html>` from the URL before first paint. The root layout
+ * cannot read the `[locale]` param, so a synchronous script reads the path
+ * prefix instead. Must run before a screen reader or crawler inspects `lang`.
+ */
+const langScript = `(function(){var p=location.pathname;document.documentElement.lang=p.startsWith('/es')?'es':p.startsWith('/fr')?'fr':'en'})()`
+
 export default function RootLayout({
   children,
 }: {
@@ -150,6 +157,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         {/* Both have to be parsed before the curtain and the hero heading are,
             so they sit ahead of the tree rather than being hoisted to <head>. */}
+        <script dangerouslySetInnerHTML={{ __html: langScript }} />
         <script dangerouslySetInnerHTML={{ __html: preloaderFlagScript }} />
         <style dangerouslySetInnerHTML={{ __html: criticalCss }} />
         {children}

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { ConvergeLines } from '@/components/motion/ConvergeLines'
 import { Reveal } from '@/components/motion/Reveal'
 import { getLenis } from '@/components/motion/SmoothScroll'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { site, footerNavigation, legalNavigation } from '@/content/site'
 import { localizedPath, type Locale } from '@/lib/i18n'
 import type { Dictionary } from '@/content/dictionary'
@@ -164,6 +165,12 @@ export function Footer({ locale, dictionary }: FooterProps) {
                 {dictionary.nav[item.key]}
               </InternalLink>
             ))}
+            <LanguageSwitcher
+              locale={locale}
+              label={dictionary.nav.language}
+              align="start"
+              direction="up"
+            />
             <span>
               {dictionary.common.builtBy} {site.name}
             </span>
@@ -172,7 +179,7 @@ export function Footer({ locale, dictionary }: FooterProps) {
               type="button"
               className="cursor-pointer transition-colors hover:text-white"
             >
-              Back to top ↑
+              {dictionary.footer.backToTop} ↑
             </button>
           </div>
         </div>

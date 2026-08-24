@@ -3,7 +3,6 @@ import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
 import { ContactForm } from '@/components/sections/ContactForm'
 import { serviceSelectOptions } from '@/content/services'
-import { budgetBands } from '@/content/pricing'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getDictionary } from '@/content/dictionary'
 import { site } from '@/content/site'
@@ -65,13 +64,12 @@ export default async function ContactPage({ params }: PageProps) {
               delay={0.1}
               className="font-serif text-[clamp(40px,5vw,5rem)] leading-[1.05] font-light tracking-[-0.04em]"
             >
-              Let’s build something worth shipping.
+              {dictionary.pages.contact.heading}
             </SplitHeading>
 
             <Reveal delay={0.32}>
               <p className="mt-8 max-w-[48ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
-                Briefs, collaborations, or a quick question: drop a note. I read
-                everything and usually reply within a couple of working days.
+                {dictionary.pages.contact.intro}
               </p>
             </Reveal>
 
@@ -98,7 +96,6 @@ export default async function ContactPage({ params }: PageProps) {
               locale={locale}
               dictionary={dictionary}
               serviceOptions={serviceSelectOptions(locale)}
-              budgetBands={budgetBands}
             />
           </div>
         </div>

@@ -37,18 +37,19 @@ export function Hero({ locale, dictionary }: HeroProps) {
           {/* Explicit breaks rather than natural wrapping: the line rhythm is
               a design decision, and SplitText masks whatever the layout
               produces — left to wrap, the last line shifts with viewport
-              width and the cascade loses its shape. */}
+              width and the cascade loses its shape. Split across two dictionary
+              lines so each locale keeps the two-line shape.
+              FLAG: this is the most visible line on the site — the ES/FR
+              headings deserve a native-speaker pass. */}
           {/* Deliberately no city in the h1. The old "UI/UX Designer in
               Ahmedabad" spent the page's strongest on-page signal on a
               local-intent SERP this site is not trying to win, and led an
               overseas buyer with a geo cue rather than the service. Location
               is not hidden — it stays in the facts row below and in the
               `region`/`country`/`areaServed` fields that feed schema. */}
-          {'UI/UX Designer for '}
-          <span className="font-serif font-light">global teams</span>
-          {'.'}
+          {dictionary.hero.headingLine1}
           <br />
-          {'Websites, apps & design systems.'}
+          {dictionary.hero.headingLine2}
         </SplitHeading>
 
         <Reveal

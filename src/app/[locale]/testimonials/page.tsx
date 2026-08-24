@@ -74,8 +74,8 @@ export default async function TestimonialsPage({ params }: PageProps) {
           <Reveal delay={0.35}>
             <p className="mt-8 max-w-[52ch] text-[1.0625rem] leading-[1.55] text-[var(--color-text-soft)] md:text-[1.1875rem]">
               {testimonialsArePublishable
-                ? 'What it has been like to work together, in the words of the people who did.'
-                : 'Nothing here yet, and nothing invented to fill the space.'}
+                ? dictionary.pages.testimonials.introFilled
+                : dictionary.pages.testimonials.introEmpty}
             </p>
           </Reveal>
         </div>
@@ -120,17 +120,8 @@ export default async function TestimonialsPage({ params }: PageProps) {
               <Reveal>
                 <div className="md:grid md:grid-cols-12 md:gap-x-12">
                   <div className="space-y-5 text-[1.0625rem] leading-[1.6] text-[var(--color-text-soft)] md:col-span-7 md:col-start-1 md:max-w-[58ch] md:text-[1.125rem]">
-                    <p>
-                      I would rather leave this page empty than fill it with
-                      quotes nobody said. Client testimonials go up here as they
-                      come in, with a real name and a real company attached.
-                    </p>
-                    <p>
-                      In the meantime, the case studies are the better evidence
-                      anyway: each one sets out the brief, the decisions and
-                      what actually shipped, which tells you more about working
-                      together than a sentence of praise would.
-                    </p>
+                    <p>{dictionary.pages.testimonials.emptyBody1}</p>
+                    <p>{dictionary.pages.testimonials.emptyBody2}</p>
                   </div>
                 </div>
               </Reveal>

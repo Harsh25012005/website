@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { SplitHeading } from '@/components/motion/SplitHeading'
 import { Reveal } from '@/components/motion/Reveal'
 import { ProjectCard } from '@/components/sections/ProjectCard'
-import { ServicePricing } from '@/components/sections/ServicePricing'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { services, getService, servicesByPillar } from '@/content/services'
 import { pillars, pillarPath, otherPillar } from '@/content/pillars'
@@ -211,11 +210,6 @@ export default async function ServicePage({ params }: PageProps) {
         </section>
       ) : null}
 
-      {/* After the proof, before the objections. Value, then evidence, then
-          price, then the questions the price raises — moving this above the
-          case studies asks for a decision before anything has been shown. */}
-      <ServicePricing locale={locale} service={service} />
-
       <section
         className="border-t border-[var(--color-border)] px-5 py-16 md:px-10 md:py-24"
         aria-labelledby="service-faq-heading"
@@ -226,7 +220,7 @@ export default async function ServicePage({ params }: PageProps) {
               id="service-faq-heading"
               className="max-w-[16ch] font-serif text-[clamp(32px,4.5vw,56px)] leading-[1.05] font-light tracking-[-0.03em]"
             >
-              Common questions
+              {dictionary.common.commonQuestions}
             </h2>
           </Reveal>
 
@@ -310,7 +304,7 @@ export default async function ServicePage({ params }: PageProps) {
             <div className="flex flex-col items-start gap-6 border-t border-[var(--color-border)] pt-12 md:flex-row md:items-center md:justify-between md:gap-10 md:pt-16">
               <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[28ch]">
                 <span className="text-white">
-                  Have a project in mind? Let’s talk.
+                  {dictionary.common.letsTalk}
                 </span>
               </p>
               <Link

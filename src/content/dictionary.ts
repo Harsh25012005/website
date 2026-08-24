@@ -10,13 +10,19 @@ import type { Locale } from '@/lib/i18n'
  * sections, and `common.viewProject` / `common.moreProjects` are the anchor
  * text pointing at `/work/[slug]`. Edit them for meaning, not for length —
  * they sit in tight grids and large display type.
+ *
+ * `pages.*` holds the page-shell copy that is the same on every visit — section
+ * headings, intros and CTAs that are not tied to a specific project, service or
+ * article. It is the counterpart to the per-entity content files: those carry
+ * what changes per row, this carries the frame around them. New keys must be
+ * added to all three locales — the `dictionary` test in `content.test.ts`
+ * fails the build otherwise.
  */
 const dictionaries = {
   en: {
     nav: {
       work: 'Work',
       services: 'Services',
-      pricing: 'Pricing',
       about: 'About',
       resume: 'Résumé',
       articles: 'Articles',
@@ -24,9 +30,6 @@ const dictionaries = {
       process: 'Process',
       testimonials: 'Testimonials',
       contact: 'Get in touch',
-      // Bottom-bar links rather than nav items. They belong on every page for
-      // trust and are the two nobody should have to hunt for, but a legal
-      // notice in the primary nav buys nothing.
       privacy: 'Privacy',
       terms: 'Terms',
       openMenu: 'Open menu',
@@ -36,18 +39,10 @@ const dictionaries = {
     },
     common: {
       selectedWork: 'Selected UI/UX work',
-      // The `h2` above the home page service grid. It stopped saying "UI/UX
-      // design services" when development became half the catalogue — a
-      // heading that names one pillar over a grid showing both is the kind of
-      // small mismatch that reads as carelessness.
       whatIDo: 'Design and development services',
       kindWords: 'Kind words',
       worthSharing: 'Articles on design and code',
       moreProjects: 'More case studies',
-      // Anchor text for the home page's links into the three listing pages.
-      // These are the strongest internal links on the site — the home page has
-      // the most inbound equity, and anchor text is a direct relevance signal —
-      // so they name the destination rather than saying "View all".
       allCaseStudies: 'See all case studies',
       allServices: 'Explore all services',
       allArticles: 'Read all articles',
@@ -55,30 +50,19 @@ const dictionaries = {
       soon: 'Soon',
       all: 'All',
       viewProject: 'View\ncase study',
-      // Revealed under the service name on hover. Decorative — the link's
-      // accessible name stays the service title, so this is `aria-hidden`.
       viewService: 'View service',
       readArticle: 'Read article',
       backToWork: 'Back to all work',
       backToArticles: 'Back to all articles',
       backToServices: 'Back to all services',
-      // Scoped to the service's own pillar since the split — listing the other
-      // fourteen at the foot of every detail page was a link dump, not
-      // navigation.
       otherServices: 'Other services in this area',
       relatedWork: 'Related case studies',
       furtherReading: 'Further reading',
       servicesMentioned: 'Related services',
       whatYouGet: 'What you get',
-      // The pricing block on a service page. `priceOnRequest` is the state
-      // every service is in until real figures land in `content/pricing.ts` —
-      // it is the honest version of a number, not a placeholder for one.
       whatItCosts: 'What it costs',
       priceFrom: 'From',
       priceOnRequest: 'Price on request',
-      // Not "Quoted per project": one of the three services that lands on this
-      // fallback is a monthly retainer, and its own note says so a line below.
-      // The label has to be true for every service that can reach it.
       quotedIndividually: 'Quoted individually',
       seePricing: 'Compare all packages',
       overview: 'Overview',
@@ -87,6 +71,10 @@ const dictionaries = {
       pauseSlideshow: 'Pause slideshow',
       playSlideshow: 'Play slideshow',
       minRead: 'min read',
+      letsTalk: 'Have a project in mind? Let’s talk.',
+      commonQuestions: 'Common questions',
+      viewAll: 'View all',
+      lastUpdated: 'Last updated',
     },
     filters: {
       all: 'All',
@@ -99,10 +87,11 @@ const dictionaries = {
       focus: 'Focus',
       languages: 'Languages',
       openFor: 'Available for',
-      // Rendered in a tight two-column grid — keep values under ~35 chars.
       focusValue: 'Product UI, design systems & code',
       languagesValue: 'English',
       openForValue: 'Freelance & contract projects',
+      headingLine1: 'UI/UX Designer for global teams.',
+      headingLine2: 'Websites, apps & design systems.',
     },
     contact: {
       name: 'Name',
@@ -113,9 +102,6 @@ const dictionaries = {
       namePlaceholder: 'Your name',
       emailPlaceholder: 'you@domain.com',
       subjectPlaceholder: 'What’s it about?',
-      // Phone, budget and service are all optional. Requiring a budget is the
-      // fastest way to lose the enquiry from someone who genuinely does not
-      // know yet, and that enquiry is often the better project.
       phone: 'Phone number',
       phonePlaceholder: 'With country code, optional',
       budget: 'Budget',
@@ -131,6 +117,8 @@ const dictionaries = {
       success: 'Thanks! Your message is on its way.',
       error: 'Something went wrong. Email me directly instead.',
       sending: 'Sending…',
+      serviceGroupDesign: 'UI/UX design',
+      serviceGroupDevelopment: 'Custom development',
     },
     notFound: {
       title: 'This page isn’t here.',
@@ -148,6 +136,480 @@ const dictionaries = {
       backToTop: 'Back to top',
       rights: 'All rights reserved',
       legal: 'Legal',
+    },
+    pages: {
+      work: {
+        heading: 'A closer look at the work I’ve helped shape',
+        intro:
+          'Selected projects across product design, websites, systems and brand-led experiences, independently and as part of teams.',
+      },
+      services: {
+        heading: 'Design and development, from the first flow to the live site',
+        intro:
+          'I design interfaces in Figma, Framer, Webflow and Sketch, and build the front end in HTML, CSS, Tailwind CSS, React, Next.js and PHP. Take either half on its own, or both, in which case nothing is lost in handoff because there is no handoff.',
+        servicesCount: 'services',
+        howIWork: 'How I work',
+        fullProcess: 'The full process, phase by phase',
+      },
+      process: {
+        heading: 'What actually happens, in what order',
+        youEndUpWith: 'You end up with',
+        workingTogether: 'Working together',
+        cta: 'This starts with a brief. Send yours.',
+      },
+      tools: {
+        heading: 'What I design and build with',
+        cta: 'Curious how these get used on a real project?',
+      },
+      about: {
+        heading:
+          'I design and build digital products: UI/UX, design systems, and the SaaS and mobile experiences built on them.',
+        skillsAndTools: 'Skills and tools',
+        skills: 'Skills',
+        tools: 'Tools',
+      },
+      resume: {
+        experience: 'Experience',
+        education: 'Education',
+        whatIDo: 'What I do',
+        skills: 'Skills',
+        tools: 'Tools',
+        toolsNoteBefore:
+          'More on how these are actually used, day to day, on the',
+        toolsNoteLink: 'tools page',
+        cta: 'Hiring, or have a project? The inbox is open.',
+      },
+      testimonials: {
+        introFilled:
+          'What it has been like to work together, in the words of the people who did.',
+        introEmpty: 'Nothing here yet, and nothing invented to fill the space.',
+        emptyBody1:
+          'I would rather leave this page empty than fill it with quotes nobody said. Client testimonials go up here as they come in, with a real name and a real company attached.',
+        emptyBody2:
+          'In the meantime, the case studies are the better evidence anyway: each one sets out the brief, the decisions and what actually shipped, which tells you more about working together than a sentence of praise would.',
+      },
+      local: {
+        heading: 'UI/UX designer in Ahmedabad',
+        whatIDesign: 'What I design for clients here',
+        workingLocally: 'Working together locally',
+        cta: 'Based in Ahmedabad and need a designer? Let’s meet.',
+      },
+      contact: {
+        heading: 'Let’s build something worth shipping.',
+        intro:
+          'Briefs, collaborations, or a quick question: drop a note. I read everything and usually reply within a couple of working days.',
+      },
+      thankYou: {
+        heading: 'Your message has been sent',
+        body: 'It has landed in my inbox. I read everything and usually reply within a couple of working days.',
+        addBefore: 'Something to add? Write to',
+        addAfter: 'directly. It reaches the same inbox.',
+        whileYouWait: 'While you wait',
+        workDesc: 'Case studies with the brief, the process and the outcome.',
+        servicesDesc: 'What I take on, and what you get at the end of it.',
+        articlesDesc: 'Notes on design systems, handoff and front-end work.',
+      },
+      legal: {
+        cta: 'Anything here you want clarified before we work together?',
+      },
+    },
+  },
+
+  es: {
+    nav: {
+      work: 'Trabajo',
+      services: 'Servicios',
+      about: 'Sobre mí',
+      resume: 'Currículum',
+      articles: 'Artículos',
+      tools: 'Herramientas',
+      process: 'Proceso',
+      testimonials: 'Testimonios',
+      contact: 'Contactar',
+      privacy: 'Privacidad',
+      terms: 'Términos',
+      openMenu: 'Abrir menú',
+      closeMenu: 'Cerrar menú',
+      language: 'Idioma',
+      siteMenu: 'Menú del sitio',
+    },
+    common: {
+      selectedWork: 'Proyectos UI/UX seleccionados',
+      whatIDo: 'Servicios de diseño y desarrollo',
+      kindWords: 'Opiniones de clientes',
+      worthSharing: 'Artículos sobre diseño y código',
+      moreProjects: 'Más casos de estudio',
+      allCaseStudies: 'Ver todos los casos',
+      allServices: 'Explorar todos los servicios',
+      allArticles: 'Leer todos los artículos',
+      workTogether: 'Trabajemos juntos',
+      soon: 'Próximamente',
+      all: 'Todos',
+      viewProject: 'Ver\ncaso de estudio',
+      viewService: 'Ver servicio',
+      readArticle: 'Leer artículo',
+      backToWork: 'Volver a todos los proyectos',
+      backToArticles: 'Volver a todos los artículos',
+      backToServices: 'Volver a todos los servicios',
+      otherServices: 'Otros servicios en esta área',
+      relatedWork: 'Casos de estudio relacionados',
+      furtherReading: 'Lecturas recomendadas',
+      servicesMentioned: 'Servicios relacionados',
+      whatYouGet: 'Lo que recibes',
+      whatItCosts: 'Coste del servicio',
+      priceFrom: 'Desde',
+      priceOnRequest: 'Precio bajo consulta',
+      quotedIndividually: 'Presupuesto personalizado',
+      seePricing: 'Comparar todos los paquetes',
+      overview: 'Resumen',
+      outcome: 'Resultado',
+      builtBy: 'Diseñado y desarrollado por',
+      pauseSlideshow: 'Pausar presentación',
+      playSlideshow: 'Reproducir presentación',
+      minRead: 'min de lectura',
+      letsTalk: '¿Tienes un proyecto en mente? Hablemos.',
+      commonQuestions: 'Preguntas frecuentes',
+      viewAll: 'Ver todos',
+      lastUpdated: 'Última actualización',
+    },
+    filters: {
+      all: 'Todos',
+      uxui: 'UX/UI',
+      branding: 'Branding',
+      website: 'Web',
+    },
+    hero: {
+      based: 'Ubicación',
+      focus: 'Enfoque',
+      languages: 'Idiomas',
+      openFor: 'Disponible para',
+      focusValue: 'UI de producto, design systems y código',
+      languagesValue: 'Inglés, Español',
+      openForValue: 'Proyectos freelance y por contrato',
+      headingLine1: 'Diseñador UI/UX para equipos globales.',
+      headingLine2: 'Webs, apps y design systems.',
+    },
+    contact: {
+      name: 'Nombre',
+      email: 'Email',
+      subject: 'Asunto',
+      message: 'Mensaje',
+      company: 'Empresa',
+      namePlaceholder: 'Tu nombre',
+      emailPlaceholder: 'tu@dominio.com',
+      subjectPlaceholder: '¿De qué se trata?',
+      phone: 'Teléfono',
+      phonePlaceholder: 'Con código de país, opcional',
+      budget: 'Presupuesto',
+      budgetPlaceholder: 'Selecciona un rango',
+      service: 'Servicio',
+      servicePlaceholder: 'Selecciona un servicio',
+      optional: 'Opcional',
+      messagePlaceholder:
+        'Unas líneas sobre el producto, alcance, plazos y presupuesto.',
+      send: 'Enviar mensaje',
+      required: 'Este campo es obligatorio.',
+      invalidEmail: 'Introduce un email válido.',
+      success: '¡Gracias! Tu mensaje está en camino.',
+      error: 'Algo salió mal. Escríbeme directamente.',
+      sending: 'Enviando…',
+      serviceGroupDesign: 'Diseño UI/UX',
+      serviceGroupDevelopment: 'Desarrollo a medida',
+    },
+    notFound: {
+      title: 'Esta página no existe.',
+      body: 'El enlace puede estar desactualizado o la página se ha movido. Vuelve a la página de inicio: los casos de estudio, los servicios de diseño y desarrollo y los artículos están a un clic.',
+      cta: 'Volver al inicio',
+    },
+    footer: {
+      collaborate: '¡Colaboremos!',
+      menu: 'Menú',
+      home: 'Inicio',
+      connect: 'Conectar',
+      emailLabel: 'Email',
+      sayHello: 'Escríbeme',
+      availableFor: 'Disponible para trabajo freelance',
+      backToTop: 'Volver arriba',
+      rights: 'Todos los derechos reservados',
+      legal: 'Legal',
+    },
+    pages: {
+      work: {
+        heading:
+          'Una mirada más de cerca al trabajo al que he ayudado a dar forma',
+        intro:
+          'Proyectos seleccionados de diseño de producto, webs, sistemas y experiencias de marca, en solitario y como parte de equipos.',
+      },
+      services: {
+        heading:
+          'Diseño y desarrollo, desde el primer flujo hasta el sitio en producción',
+        intro:
+          'Diseño interfaces en Figma, Framer, Webflow y Sketch, y construyo el front end en HTML, CSS, Tailwind CSS, React, Next.js y PHP. Toma cualquiera de las dos mitades por separado, o ambas, en cuyo caso nada se pierde en el traspaso porque no hay traspaso.',
+        servicesCount: 'servicios',
+        howIWork: 'Cómo trabajo',
+        fullProcess: 'El proceso completo, fase por fase',
+      },
+      process: {
+        heading: 'Qué ocurre realmente, y en qué orden',
+        youEndUpWith: 'Lo que obtienes',
+        workingTogether: 'Trabajar juntos',
+        cta: 'Todo empieza con un brief. Envía el tuyo.',
+      },
+      tools: {
+        heading: 'Con qué diseño y construyo',
+        cta: '¿Con curiosidad por ver cómo se usan en un proyecto real?',
+      },
+      about: {
+        heading:
+          'Diseño y construyo productos digitales: UI/UX, design systems y las experiencias SaaS y móviles que se apoyan en ellos.',
+        skillsAndTools: 'Habilidades y herramientas',
+        skills: 'Habilidades',
+        tools: 'Herramientas',
+      },
+      resume: {
+        experience: 'Experiencia',
+        education: 'Formación',
+        whatIDo: 'Qué hago',
+        skills: 'Habilidades',
+        tools: 'Herramientas',
+        toolsNoteBefore: 'Más sobre cómo se usan en el día a día en la',
+        toolsNoteLink: 'página de herramientas',
+        cta: '¿Contratando o con un proyecto? La bandeja está abierta.',
+      },
+      testimonials: {
+        introFilled:
+          'Cómo ha sido trabajar juntos, en palabras de quienes lo hicieron.',
+        introEmpty:
+          'Todavía nada por aquí, y nada inventado para llenar el espacio.',
+        emptyBody1:
+          'Prefiero dejar esta página vacía antes que llenarla con frases que nadie dijo. Los testimonios de clientes se publican aquí a medida que llegan, con un nombre real y una empresa real.',
+        emptyBody2:
+          'Mientras tanto, los casos de estudio son de todos modos la mejor prueba: cada uno expone el brief, las decisiones y lo que realmente se lanzó, lo que dice más sobre trabajar juntos que una frase de elogio.',
+      },
+      local: {
+        heading: 'Diseñador UI/UX en Ahmedabad',
+        whatIDesign: 'Lo que diseño para clientes de aquí',
+        workingLocally: 'Trabajar juntos en local',
+        cta: '¿Estás en Ahmedabad y necesitas un diseñador? Quedemos.',
+      },
+      contact: {
+        heading: 'Construyamos algo que valga la pena lanzar.',
+        intro:
+          'Briefs, colaboraciones o una pregunta rápida: escríbeme. Leo todo y suelo responder en un par de días laborables.',
+      },
+      thankYou: {
+        heading: 'Tu mensaje se ha enviado',
+        body: 'Ha llegado a mi bandeja de entrada. Leo todo y suelo responder en un par de días laborables.',
+        addBefore: '¿Algo que añadir? Escribe a',
+        addAfter: 'directamente. Llega a la misma bandeja.',
+        whileYouWait: 'Mientras esperas',
+        workDesc: 'Casos de estudio con el brief, el proceso y el resultado.',
+        servicesDesc: 'Lo que asumo y lo que recibes al final.',
+        articlesDesc:
+          'Notas sobre design systems, traspaso y trabajo front-end.',
+      },
+      legal: {
+        cta: '¿Algo aquí que quieras aclarar antes de trabajar juntos?',
+      },
+    },
+  },
+
+  fr: {
+    nav: {
+      work: 'Projets',
+      services: 'Services',
+      about: 'À propos',
+      resume: 'CV',
+      articles: 'Articles',
+      tools: 'Outils',
+      process: 'Processus',
+      testimonials: 'Témoignages',
+      contact: 'Contact',
+      privacy: 'Confidentialité',
+      terms: 'Mentions légales',
+      openMenu: 'Ouvrir le menu',
+      closeMenu: 'Fermer le menu',
+      language: 'Langue',
+      siteMenu: 'Menu du site',
+    },
+    common: {
+      selectedWork: 'Projets UI/UX sélectionnés',
+      whatIDo: 'Services de design et développement',
+      kindWords: 'Témoignages clients',
+      worthSharing: 'Articles sur le design et le code',
+      moreProjects: 'Plus d’études de cas',
+      allCaseStudies: 'Voir toutes les études de cas',
+      allServices: 'Découvrir tous les services',
+      allArticles: 'Lire tous les articles',
+      workTogether: 'Travaillons ensemble',
+      soon: 'Bientôt',
+      all: 'Tous',
+      viewProject: 'Voir\nl’étude de cas',
+      viewService: 'Voir le service',
+      readArticle: 'Lire l’article',
+      backToWork: 'Retour aux projets',
+      backToArticles: 'Retour aux articles',
+      backToServices: 'Retour aux services',
+      otherServices: 'Autres services dans ce domaine',
+      relatedWork: 'Études de cas associées',
+      furtherReading: 'Lectures complémentaires',
+      servicesMentioned: 'Services associés',
+      whatYouGet: 'Ce que vous recevez',
+      whatItCosts: 'Tarifs',
+      priceFrom: 'À partir de',
+      priceOnRequest: 'Prix sur demande',
+      quotedIndividually: 'Devis personnalisé',
+      seePricing: 'Comparer tous les forfaits',
+      overview: 'Aperçu',
+      outcome: 'Résultat',
+      builtBy: 'Conçu et développé par',
+      pauseSlideshow: 'Mettre en pause',
+      playSlideshow: 'Lancer le diaporama',
+      minRead: 'min de lecture',
+      letsTalk: 'Un projet en tête ? Parlons-en.',
+      commonQuestions: 'Questions fréquentes',
+      viewAll: 'Voir tout',
+      lastUpdated: 'Dernière mise à jour',
+    },
+    filters: {
+      all: 'Tous',
+      uxui: 'UX/UI',
+      branding: 'Branding',
+      website: 'Site web',
+    },
+    hero: {
+      based: 'Basé à',
+      focus: 'Spécialité',
+      languages: 'Langues',
+      openFor: 'Disponible pour',
+      focusValue: 'UI produit, design systems et code',
+      languagesValue: 'Anglais, Français',
+      openForValue: 'Missions freelance et contrats',
+      headingLine1: 'Designer UI/UX pour des équipes internationales.',
+      headingLine2: 'Sites web, apps et design systems.',
+    },
+    contact: {
+      name: 'Nom',
+      email: 'Email',
+      subject: 'Objet',
+      message: 'Message',
+      company: 'Entreprise',
+      namePlaceholder: 'Votre nom',
+      emailPlaceholder: 'vous@domaine.com',
+      subjectPlaceholder: 'De quoi s’agit-il ?',
+      phone: 'Téléphone',
+      phonePlaceholder: 'Avec indicatif pays, facultatif',
+      budget: 'Budget',
+      budgetPlaceholder: 'Sélectionnez une fourchette',
+      service: 'Service',
+      servicePlaceholder: 'Sélectionnez un service',
+      optional: 'Facultatif',
+      messagePlaceholder:
+        'Quelques lignes sur le produit, le périmètre, les délais et le budget.',
+      send: 'Envoyer le message',
+      required: 'Ce champ est obligatoire.',
+      invalidEmail: 'Saisissez une adresse email valide.',
+      success: 'Merci ! Votre message est en route.',
+      error: 'Une erreur s’est produite. Écrivez-moi directement.',
+      sending: 'Envoi en cours…',
+      serviceGroupDesign: 'Design UI/UX',
+      serviceGroupDevelopment: 'Développement sur mesure',
+    },
+    notFound: {
+      title: 'Cette page n’existe pas.',
+      body: 'Le lien est peut-être obsolète, ou la page a été déplacée. Retournez à la page d’accueil : les études de cas, les services de design et développement et les articles sont à un clic.',
+      cta: 'Retour à l’accueil',
+    },
+    footer: {
+      collaborate: 'Collaborons !',
+      menu: 'Menu',
+      home: 'Accueil',
+      connect: 'Contact',
+      emailLabel: 'Email',
+      sayHello: 'Écrivez-moi',
+      availableFor: 'Disponible pour du travail freelance',
+      backToTop: 'Retour en haut',
+      rights: 'Tous droits réservés',
+      legal: 'Mentions légales',
+    },
+    pages: {
+      work: {
+        heading:
+          'Un regard de plus près sur les projets que j’ai contribué à façonner',
+        intro:
+          'Une sélection de projets en design de produit, sites web, systèmes et expériences de marque, en solo comme au sein d’équipes.',
+      },
+      services: {
+        heading: 'Design et développement, du premier flux au site en ligne',
+        intro:
+          'Je conçois les interfaces dans Figma, Framer, Webflow et Sketch, et je développe le front-end en HTML, CSS, Tailwind CSS, React, Next.js et PHP. Prenez l’une des deux moitiés seule, ou les deux, auquel cas rien ne se perd au passage puisqu’il n’y a pas de relais.',
+        servicesCount: 'services',
+        howIWork: 'Comment je travaille',
+        fullProcess: 'Le processus complet, phase par phase',
+      },
+      process: {
+        heading: 'Ce qui se passe vraiment, et dans quel ordre',
+        youEndUpWith: 'Ce que vous obtenez',
+        workingTogether: 'Travailler ensemble',
+        cta: 'Tout commence par un brief. Envoyez le vôtre.',
+      },
+      tools: {
+        heading: 'Ce avec quoi je conçois et développe',
+        cta: 'Envie de voir comment tout cela s’utilise sur un vrai projet ?',
+      },
+      about: {
+        heading:
+          'Je conçois et développe des produits numériques : UI/UX, design systems et les expériences SaaS et mobiles qui reposent dessus.',
+        skillsAndTools: 'Compétences et outils',
+        skills: 'Compétences',
+        tools: 'Outils',
+      },
+      resume: {
+        experience: 'Expérience',
+        education: 'Formation',
+        whatIDo: 'Ce que je fais',
+        skills: 'Compétences',
+        tools: 'Outils',
+        toolsNoteBefore: 'Plus de détails sur leur usage au quotidien sur la',
+        toolsNoteLink: 'page outils',
+        cta: 'Vous recrutez ou avez un projet ? La boîte est ouverte.',
+      },
+      testimonials: {
+        introFilled:
+          'Ce que ça fait de travailler ensemble, dans les mots de ceux qui l’ont fait.',
+        introEmpty:
+          'Rien ici pour l’instant, et rien inventé pour combler le vide.',
+        emptyBody1:
+          'Je préfère laisser cette page vide plutôt que de la remplir de citations que personne n’a dites. Les témoignages clients sont publiés ici au fur et à mesure, avec un vrai nom et une vraie entreprise.',
+        emptyBody2:
+          'En attendant, les études de cas restent la meilleure preuve : chacune expose le brief, les décisions et ce qui a réellement été livré, ce qui en dit plus sur une collaboration qu’une phrase élogieuse.',
+      },
+      local: {
+        heading: 'Designer UI/UX à Ahmedabad',
+        whatIDesign: 'Ce que je conçois pour les clients d’ici',
+        workingLocally: 'Travailler ensemble en local',
+        cta: 'Basé à Ahmedabad et besoin d’un designer ? Rencontrons-nous.',
+      },
+      contact: {
+        heading: 'Construisons quelque chose qui mérite d’être lancé.',
+        intro:
+          'Briefs, collaborations ou une question rapide : laissez un mot. Je lis tout et je réponds en général sous deux jours ouvrés.',
+      },
+      thankYou: {
+        heading: 'Votre message a été envoyé',
+        body: 'Il est arrivé dans ma boîte de réception. Je lis tout et je réponds en général sous deux jours ouvrés.',
+        addBefore: 'Quelque chose à ajouter ? Écrivez à',
+        addAfter: 'directement. Cela arrive dans la même boîte.',
+        whileYouWait: 'En attendant',
+        workDesc: 'Des études de cas avec le brief, le processus et le résultat.',
+        servicesDesc:
+          'Ce que je prends en charge, et ce que vous obtenez au bout.',
+        articlesDesc:
+          'Des notes sur les design systems, le passage de relais et le front-end.',
+      },
+      legal: {
+        cta: 'Quelque chose ici à clarifier avant de travailler ensemble ?',
+      },
     },
   },
 } as const

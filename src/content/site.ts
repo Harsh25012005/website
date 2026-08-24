@@ -1,5 +1,4 @@
 import type { Localized } from './types'
-import { pricingIsPublishable } from './pricing'
 import { testimonialsArePublishable } from './about'
 
 /**
@@ -29,6 +28,8 @@ export const site = {
    */
   role: {
     en: 'UI/UX Designer & Front-End Developer',
+    es: 'Diseñador UI/UX y Desarrollador Front-End',
+    fr: 'Designer UI/UX & Développeur Front-End',
   } satisfies Localized<string>,
   /** Schema-facing mirror of `role` — Person.jobTitle / ProfessionalService. */
   jobTitle: 'UI/UX Designer & Front-End Developer',
@@ -40,6 +41,8 @@ export const site = {
    */
   location: {
     en: 'Ahmedabad, Gujarat, India',
+    es: 'Ahmedabad, Gujarat, India',
+    fr: 'Ahmedabad, Gujarat, Inde',
   } satisfies Localized<string>,
   /**
    * Sits inside the hero `h1` and the footer availability line — must stay a
@@ -47,6 +50,8 @@ export const site = {
    */
   city: {
     en: 'Ahmedabad',
+    es: 'Ahmedabad',
+    fr: 'Ahmedabad',
   } satisfies Localized<string>,
   region: 'Gujarat',
   country: 'India',
@@ -158,19 +163,12 @@ export const profileSocials = site.socials.filter((social) =>
 /**
  * Header nav — also the mobile menu.
  *
- * This used to be three items, on the reasoning that a fourth broke the
- * header's line rhythm. That constraint was solved in the header itself
- * (tighter gaps and a slightly smaller face above `md`) rather than paid for in
- * information architecture: leaving the pages that convert out of the primary
- * nav to protect a typographic detail is the wrong trade.
- *
- * Order is by intent, not by importance to me: someone evaluating a designer
- * looks at the work, then what it costs, then who they would be working with.
+ * Order is by intent: someone evaluating a designer looks at the work, then
+ * what services are on offer, then who they would be working with.
  */
 const headerLinks = [
   { key: 'work', href: '/work' },
   { key: 'services', href: '/services' },
-  { key: 'pricing', href: '/pricing' },
   { key: 'about', href: '/about' },
   { key: 'resume', href: '/resume' },
   { key: 'articles', href: '/articles' },
@@ -214,18 +212,11 @@ export const legalNavigation = [
 ] as const
 
 /**
- * `/pricing` and `/testimonials` drop out of both navs while their content is
- * not ready — each ships `noindex` until then, and a sitewide link to a noindex
- * page spends crawl budget on a page that has asked not to be indexed.
- *
- * Derived rather than commented-out entries someone has to remember to restore.
- * The failure mode that guards against is the quiet one: real prices get set,
- * the page starts indexing, and nothing on the site links to it — an orphaned
- * page with no internal links is a page that does not rank, and nothing about
- * it looks broken.
+ * `/testimonials` drops out of both navs while its content is not ready —
+ * it ships `noindex` until then, and a sitewide link to a noindex page
+ * spends crawl budget on a page that has asked not to be indexed.
  */
 function isPublishable(key: string): boolean {
-  if (key === 'pricing') return pricingIsPublishable
   if (key === 'testimonials') return testimonialsArePublishable
   return true
 }

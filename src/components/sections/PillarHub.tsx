@@ -162,7 +162,7 @@ export function PillarHub({ locale, pillar }: PillarHubProps) {
               id="pillar-faq-heading"
               className="max-w-[16ch] font-serif text-[clamp(32px,4.5vw,56px)] leading-[1.05] font-light tracking-[-0.03em]"
             >
-              Common questions
+              {dictionary.common.commonQuestions}
             </h2>
           </Reveal>
 
@@ -228,7 +228,7 @@ export function PillarHub({ locale, pillar }: PillarHubProps) {
             <div className="flex flex-col items-start gap-6 border-t border-[var(--color-border)] pt-12 md:flex-row md:items-center md:justify-between md:gap-10 md:pt-16">
               <p className="font-serif text-[clamp(22px,2.4vw,32px)] leading-[1.15] font-light tracking-[-0.02em] md:max-w-[28ch]">
                 <span className="text-white">
-                  Have a project in mind? Let’s talk.
+                  {dictionary.common.letsTalk}
                 </span>
               </p>
               <Link

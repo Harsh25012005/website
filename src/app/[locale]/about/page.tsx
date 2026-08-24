@@ -10,6 +10,7 @@ import {
 } from '@/content/about'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { site } from '@/content/site'
+import { getDictionary } from '@/content/dictionary'
 import { isLocale } from '@/lib/i18n'
 import { buildMetadata } from '@/lib/seo'
 import {
@@ -50,6 +51,8 @@ export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
 
+  const dictionary = getDictionary(locale)
+
   return (
     <>
       {/* The one page besides home that restates Person in full: it is the
@@ -78,8 +81,7 @@ export default async function AboutPage({ params }: PageProps) {
             delay={0.1}
             className="max-w-[22ch] font-serif text-[clamp(36px,5.4vw,5rem)] leading-[0.95] font-light tracking-[-0.04em]"
           >
-            I design and build digital products: UI/UX, design systems, and the
-            SaaS and mobile experiences built on them.
+            {dictionary.pages.about.heading}
           </SplitHeading>
 
           <Reveal delay={0.35}>
@@ -121,13 +123,13 @@ export default async function AboutPage({ params }: PageProps) {
 
       <section
         className="relative px-5 py-16 md:px-10 md:py-24"
-        aria-label="Skills and tools"
+        aria-label={dictionary.pages.about.skillsAndTools}
       >
         <div className="shell">
           <div className="grid gap-12 border-t border-[var(--color-border)] pt-12 md:grid-cols-2 md:gap-8 md:pt-16">
             <Reveal>
               <h2 className="max-w-[20ch] font-serif text-[clamp(26px,3vw,40px)] leading-[1.05] font-light tracking-[-0.03em]">
-                Skills
+                {dictionary.pages.about.skills}
               </h2>
               <ul className="mt-8 flex flex-wrap gap-2">
                 {skills.map((skill) => (
@@ -143,7 +145,7 @@ export default async function AboutPage({ params }: PageProps) {
 
             <Reveal delay={0.08}>
               <h2 className="max-w-[20ch] font-serif text-[clamp(26px,3vw,40px)] leading-[1.05] font-light tracking-[-0.03em]">
-                Tools
+                {dictionary.pages.about.tools}
               </h2>
               <ul className="mt-8 flex flex-wrap gap-2">
                 {tools.map((tool) => (
