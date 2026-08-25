@@ -38,6 +38,8 @@ import type { ImageAsset, Localized, Project } from './types'
 const PHONE = 'aspect-[848/1498]'
 const PHONE_TALL = 'aspect-[850/1552]'
 const PHONE_SLIM = 'aspect-[818/1457]'
+const EXPENZA_PHONE = 'aspect-[1133/2049]'
+const EXPENZA_WIDE = 'aspect-[2400/1400]'
 const SQUARE = 'aspect-square'
 const LANDSCAPE = 'aspect-[4/3]'
 
@@ -46,6 +48,306 @@ function shot(slug: string, file: string, alt: Localized<string>): ImageAsset {
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'expenza',
+    title: { en: 'Expenza', es: 'Expenza', fr: 'Expenza' },
+    discipline: {
+      en: 'Gesture-driven expense tracker app UI/UX',
+      es: 'Diseño UI/UX de app móvil de control de gastos por gestos',
+      fr: "UI/UX d'application mobile de suivi des dépenses par gestes",
+    },
+    year: '2026',
+    tags: ['uxui'],
+    summary: {
+      en: 'An editorial, gesture-driven mobile expense tracker engineered around a signature Shake-to-Add physical interaction, warm neutral minimalism, and a 100% local-first data architecture.',
+      es: 'Un gestor de gastos móvil editorial y guiado por gestos, diseñado en torno a la interacción física Shake-to-Add, un minimalismo neutro y cálido, y una arquitectura 100% local en dispositivo.',
+      fr: "Un suivi des dépenses mobile éditorial et gestuel, conçu autour de l'interaction physique Shake-to-Add, d'un minimalisme neutre chaleureux et d'une architecture 100% locale sur appareil.",
+    },
+    thumbnail: shot('expenza', 'cover', {
+      en: 'Expenza mobile expense tracker app dashboard and interaction screens',
+      es: 'Dashboard y pantallas de interacción de la app móvil de gastos Expenza',
+      fr: "Tableau de bord et écrans d'interaction de l'application de dépenses Expenza",
+    }),
+    hero: shot('expenza', 'cover', {
+      en: 'Expenza mobile expense tracker: Home dashboard, Shake-to-Add quick modal, and behavioral analytics overview',
+      es: 'App móvil Expenza: Dashboard principal, modal rápido Shake-to-Add y resumen de analítica de comportamiento',
+      fr: "Application mobile Expenza\u00a0: tableau de bord d'accueil, modal rapide Shake-to-Add et aperçu analytique comportemental",
+    }),
+    meta: [
+      {
+        label: { en: 'Type', es: 'Tipo', fr: 'Type' },
+        value: {
+          en: 'Product design & working mobile application',
+          es: 'Diseño de producto y app móvil en producción',
+          fr: 'Design de produit et application mobile en production',
+        },
+      },
+      {
+        label: { en: 'Role', es: 'Rol', fr: 'Rôle' },
+        value: {
+          en: 'Product designer & mobile architect',
+          es: 'Diseñador de producto y arquitecto móvil',
+          fr: 'Designer de produit et architecte mobile',
+        },
+      },
+      {
+        label: { en: 'Platform', es: 'Plataforma', fr: 'Plateforme' },
+        value: {
+          en: 'iOS and Android (React Native & Expo)',
+          es: 'iOS y Android (React Native y Expo)',
+          fr: 'iOS et Android (React Native et Expo)',
+        },
+      },
+      {
+        label: { en: 'Tools', es: 'Herramientas', fr: 'Outils' },
+        value: {
+          en: 'Figma, React Native, Sharp',
+          es: 'Figma, React Native, Sharp',
+          fr: 'Figma, React Native, Sharp',
+        },
+      },
+    ],
+    sections: [
+      {
+        heading: {
+          en: 'The friction problem in personal finance',
+          es: 'El problema de la fricción en las finanzas personales',
+          fr: 'Le problème de la friction dans les finances personnelles',
+        },
+        paragraphs: {
+          en: [
+            'Most personal finance applications fail not from a lack of features, but because of excessive interaction friction. When walking away from a coffee counter or grocery checkout, users have less than five seconds of active attention before pocketing their phone. Traditional capture flows requiring multi-level submenus, authentication walls, and cloud sync result in deferred tracking, inaccurate totals, and eventual app abandonment.',
+            'Expenza is built from the opposite principle: sub-three-second capture. By replacing UI navigation with physical intent, the app bridges the critical gap between immediate transaction capture and meaningful long-term financial awareness.',
+          ],
+          es: [
+            'La mayoría de las aplicaciones de finanzas personales fallan no por falta de funciones, sino por un exceso de fricción en la interacción. Al salir de una cafetería o de una tienda, los usuarios disponen de menos de cinco segundos de atención antes de guardar el teléfono. Los flujos tradicionales con submenús profundos, pantallas de acceso y sincronización en la nube provocan registros olvidados y el abandono de la app.',
+            'Expenza parte del principio opuesto: registro en menos de tres segundos. Al sustituir la navegación por intención física, la app une la captura inmediata del gasto con una comprensión financiera duradera.',
+          ],
+          fr: [
+            'La plupart des applications de finances personnelles échouent non par manque de fonctionnalités, mais en raison d\'une friction d\'interaction excessive. En quittant un café ou une caisse de supermarché, les utilisateurs ont moins de cinq secondes d\'attention avant de ranger leur téléphone. Les flux traditionnels exigeant des sous-menus complexes et des synchronisations entraînent l\'abandon rapide de l\'application.',
+            'Expenza est construite sur le principe inverse\u00a0: une saisie en moins de trois secondes. En remplaçant la navigation d\'interface par une intention physique, l\'application réconcilie la saisie instantanée et la clarté financière à long terme.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Physical intent over UI navigation: Shake-to-Add',
+          es: 'Intención física sobre navegación: Shake-to-Add',
+          fr: 'L\'intention physique plutôt que la navigation\u00a0: Shake-to-Add',
+        },
+        paragraphs: {
+          en: [
+            'Rather than hunting for a floating action button or drilling into a menu, users simply flick their wrist. A custom accelerometer filter computes coordinate deltas across three axes (Δ > 3.0G) paired with a 1,500ms debounce cooldown to eliminate pocket false positives while preserving instant responsiveness.',
+            'The resulting modal auto-focuses the input, defaults to recent context, and presents quick-increment chips (+10, +50, +100, +200, +500) so round transactions can be logged in a single tap without invoking the keyboard. When minimized, a native foreground service triggers a tactile haptic pulse and delivers a direct deep-link notification.',
+          ],
+          es: [
+            'En lugar de buscar un botón flotante o navegar por un menú, los usuarios simplemente realizan un leve movimiento de muñeca. Un filtro de acelerómetro calcula deltas en tres ejes (Δ > 3.0G) junto a un enfriamiento de 1.500 ms que elimina falsos positivos en el bolsillo manteniendo una respuesta inmediata.',
+            'El modal resultante enfoca el campo de texto, preselecciona el contexto reciente y ofrece pastillas de incremento rápido (+10, +50, +100, +200, +500) para registrar cifras redondas con un solo toque sin abrir el teclado. Al estar en segundo plano, un servicio nativo emite una vibración háptica y una notificación con enlace directo.',
+          ],
+          fr: [
+            'Plutôt que de chercher un bouton flottant ou de parcourir un menu, l\'utilisateur effectue un simple mouvement du poignet. Un filtre d\'accéléromètre personnalisé calcule les variations sur trois axes (Δ > 3.0G) couplé à un délai de temporisation de 1\u00a0500\u00a0ms pour éliminer les faux positifs en poche tout en garantissant une réactivité instantanée.',
+            'La fenêtre modale active immédiatement la saisie, pré-sélectionne le contexte récent et propose des puces d\'incrémentation rapide (+10, +50, +100, +200, +500) pour consigner les montants ronds en un geste sans clavier. En arrière-plan, un service natif déclenche une impulsion haptique et une notification avec lien direct.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Warm editorial clarity without drop shadows',
+          es: 'Claridad editorial cálida sin sombras paralelas',
+          fr: 'Clarté éditoriale chaleureuse sans ombres portées',
+        },
+        paragraphs: {
+          en: [
+            'Expenza steps away from dark neon fintech cliches toward an editorial light visual system. Built on warm neutral backgrounds (#F7F7F5), crisp white cards (#FFFFFF), and hairline borders (#E7E7E4), the interface adheres to a strict zero-drop-shadow rule. Tactility comes from precise spacing, border hierarchy, and physical haptics rather than artificial blur layers.',
+            'Typography is set in Plus Jakarta Sans for crisp numerical legibility. Category tokens use high-contrast chromatic pairings—warm amber for Food, cobalt blue for Transport, magenta for Shopping, and royal purple for Bills—giving visual weight to distribution without distracting from core totals.',
+          ],
+          es: [
+            'Expenza se aleja de los clichés fintech oscuros con luces de neón hacia un sistema visual editorial luminoso. Basado en fondos neutros cálidos (#F7F7F5), tarjetas blancas nítidas (#FFFFFF) y bordes finos (#E7E7E4), la interfaz sigue una regla estricta de cero sombras paralelas. La sensación táctil proviene del espaciado preciso, la jerarquía de bordes y la respuesta háptica.',
+            'La tipografía utiliza Plus Jakarta Sans para una legibilidad numérica óptima. Los tokens de categoría emplean combinaciones cromáticas de alto contraste (ámbar para Comida, azul cobalto para Transporte, magenta para Compras y púrpura para Facturas), aportando peso visual a la distribución sin restar protagonismo a los totales.',
+          ],
+          fr: [
+            'Expenza s\'éloigne des clichés fintech sombres et néon au profit d\'un univers visuel éditorial clair. Conçue sur des fonds neutres chauds (#F7F7F5), des cartes blanches nettes (#FFFFFF) et des bordures subtiles (#E7E7E4), l\'interface applique une règle stricte de zéro ombre portée. La sensation tactile naît d\'un espacement rigoureux, d\'une hiérarchie de contours et de retours haptiques.',
+            'La typographie est composée en Plus Jakarta Sans pour une lisibilité parfaite des chiffres. Les tokens de catégories utilisent des accords chromatiques contrastés\u00a0: ambre pour la Nourriture, bleu cobalt pour les Transports, magenta pour le Shopping et violet pour les Factures.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Behavioral reflection: Money Replay & Money Mood',
+          es: 'Reflexión conductual: Money Replay y Money Mood',
+          fr: 'Réflexion comportementale\u00a0: Money Replay et Money Mood',
+        },
+        paragraphs: {
+          en: [
+            'Recording expenses is only half the battle; the interface must also help users understand their spending rhythm. Expenza replaces passive chart dumps with deterministic behavioral insights: the "Money Mood" velocity badge evaluates daily spending speed against the calendar timeline, while consistency streaks reward no-spend and under-budget days.',
+            'At the end of each month, an interactive 7-stage Money Replay story transforms monthly totals into an engaging visual narrative covering top spending categories, peak spending days, and budget health in plain English.',
+          ],
+          es: [
+            'Registrar gastos es solo la mitad del objetivo; la interfaz debe ayudar al usuario a entender su ritmo de consumo. Expenza sustituye los gráficos pasivos por análisis conductuales deterministas: la insignia «Money Mood» evalúa la velocidad de gasto frente al calendario mensual, mientras que las rachas de consistencia recompensan los días sin gasto y bajo presupuesto.',
+            'Al final de cada mes, una historia interactiva Money Replay de 7 etapas transforma las cifras mensuales en una narrativa visual atractiva que resume las principales categorías, los días de mayor gasto y la salud presupuestaria en lenguaje claro.',
+          ],
+          fr: [
+            'Enregistrer les dépenses n\'est que la moitié du chemin\u00a0; l\'interface doit également éclairer le rythme des dépenses. Expenza remplace les graphiques passifs par des indicateurs comportementaux\u00a0: le badge «\u00a0Money Mood\u00a0» évalue la cadence de dépense par rapport au calendrier, tandis que les séries de régularité valorisent les journées sans dépense et le respect du budget.',
+            'À la fin de chaque mois, une story interactive Money Replay en 7 étapes transforme les chiffres du mois en un récit visuel percutant, détaillant les postes majeurs et la santé financière en langage naturel.',
+          ],
+        },
+      },
+      {
+        heading: {
+          en: 'Local-first sovereignty & native export engine',
+          es: 'Soberanía local y motor de exportación nativo',
+          fr: 'Souveraineté locale et moteur d\'exportation natif',
+        },
+        paragraphs: {
+          en: [
+            'Privacy is absolute: 100% of financial data is stored on-device via async storage with zero external telemetry, tracking IDs, or required accounts. Users own their data entirely.',
+            'To ensure complete portability, Expenza includes a built-in multi-format export engine. Users can generate professionally styled Excel spreadsheets (.xlsx) with header accents and formulas, formatted A4 PDF financial statements with metric cards, or structured JSON backups for external developer tools.',
+          ],
+          es: [
+            'La privacidad es absoluta: el 100% de los datos financieros se almacena en el dispositivo mediante almacenamiento local seguro sin telemetría externa, identificadores de rastreo ni cuentas obligatorias. El usuario es el único dueño de su información.',
+            'Para garantizar la portabilidad total, Expenza incorpora un motor de exportación multiformato. Los usuarios pueden generar hojas de cálculo de Excel estilizadas (.xlsx) con fórmulas y colores contables, estados financieros en PDF formato A4 listos para imprimir, o copias de seguridad en JSON estructurado.',
+          ],
+          fr: [
+            'La confidentialité est totale\u00a0: 100% des données financières restent sur l\'appareil via un stockage local sécurisé, sans télémétrie externe, sans traceurs et sans obligation de créer un compte. L\'utilisateur reste l\'unique propriétaire de ses données.',
+            'Pour assurer une portabilité complète, Expenza intègre un moteur d\'export multi-format. Les utilisateurs peuvent générer des classeurs Excel stylisés (.xlsx) avec formules, des relevés PDF au format A4 prêts à l\'impression ou des sauvegardes complètes en JSON structuré.',
+          ],
+        },
+      },
+    ],
+    gallery: [
+      {
+        image: shot('expenza', 'home-default', {
+          en: 'Expenza home dashboard showing hero balance, budget progress bar, where did it go breakdown, and spending streaks',
+          es: 'Dashboard principal de Expenza con balance, barra de presupuesto, desglose de categorías y rachas',
+          fr: "Tableau de bord Expenza affichant le solde, la progression du budget, la répartition des dépenses et les séries",
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+      {
+        image: shot('expenza', 'add-expense', {
+          en: 'Quick expense modal with 3x3 category grid and one-tap quick-increment amount pills',
+          es: 'Modal rápido de añadir gasto con cuadrícula de categorías 3x3 y pastillas de incremento de importe',
+          fr: "Modal de saisie rapide avec grille de catégories 3x3 et puces d'incrémentation rapide",
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+      {
+        image: shot('expenza', 'shake-sensitivity', {
+          en: 'Shake-to-Add sensitivity configuration screen with threshold calibration and permission badges',
+          es: 'Pantalla de configuración de sensibilidad Shake-to-Add con calibración de umbrales y permisos',
+          fr: 'Écran de configuration de la sensibilité Shake-to-Add avec calibrage des seuils et autorisations',
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+      {
+        image: shot('expenza', 'expenses-list', {
+          en: 'Chronological transaction list with date sectioning, category filter pills, and live search',
+          es: 'Lista cronológica de transacciones agrupada por fechas con filtros de categoría y búsqueda en tiempo real',
+          fr: 'Liste chronologique des transactions groupée par dates avec filtres de catégories et recherche',
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+      {
+        image: shot('expenza', 'expenses-calendar', {
+          en: 'Interactive calendar view with spending indicator dots and day transaction inspection card',
+          es: 'Vista interactiva de calendario con puntos de gasto y tarjeta de inspección del día seleccionado',
+          fr: "Vue calendrier interactive avec indicateurs de dépenses et carte d'inspection détaillée du jour",
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+      {
+        image: shot('expenza', 'insights-overview', {
+          en: 'Behavioral insights dashboard featuring Money Mood velocity, monthly spending charts, and category breakdown',
+          es: 'Dashboard de analítica conductual con velocidad Money Mood, gráfico de gasto mensual y desglose por categorías',
+          fr: "Tableau de bord d'analytique comportementale avec vélocité Money Mood, graphiques mensuels et répartition",
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+      {
+        image: shot('expenza', 'insights-breakdown', {
+          en: 'Category breakdown and spending distribution widget with proportional segmented bars',
+          es: 'Desglose de categorías y distribución de gastos con barras segmentadas proporcionales',
+          fr: 'Répartition par catégories et distribution des dépenses avec barres segmentées proportionnelles',
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+      {
+        image: shot('expenza', 'money-replay', {
+          en: 'Money Replay story screen providing an Instagram-style monthly financial reflection narrative',
+          es: 'Pantalla de historia Money Replay con resumen narrativo mensual estilo redes sociales',
+          fr: 'Écran de story Money Replay offrant un bilan financier mensuel immersif au format story',
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+      {
+        image: shot('expenza', 'settings-budget', {
+          en: 'Monthly budget configuration with numerical input and quick preset chips',
+          es: 'Configuración de presupuesto mensual con entrada numérica y opciones rápidas predefinidas',
+          fr: 'Configuration du budget mensuel avec saisie numérique et puces de montants prédéfinis',
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+      {
+        image: shot('expenza', 'systems-overview', {
+          en: 'Expenza mobile design system, money replay story card, and budget calibration showcase',
+          es: 'Sistema de diseño móvil de Expenza, historia Money Replay y calibración de presupuesto',
+          fr: 'Système de design mobile Expenza, carte de story Money Replay et calibrage budgétaire',
+        }),
+        span: 'half',
+        aspect: EXPENZA_WIDE,
+      },
+      {
+        image: shot('expenza', 'export-suite', {
+          en: 'Multi-format export engine generating styled Excel workbooks and formatted PDF statements',
+          es: 'Motor de exportación multiformato con hojas de cálculo Excel estilizadas y estados en PDF',
+          fr: "Moteur d'exportation multiformat générant des feuilles Excel stylisées et des relevés PDF",
+        }),
+        span: 'half',
+        aspect: EXPENZA_WIDE,
+      },
+      {
+        image: shot('expenza', 'design-system', {
+          en: 'Expenza tokenized design system: typography hierarchy, semantic category colors, and card layouts',
+          es: 'Sistema de diseño tokenizado de Expenza: jerarquía tipográfica, colores semánticos y tarjetas',
+          fr: 'Système de design tokenisé Expenza\u00a0: hiérarchie typographique, couleurs sémantiques et composants',
+        }),
+        span: 'quarter',
+        aspect: EXPENZA_PHONE,
+      },
+    ],
+    outcome: {
+      heading: { en: 'What it produced', es: 'Lo que produjo', fr: 'Ce que cela a produit' },
+      paragraphs: {
+        en: [
+          'A complete, production-tested mobile personal finance application that reduces everyday capture to a sub-three-second physical gesture while maintaining an editorial light aesthetic and 100% on-device data sovereignty.',
+          'What it demonstrates for client engagements is the end-to-end craft: translating physical hardware sensor APIs into delightful micro-interactions, designing rigorous tokenized UI systems that communicate without relying on drop shadows, and delivering pro-tier data exports natively on mobile.',
+        ],
+        es: [
+          'Una aplicación móvil de finanzas personales completa y lista para producción que reduce el registro diario a un gesto físico de menos de tres segundos, manteniendo una estética editorial clara y un control de datos 100% en dispositivo.',
+          'Lo que demuestra para proyectos con clientes es el oficio integral: transformar sensores de hardware en microinteracciones gratificantes, diseñar sistemas de interfaz rigurosos sin sombras superfluas y crear motores de exportación profesionales en móvil.',
+        ],
+        fr: [
+          'Une application mobile de finances personnelles complète et éprouvée qui réduit la saisie quotidienne à un geste physique de moins de trois secondes, tout en préservant une esthétique éditoriale claire et la souveraineté totale des données sur l\'appareil.',
+          'Ce qu\'elle démontre pour les projets clients est un savoir-faire de bout en bout\u00a0: exploiter les capteurs matériels pour créer des micro-interactions fluides, concevoir des design systems rigoureux sans artifices visuels et intégrer des exports de données professionnels.',
+        ],
+      },
+    },
+    relatedArticles: [
+      'ui-ux-design-trends-2026',
+      'design-system-in-figma',
+      'ui-design-mistakes',
+      'figma-to-react-handoff',
+    ],
+  },
   {
     slug: 'zenith',
     title: { en: 'Zenith', es: 'Zenith', fr: 'Zenith' },

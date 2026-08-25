@@ -297,7 +297,7 @@ export const services: Service[] = [
         },
       },
     ],
-    relatedProjects: ['zenith', 'crave'],
+    relatedProjects: ['expenza', 'zenith', 'crave'],
   },
   {
     slug: 'mobile-app-design',
@@ -427,7 +427,7 @@ export const services: Service[] = [
         },
       },
     ],
-    relatedProjects: ['zenith', 'crave', 'cleaning-services-app'],
+    relatedProjects: ['expenza', 'zenith', 'crave', 'cleaning-services-app'],
   },
   {
     slug: 'saas-product-design',

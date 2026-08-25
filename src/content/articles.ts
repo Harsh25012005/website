@@ -178,7 +178,7 @@ export const articles: Article[] = [
       },
     ],
     gallery: [],
-    relatedProjects: ['zenith', 'stayease'],
+    relatedProjects: ['expenza', 'zenith', 'stayease'],
     relatedServices: ['web-ui-design', 'saas-product-design'],
   },
   {
@@ -715,7 +715,7 @@ export const articles: Article[] = [
       },
     ],
     gallery: [],
-    relatedProjects: ['zenith'],
+    relatedProjects: ['expenza', 'zenith'],
     relatedServices: ['design-systems', 'saas-product-design'],
   },
   {
@@ -1129,7 +1129,7 @@ export const articles: Article[] = [
       },
     ],
     gallery: [],
-    relatedProjects: ['crave', 'cleaning-services-app'],
+    relatedProjects: ['expenza', 'crave', 'cleaning-services-app'],
     relatedServices: ['ux-research-wireframing', 'web-ui-design'],
   },
 ]
