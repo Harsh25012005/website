@@ -145,8 +145,9 @@ export default async function ArticlePage({ params }: PageProps) {
                 alt={article.cover.alt[locale]}
                 fill
                 priority
-                sizes="90vw"
-                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1440px) 90vw, 1200px"
+                quality={90}
+                className="object-cover [backface-visibility:hidden]"
               />
             </ParallaxFrame>
           </Reveal>
@@ -187,8 +188,9 @@ export default async function ArticlePage({ params }: PageProps) {
                         src={section.image.src}
                         alt={section.image.alt[locale]}
                         fill
-                        sizes="90vw"
-                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1440px) 90vw, 1200px"
+                        quality={90}
+                        className="object-cover [backface-visibility:hidden]"
                       />
                     </ParallaxFrame>
                   </figure>
@@ -219,9 +221,12 @@ export default async function ArticlePage({ params }: PageProps) {
                         alt={image.alt[locale]}
                         fill
                         sizes={
-                          index === 0 ? '90vw' : '(max-width: 768px) 100vw, 45vw'
+                          index === 0
+                            ? '(max-width: 768px) 100vw, (max-width: 1440px) 90vw, 1200px'
+                            : '(max-width: 768px) 100vw, (max-width: 1440px) 50vw, 600px'
                         }
-                        className="object-cover"
+                        quality={90}
+                        className="object-cover [backface-visibility:hidden]"
                       />
                     </ParallaxFrame>
                   </figure>

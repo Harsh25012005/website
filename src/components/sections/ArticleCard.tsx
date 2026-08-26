@@ -20,7 +20,7 @@ type ArticleCardProps = {
 export function ArticleCard({
   article,
   locale,
-  sizes = '(max-width: 768px) 100vw, 33vw',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 450px',
   headingLevel: Heading = 'h3',
 }: ArticleCardProps) {
   return (
@@ -39,7 +39,8 @@ export function ArticleCard({
               alt={article.cover.alt[locale]}
               fill
               sizes={sizes}
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              quality={90}
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] [backface-visibility:hidden]"
             />
           </ParallaxFrame>
         </div>

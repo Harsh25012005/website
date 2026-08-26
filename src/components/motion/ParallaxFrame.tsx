@@ -64,9 +64,12 @@ export function ParallaxFrame({
   return (
     <div
       ref={frameRef}
-      className={cn('img-skeleton overflow-hidden', className)}
+      className={cn('img-skeleton overflow-hidden [transform:translateZ(0)]', className)}
     >
-      <div ref={innerRef} className="relative -mt-[5%] h-[110%] w-full">
+      <div
+        ref={innerRef}
+        className="relative -mt-[5%] h-[110%] w-full [transform:translate3d(0,0,0)] [backface-visibility:hidden] will-change-transform"
+      >
         {children}
       </div>
     </div>

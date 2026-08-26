@@ -28,7 +28,7 @@ export function ProjectCard({
   locale,
   dictionary,
   aspect = 'aspect-[4/5]',
-  sizes = '(max-width: 768px) 100vw, 45vw',
+  sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1440px) 45vw, 650px',
   parallax = 40,
 }: ProjectCardProps) {
   const href = localizedPath(locale, `/work/${project.slug}`)
@@ -45,7 +45,8 @@ export function ProjectCard({
             alt={project.thumbnail.alt[locale]}
             fill
             sizes={sizes}
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            quality={90}
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] [backface-visibility:hidden]"
           />
         </ParallaxFrame>
       </div>

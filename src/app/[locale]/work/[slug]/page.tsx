@@ -148,8 +148,9 @@ export default async function ProjectPage({ params }: PageProps) {
                 alt={project.hero.alt[locale]}
                 fill
                 priority
-                sizes="90vw"
-                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1440px) 90vw, 1400px"
+                quality={90}
+                className="object-cover [backface-visibility:hidden]"
               />
             </ParallaxFrame>
           </Reveal>
@@ -215,14 +216,15 @@ export default async function ProjectPage({ params }: PageProps) {
                           fill
                           sizes={
                             item.span === 'full'
-                              ? '90vw'
+                              ? '(max-width: 768px) 100vw, (max-width: 1440px) 90vw, 1400px'
                               : item.span === 'half'
-                                ? '(max-width: 768px) 100vw, 45vw'
+                                ? '(max-width: 768px) 100vw, (max-width: 1440px) 50vw, 700px'
                                 : item.span === 'third'
-                                  ? '(max-width: 768px) 50vw, 30vw'
-                                  : '(max-width: 768px) 50vw, 23vw'
+                                  ? '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 480px'
+                                  : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px'
                           }
-                          className="object-cover"
+                          quality={90}
+                          className="object-cover [backface-visibility:hidden]"
                         />
                       </ParallaxFrame>
                     </figure>
@@ -320,7 +322,7 @@ export default async function ProjectPage({ params }: PageProps) {
                     project={item}
                     locale={locale}
                     dictionary={dictionary}
-                    sizes="(max-width: 768px) 100vw, 30vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 450px"
                     parallax={26}
                   />
                 </Reveal>

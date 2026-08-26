@@ -158,6 +158,11 @@ html.lenis body {
   background-color: #1b1e23;
 }
 
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: auto;
+}
+
 /*
  * The signature warm→lilac wash used on the hero accent word, the mailto
  * headline and every gradient CTA.
